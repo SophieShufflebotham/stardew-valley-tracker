@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:test_project/src/screens/RoomScreen.dart';
 import 'package:test_project/src/widgets/ListItem.dart';
 
-import 'SearchScreen.dart';
-
 class HomeScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -24,7 +22,7 @@ class HomeScreenState extends State<HomeScreen> {
         title: Text("Stardew Valley Checklist"),
       ),
       body: _buildList(),
-      bottomNavigationBar: _createNavBar(),
+      bottomNavigationBar: _createNavBar(context),
     );
   }
 
@@ -50,29 +48,19 @@ class HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _createNavBar() {
-    return Container(
-        height: 50.0,
-        child: BottomAppBar(
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.home),
-                  onPressed: () {},
-                ),
-                IconButton(
-                    icon: Icon(Icons.search),
-                    onPressed: () => {
-                          Navigator.of(context).push(
-                            MaterialPageRoute<void>(
-                              builder: (BuildContext context) {
-                                return SearchScreen();
-                              },
-                            ),
-                          )
-                        }),
-              ]),
-        ));
+  Widget _createNavBar(BuildContext context) {
+    return BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text('Home'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            title: Text('Search'),
+          ),
+        ],
+        currentIndex: 0,
+        selectedItemColor: Theme.of(context).toggleableActiveColor);
   }
 }
