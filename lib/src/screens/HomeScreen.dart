@@ -22,7 +22,6 @@ class HomeScreenState extends State<HomeScreen> {
         title: Text("Stardew Valley Checklist"),
       ),
       body: _buildList(),
-      bottomNavigationBar: _createNavBar(context),
     );
   }
 
@@ -46,21 +45,5 @@ class HomeScreenState extends State<HomeScreen> {
         );
       },
     );
-  }
-
-  Widget _createNavBar(BuildContext context) {
-    return BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text('Home'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            title: Text('Search'),
-          ),
-        ],
-        currentIndex: 0,
-        selectedItemColor: Theme.of(context).toggleableActiveColor);
   }
 }
