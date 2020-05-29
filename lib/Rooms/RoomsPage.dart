@@ -19,13 +19,12 @@ class RoomsPage extends StatelessWidget {
           centerTitle: true,
           title: Text(_roomName,
               style: TextStyle(
-                color: Colors.white,
                 fontSize: 16.0,
               )),
-          background: Image.asset(
-            "graphics/$assetName.png",
-            fit: BoxFit.cover,
-          ),
+          background: ColorFiltered(
+              colorFilter: ColorFilter.mode(
+                  Colors.grey.withOpacity(0.7), BlendMode.modulate),
+              child: Image.asset("graphics/$assetName.png", fit: BoxFit.cover)),
           collapseMode: CollapseMode.none,
         ));
 
