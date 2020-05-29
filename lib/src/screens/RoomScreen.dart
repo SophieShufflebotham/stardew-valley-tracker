@@ -1,15 +1,13 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
 
-class RoomsPage extends StatelessWidget {
-  final String _roomName;
+class RoomScreen extends StatelessWidget {
+  final String roomName;
 
-  RoomsPage(this._roomName);
+  RoomScreen({@required this.roomName});
 
   @override
   Widget build(BuildContext context) {
-    var assetName = _roomName.toLowerCase().replaceAll(' ', '_');
+    var assetName = roomName.toLowerCase().replaceAll(' ', '_');
 
     Widget appBar = SliverAppBar(
         expandedHeight: 200.0,
@@ -17,7 +15,7 @@ class RoomsPage extends StatelessWidget {
         pinned: true,
         flexibleSpace: FlexibleSpaceBar(
           centerTitle: true,
-          title: Text(_roomName,
+          title: Text(roomName,
               style: TextStyle(
                 fontSize: 16.0,
               )),

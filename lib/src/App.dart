@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../List/ListItems.dart';
+import 'screens/HomeScreen.dart';
 
 class App extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -10,7 +10,7 @@ class App extends StatelessWidget {
         primaryColor: Colors.white,
       ),
       darkTheme: ThemeData.dark(),
-      home: ListItems(),
+      home: HomeScreen(),
     );
   }
 }
