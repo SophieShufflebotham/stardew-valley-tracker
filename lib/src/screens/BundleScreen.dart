@@ -1,29 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:test_project/src/widgets/ListItem.dart';
-import 'package:test_project/src/screens/BundleScreen.dart';
+import '../widgets/SquareAvatar.dart';
 
-class RoomScreen extends StatefulWidget {
-  final String roomName;
+class BundleScreen extends StatefulWidget {
+  final String bundleName;
 
-  RoomScreen({this.roomName});
+  BundleScreen({this.bundleName});
 
   @override
   State<StatefulWidget> createState() {
-    return RoomScreenState(roomName: roomName);
+    return BundleScreenState(bundleName: bundleName);
   }
 }
 
-class RoomScreenState extends State<RoomScreen> {
-  final String roomName;
+class BundleScreenState extends State<BundleScreen> {
+  final String bundleName;
   final controller = ScrollController();
   var titleBar = "";
   var sliverTitle = "";
-  final _bundles = [
-    "Spring Foraging Bundle",
-    "Summer Foraging Bundle",
+  final _items = [
+    "Dandelion",
+    "Wild Horseradish",
   ];
+  final Set<String> _savedItems = new Set<String>();
 
-  RoomScreenState({@required this.roomName});
+  BundleScreenState({@required this.bundleName});
 
   @override
   void initState() {
@@ -32,7 +33,7 @@ class RoomScreenState extends State<RoomScreen> {
     bool initialised = false;
 
     if (!initialised) {
-      sliverTitle = roomName;
+      sliverTitle = bundleName;
       initialised = true;
     }
 
@@ -41,7 +42,7 @@ class RoomScreenState extends State<RoomScreen> {
         if (!sliverCollapsed) {
           // do what ever you want when silver is collapsing !
 
-          titleBar = roomName;
+          titleBar = bundleName;
           sliverTitle = "";
           sliverCollapsed = true;
           setState(() {});
@@ -51,7 +52,7 @@ class RoomScreenState extends State<RoomScreen> {
         if (sliverCollapsed) {
           // do what ever you want when silver is expanding !
 
-          sliverTitle = roomName;
+          sliverTitle = bundleName;
           titleBar = "";
           sliverCollapsed = false;
           setState(() {});
@@ -60,31 +61,45 @@ class RoomScreenState extends State<RoomScreen> {
     });
   }
 
+  void _clickHandler(bool alreadySaved, String itemName) {
+    setState(() {
+      if (alreadySaved) {
+        _savedItems.remove(itemName);
+      } else {
+        _savedItems.add(itemName);
+      }
+    });
+  }
+
   Widget _buildList() {
     return ListView.builder(
-        itemCount: _bundles.length, itemBuilder: _buildListItem);
+        itemCount: _items.length, itemBuilder: _buildListItem);
   }
 
   Widget _buildListItem(BuildContext context, int i) {
-    var bundleName = _bundles[i];
-    var imageName = bundleName.toLowerCase().replaceAll(' ', '_') + "_icon";
+    var itemName = _items[i];
+    var imageName = itemName.toLowerCase().replaceAll(' ', '_') + "_icon";
+    bool alreadySaved = _savedItems.contains(itemName);
 
-    return ListItem(
-      name: bundleName,
-      iconImage: AssetImage("graphics/$imageName.png"),
-      onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute<void>(
-            builder: (context) => BundleScreen(bundleName: bundleName),
-          ),
-        );
-      },
-    );
+    return ListTile(
+        title: Text(itemName),
+        leading: SquareAvatar(
+            backgroundImage: AssetImage("graphics/$imageName.png")),
+        trailing: Switch(
+          activeColor: Colors.lightGreen,
+          value: alreadySaved,
+          onChanged: (value) {
+            _clickHandler(alreadySaved, itemName);
+          },
+        ),
+        onTap: () {
+          _clickHandler(alreadySaved, itemName);
+        });
   }
 
   @override
   Widget build(BuildContext context) {
-    var assetName = roomName.toLowerCase().replaceAll(' ', '_');
+    var assetName = bundleName.toLowerCase().replaceAll(' ', '_');
 
     Widget appBar = SliverAppBar(
         expandedHeight: 200.0,
@@ -119,7 +134,7 @@ class RoomScreenState extends State<RoomScreen> {
         appBar,
         SliverList(
           delegate: SliverChildBuilderDelegate((context, index) {
-            if (index < _bundles.length) {
+            if (index < _items.length) {
               return _buildListItem(context, index);
             }
           }),
