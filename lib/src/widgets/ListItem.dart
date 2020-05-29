@@ -17,10 +17,9 @@ class ListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
         title: Text(name),
+        subtitle: Text('0/6 Completed'),
         trailing: Icon(Icons.keyboard_arrow_right),
-        leading: SquareAvatar(
-          backgroundImage: iconImage,
-        ),
+        leading: SquareAvatar(backgroundImage: iconImage),
         onTap: onTap);
   }
 }
