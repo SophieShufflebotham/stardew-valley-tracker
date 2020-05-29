@@ -8,19 +8,16 @@ import 'List/ListItems.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-    final _theme = ThemeData(primaryColor: Color.fromRGBO(112, 129, 156, 1.0),);
+    final theme = ThemeData(
+      primaryColor: Color.fromRGBO(112, 129, 156, 1.0),
+    );
 
     return MaterialApp(
       title: 'Welcome to Flutter',
-      theme: _theme,
+      theme: theme,
       home: ListItems(),
     );
   }
 }
-
-
-
-

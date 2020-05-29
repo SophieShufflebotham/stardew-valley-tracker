@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import '../Rooms/RoomsPage.dart';
 import 'ListItems.dart';
-import 'package:stardew-tracker/Rooms/RoomsPage.dart';
 
 class ListItemsState extends State<ListItems> {
   final _bigFontStyle = TextStyle(fontSize: 18, color: Colors.white);
   final Set<String> _saved = Set<String>();
   final _listContent = new List();
   final List<String> _rooms = new List();
-  int _maxRoomsLength = 2; //TODO number of rooms total - This can probably be grabbed from a file/somewhere else?
+  int _maxRoomsLength =
+      2; //TODO number of rooms total - This can probably be grabbed from a file/somewhere else?
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +34,11 @@ class ListItemsState extends State<ListItems> {
             children: <Widget>[
               IconButton(
                 icon: Icon(Icons.home, color: Colors.white),
-                onPressed:(){}, //TODO
+                onPressed: () {}, //TODO
               ),
               IconButton(
                 icon: Icon(Icons.search, color: Colors.white),
-                onPressed:  _pushSaved, //TODO
+                onPressed: _pushSaved, //TODO
               ),
             ]),
       ),
@@ -54,7 +55,7 @@ class ListItemsState extends State<ListItems> {
   }
 
 //TODO get the data from somewhere non-hardcoded
-  void _setRoomName(int index){
+  void _setRoomName(int index) {
     switch (index) {
       case 0:
         _rooms.add("Crafts Room");
@@ -75,7 +76,6 @@ class ListItemsState extends State<ListItems> {
         );
       },
     );
-
 
     final List<Widget> divided = ListTile.divideTiles(
       context: context,
@@ -123,30 +123,34 @@ class ListItemsState extends State<ListItems> {
         style: _bigFontStyle,
       ),
       trailing: _iconConfig(alreadySaved),
-      onTap: (){    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (context) => RoomsPage(listString),
-      ),
-    );},
-    );//TODO
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            builder: (context) => RoomsPage(listString),
+          ),
+        );
+      },
+    ); //TODO
   }
 
   Widget _buildList() {
     print("Length: " + _rooms.length.toString());
-    return ListView.builder(itemCount: _maxRoomsLength, itemBuilder: (context, i) {
-      print("i: " + i.toString());
-      print("rooms: " + _rooms.length.toString());
-      print("true: " + (i >= _rooms.length).toString());
+    return ListView.builder(
+        itemCount: _maxRoomsLength,
+        itemBuilder: (context, i) {
+          print("i: " + i.toString());
+          print("rooms: " + _rooms.length.toString());
+          print("true: " + (i >= _rooms.length).toString());
 
-      if (i >= _rooms.length) {
-        print("wtf");
-        _listContent.addAll(_populateListEntries());
-      }
+          if (i >= _rooms.length) {
+            print("wtf");
+            _listContent.addAll(_populateListEntries());
+          }
 
-      final listString = _listContent[i];
-      final bool alreadySaved = _saved.contains(listString);
-      var _listTile = _makeListTile(listString, alreadySaved);
-      return _makeCard(_listTile);
-    });
+          final listString = _listContent[i];
+          final bool alreadySaved = _saved.contains(listString);
+          var _listTile = _makeListTile(listString, alreadySaved);
+          return _makeCard(_listTile);
+        });
   }
 }
