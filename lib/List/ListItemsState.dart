@@ -106,14 +106,38 @@ class ListItemsState extends State<ListItems> {
     return Icon(Icons.keyboard_arrow_right);
   }
 
-  Widget _makeCard(var listTile) {
-    return Card(
-        elevation: 8.0,
-        margin: new EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
-        child: Container(
-          decoration: BoxDecoration(color: Color.fromRGBO(146, 157, 176, 1.0)),
-          child: listTile,
-        ));
+  Widget _makeCard(Widget listTile, String roomString) {
+    final _horizontal = 15.0;
+    final _vertical = 12.0;
+
+    //Adding a Positioned element on top of our card element allows the InkWell effect to be seen, as the ink effect is displayed underneath the opaque BoxDecoration
+    return Stack(
+      children: <Widget>[
+        Card(
+            elevation: 8.0,
+            margin: new EdgeInsets.symmetric(
+                horizontal: _horizontal, vertical: _vertical),
+            child: Container(
+              decoration:
+                  BoxDecoration(color: Color.fromRGBO(146, 157, 176, 1.0)),
+              child: listTile,
+            )),
+        Positioned.fill(
+            left: _horizontal,
+            right: _horizontal,
+            top: _vertical,
+            bottom: _vertical,
+            child: Material(
+                color: Colors.transparent,
+                child: InkWell(onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (context) => RoomsPage(roomString),
+                    ),
+                  );
+                })))
+      ],
+    );
   }
 
   Widget _makeListTile(String listString, bool alreadySaved) {
@@ -123,13 +147,6 @@ class ListItemsState extends State<ListItems> {
         style: _bigFontStyle,
       ),
       trailing: _iconConfig(alreadySaved),
-      onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute<void>(
-            builder: (context) => RoomsPage(listString),
-          ),
-        );
-      },
     ); //TODO
   }
 
@@ -150,7 +167,7 @@ class ListItemsState extends State<ListItems> {
           final listString = _listContent[i];
           final bool alreadySaved = _saved.contains(listString);
           var _listTile = _makeListTile(listString, alreadySaved);
-          return _makeCard(_listTile);
+          return _makeCard(_listTile, listString);
         });
   }
 }
