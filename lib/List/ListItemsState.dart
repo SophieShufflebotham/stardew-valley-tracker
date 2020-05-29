@@ -5,15 +5,13 @@ import 'ListItems.dart';
 class ListItemsState extends State<ListItems> {
   final _bigFontStyle = TextStyle(fontSize: 18, color: Colors.white);
   final Set<String> _saved = Set<String>();
-  final _listContent = new List();
-  final List<String> _rooms = new List();
-  int _maxRoomsLength =
-      2; //TODO number of rooms total - This can probably be grabbed from a file/somewhere else?
+  final _rooms = [
+    "Crafts Room",
+    "Boiler Room",
+  ];
 
   @override
   Widget build(BuildContext context) {
-    //var _icon = IconButton(icon: Icon(Icons.list), onPressed: _pushSaved);
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Stardew Valley Checklist"),
@@ -34,38 +32,15 @@ class ListItemsState extends State<ListItems> {
             children: <Widget>[
               IconButton(
                 icon: Icon(Icons.home, color: Colors.white),
-                onPressed: () {}, //TODO
+                onPressed: () {},
               ),
               IconButton(
                 icon: Icon(Icons.search, color: Colors.white),
-                onPressed: _pushSaved, //TODO
+                onPressed: _navigateToSearch,
               ),
             ]),
       ),
     );
-  }
-
-  List _populateListEntries() {
-    List _list = new List();
-    for (int i = 0; i < _maxRoomsLength; i++) {
-      _setRoomName(i);
-      _list.add(_rooms[i]);
-    }
-    return _list;
-  }
-
-//TODO get the data from somewhere non-hardcoded
-  void _setRoomName(int index) {
-    switch (index) {
-      case 0:
-        _rooms.add("Crafts Room");
-        break;
-      case 1:
-        _rooms.add("Boiler Room");
-        break;
-      default:
-        _rooms.add("Error Room");
-    }
   }
 
   Widget _builder(BuildContext context) {
@@ -90,7 +65,7 @@ class ListItemsState extends State<ListItems> {
     );
   }
 
-  void _pushSaved() {
+  void _navigateToSearch() {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: _builder,
@@ -98,41 +73,32 @@ class ListItemsState extends State<ListItems> {
     );
   }
 
-  Widget _iconConfig(bool alreadySaved) {
-    // return Icon(
-    //   alreadySaved ? Icons.bookmark : Icons.bookmark_border,
-    //   color: alreadySaved ? Colors.white : null,
-    // );
-    return Icon(Icons.keyboard_arrow_right);
-  }
+  Widget _makeCard(Widget listTile, String roomName) {
+    final horizontal = 15.0;
+    final vertical = 12.0;
 
-  Widget _makeCard(Widget listTile, String roomString) {
-    final _horizontal = 15.0;
-    final _vertical = 12.0;
-
-    //Adding a Positioned element on top of our card element allows the InkWell effect to be seen, as the ink effect is displayed underneath the opaque BoxDecoration
     return Stack(
       children: <Widget>[
         Card(
             elevation: 8.0,
             margin: new EdgeInsets.symmetric(
-                horizontal: _horizontal, vertical: _vertical),
+                horizontal: horizontal, vertical: vertical),
             child: Container(
               decoration:
                   BoxDecoration(color: Color.fromRGBO(146, 157, 176, 1.0)),
               child: listTile,
             )),
         Positioned.fill(
-            left: _horizontal,
-            right: _horizontal,
-            top: _vertical,
-            bottom: _vertical,
+            left: horizontal,
+            right: horizontal,
+            top: vertical,
+            bottom: vertical,
             child: Material(
                 color: Colors.transparent,
                 child: InkWell(onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute<void>(
-                      builder: (context) => RoomsPage(roomString),
+                      builder: (context) => RoomsPage(roomName),
                     ),
                   );
                 })))
@@ -140,34 +106,23 @@ class ListItemsState extends State<ListItems> {
     );
   }
 
-  Widget _makeListTile(String listString, bool alreadySaved) {
+  Widget _buildRoomListItem(String roomName) {
     return ListTile(
       title: Text(
-        listString,
+        roomName,
         style: _bigFontStyle,
       ),
-      trailing: _iconConfig(alreadySaved),
-    ); //TODO
+      trailing: Icon(Icons.keyboard_arrow_right),
+    );
   }
 
   Widget _buildList() {
-    print("Length: " + _rooms.length.toString());
     return ListView.builder(
-        itemCount: _maxRoomsLength,
+        itemCount: _rooms.length,
         itemBuilder: (context, i) {
-          print("i: " + i.toString());
-          print("rooms: " + _rooms.length.toString());
-          print("true: " + (i >= _rooms.length).toString());
-
-          if (i >= _rooms.length) {
-            print("wtf");
-            _listContent.addAll(_populateListEntries());
-          }
-
-          final listString = _listContent[i];
-          final bool alreadySaved = _saved.contains(listString);
-          var _listTile = _makeListTile(listString, alreadySaved);
-          return _makeCard(_listTile, listString);
+          final roomName = _rooms[i];
+          final listItem = _buildRoomListItem(roomName);
+          return _makeCard(listItem, roomName);
         });
   }
 }
