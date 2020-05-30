@@ -109,10 +109,10 @@ class HomeScreenState extends State<HomeScreen> {
 
   Widget _buildListItem(BuildContext context, int i) {
     var roomName = _rooms[i];
-    var newImageName = roomName.toLowerCase().replaceAll(' ', '_') + "_icon";
+    var imageName = roomName.toLowerCase().replaceAll(' ', '_') + "_icon";
     return ListItem(
       name: roomName,
-      iconImage: AssetImage("graphics/$newImageName.png"),
+      iconImage: AssetImage("graphics/$imageName.png"),
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute<void>(
