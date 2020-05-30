@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:test_project/src/screens/RoomScreen.dart';
 import 'package:test_project/src/widgets/ListItem.dart';
+import 'package:test_project/model/model.dart';
+import 'package:test_project/tools/populateDb.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -14,9 +16,9 @@ class HomeScreenState extends State<HomeScreen> {
     "Crafts Room",
     "Boiler Room",
   ];
-
   @override
   Widget build(BuildContext context) {
+    PopulateDb().populateRooms();
     return Scaffold(
       appBar: AppBar(
         title: Text("Stardew Valley Checklist"),
