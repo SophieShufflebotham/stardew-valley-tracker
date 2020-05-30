@@ -215,5 +215,12 @@
         "iconPath": "graphics/25000_bundle_icon.png",
         "headerImagePath": "graphics/25000_bundle.png",
         "room": 6
+    },
+    {
+        "id": 32,
+        "name": "The Missing Bundle",
+        "iconPath": "graphics/the_missing_bundle_icon.png",
+        "headerImagePath": "graphics/the_missing_bundle.png",
+        "room": 7
     }
 ]
