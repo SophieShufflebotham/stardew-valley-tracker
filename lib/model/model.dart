@@ -43,12 +43,14 @@ const tableItems = SqfEntityTable(
   primaryKeyName: "id",
   modelName: null,
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+  defaultJsonUrl:
+      "https://raw.githubusercontent.com/PikaPirate/stardew-valley-tracker/master/Items.json",
   fields: [
     SqfEntityField("name", DbType.text, isNotNull: true),
     SqfEntityField("iconPath", DbType.text, isNotNull: true),
-    SqfEntityField("complete", DbType.bool),
+    SqfEntityField("complete", DbType.bool, defaultValue: false),
     SqfEntityFieldRelationship(
-      parentTable: tableRooms,
+      parentTable: tableBundles,
       fieldName: "bundle",
     ),
   ],

@@ -3,6 +3,7 @@ import 'package:test_project/src/screens/RoomScreen.dart';
 import 'package:test_project/src/widgets/ListItem.dart';
 import 'package:test_project/model/model.dart';
 import 'package:test_project/tools/populateDb.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -15,8 +16,9 @@ class HomeScreenState extends State<HomeScreen> {
   List<Room> _rooms = new List<Room>();
 
   HomeScreenState() {
-    getDatabaseContent();
+    getInitStatus();
   }
+  
   static final String pageTitle = "Community Center";
   var imageName = pageTitle.toLowerCase().replaceAll(' ', '_') + "_icon";
   var sliverTitle = "";
@@ -130,13 +132,28 @@ class HomeScreenState extends State<HomeScreen> {
   }
 
   void getDatabaseContent() async {
-    bool success = await PopulateDb().populateRooms();
-    if (success) {
-      List<Room> roomsList = await Room().select().toList();
+    List<Room> roomsList = await Room().select().toList();
 
-      setState(() {
-        _rooms = roomsList;
-      });
+    setState(() {
+      _rooms = roomsList;
+    });
+  }
+
+  void getInitStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isInitialised = false;
+    isInitialised =
+        (prefs.getBool('dbReady') == null) ? false : prefs.getBool('dbReady');
+
+    print("getBool: " + prefs.getBool('dbReady').toString());
+
+    if (!isInitialised) {
+      bool success = await PopulateDb().initialiseDatabase();
+
+      if (success) {
+        prefs.setBool('dbReady', true);
+      }
     }
+    getDatabaseContent();
   }
 }
