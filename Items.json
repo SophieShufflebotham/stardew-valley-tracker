@@ -560,6 +560,13 @@
         "bundle": 17
     },
     {
+        "id": 133,
+        "name": "Cockle",
+        "iconPath": "graphics/cockle_icon.png",
+        "completed": false,
+        "bundle": 17
+    },
+    {
         "id": 80,
         "name": "Mussel",
         "iconPath": "graphics/mussel_icon.png",

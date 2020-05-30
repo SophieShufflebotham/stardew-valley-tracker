@@ -161,13 +161,6 @@
         "room": 5
     },
     {
-        "id": 24,
-        "name": "Dye Bundle",
-        "iconPath": "graphics/dye_bundle_icon.png",
-        "headerImagePath": "graphics/dye_bundle.png",
-        "room": 5
-    },
-    {
         "id": 25,
         "name": "Field Research Bundle",
         "iconPath": "graphics/field_research_bundle_icon.png",
