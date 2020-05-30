@@ -32,6 +32,7 @@ dependencies:
   sqfentity_gen: ^1.2.3
   flutter_datetime_picker: ^1.2.8  
   intl: ^0.16.1
+  shared_preferences: ^0.5.7+3
 
 dev_dependencies:
   flutter_test:

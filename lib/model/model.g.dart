@@ -49,7 +49,6 @@ class TableBundle extends SqfEntityTableBase {
   TableBundle() {
     // declare properties of EntityTable
     tableName = 'bundles';
-    relationType = RelationType.ONE_TO_MANY;
     primaryKeyName = 'id';
     primaryKeyType = PrimaryKeyType.integer_auto_incremental;
     useSoftDeleting = false;
@@ -89,9 +88,10 @@ class TableItem extends SqfEntityTableBase {
     fields = [
       SqfEntityFieldBase('name', DbType.text, isNotNull: true),
       SqfEntityFieldBase('iconPath', DbType.text, isNotNull: true),
-      SqfEntityFieldBase('complete', DbType.bool, isNotNull: false),
+      SqfEntityFieldBase('complete', DbType.bool,
+          defaultValue: false, isNotNull: false),
       SqfEntityFieldRelationshipBase(
-          TableRoom.getInstance, DeleteRule.NO_ACTION,
+          TableBundle.getInstance, DeleteRule.NO_ACTION,
           relationType: RelationType.ONE_TO_MANY,
           fieldName: 'bundle',
           isNotNull: false),
@@ -182,23 +182,6 @@ class Room {
         .and;
   }
 
-  /// to load children of items to this field, use preload parameter. Ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
-  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plItems', 'plField2'..]) or so on..
-  List<Item> plItems;
-
-  /// get Item(s) filtered by id=bundle
-  ItemFilterBuilder getItems(
-      {List<String> columnsToSelect, bool getIsDeleted}) {
-    if (id == null) {
-      return null;
-    }
-    return Item()
-        .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .bundle
-        .equals(id)
-        .and;
-  }
-
 // END COLLECTIONS & VIRTUALS (Room)
 
   static const bool _softDeleteActivated = false;
@@ -253,9 +236,6 @@ class Room {
 // COLLECTIONS (Room)
     if (!forQuery) {
       map['Bundles'] = await getBundles().toMapList();
-    }
-    if (!forQuery) {
-      map['Items'] = await getItems().toMapList();
     }
 // END COLLECTIONS (Room)
 
@@ -339,16 +319,6 @@ class Room {
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
         }
-        if (/*!_loadedFields.contains('rooms.plItems') && */ (preloadFields ==
-                null ||
-            preloadFields.contains('plItems'))) {
-          /*_loadedFields.add('rooms.plItems'); */
-          obj.plItems = obj.plItems ??
-              await obj.getItems().toList(
-                  preload: preload,
-                  preloadFields: preloadFields,
-                  loadParents: false /*, loadedFields:_loadedFields*/);
-        }
       } // END RELATIONSHIPS PRELOAD CHILD
 
       objList.add(obj);
@@ -395,16 +365,6 @@ class Room {
           /*_loadedFields.add('rooms.plBundles'); */
           obj.plBundles = obj.plBundles ??
               await obj.getBundles().toList(
-                  preload: preload,
-                  preloadFields: preloadFields,
-                  loadParents: false /*, loadedFields:_loadedFields*/);
-        }
-        if (/*!_loadedFields.contains('rooms.plItems') && */ (preloadFields ==
-                null ||
-            preloadFields.contains('plItems'))) {
-          /*_loadedFields.add('rooms.plItems'); */
-          obj.plItems = obj.plItems ??
-              await obj.getItems().toList(
                   preload: preload,
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
@@ -499,12 +459,6 @@ class Room {
           success: false,
           errorMessage:
               'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (Bundle.room)');
-    }
-    if (await Item().select().bundle.equals(id).and.toCount() > 0) {
-      return BoolResult(
-          success: false,
-          errorMessage:
-              'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (Item.bundle)');
     }
     if (!_softDeleteActivated || hardDelete) {
       return _mnRoom
@@ -1031,16 +985,6 @@ class RoomFilterBuilder extends SearchCriteria {
           errorMessage:
               'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (Bundle.room)');
     }
-// Check sub records where in (Item) according to DeleteRule.NO_ACTION
-    final itemsBybundleidList = await toListPrimaryKey(false);
-    final resItemBYbundle =
-        await Item().select().bundle.inValues(itemsBybundleidList).toCount();
-    if (resItemBYbundle > 0) {
-      return BoolResult(
-          success: false,
-          errorMessage:
-              'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (Item.bundle)');
-    }
 
     if (Room._softDeleteActivated && !hardDelete) {
       r = await _obj._mnRoom.updateBatch(qparams, {'isDeleted': 1});
@@ -1101,16 +1045,6 @@ class RoomFilterBuilder extends SearchCriteria {
           /*_loadedFields.add('rooms.plBundles'); */
           obj.plBundles = obj.plBundles ??
               await obj.getBundles().toList(
-                  preload: preload,
-                  preloadFields: preloadFields,
-                  loadParents: false /*, loadedFields:_loadedFields*/);
-        }
-        if (/*!_loadedFields.contains('rooms.plItems') && */ (preloadFields ==
-                null ||
-            preloadFields.contains('plItems'))) {
-          /*_loadedFields.add('rooms.plItems'); */
-          obj.plItems = obj.plItems ??
-              await obj.getItems().toList(
                   preload: preload,
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
@@ -1348,6 +1282,26 @@ class Bundle {
   }
   // END RELATIONSHIPS (Bundle)
 
+// COLLECTIONS & VIRTUALS (Bundle)
+  /// to load children of items to this field, use preload parameter. Ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plItems', 'plField2'..]) or so on..
+  List<Item> plItems;
+
+  /// get Item(s) filtered by id=bundle
+  ItemFilterBuilder getItems(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    if (id == null) {
+      return null;
+    }
+    return Item()
+        .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
+        .bundle
+        .equals(id)
+        .and;
+  }
+
+// END COLLECTIONS & VIRTUALS (Bundle)
+
   static const bool _softDeleteActivated = false;
   BundleManager __mnBundle;
 
@@ -1404,6 +1358,12 @@ class Bundle {
     if (room != null) {
       map['room'] = forView ? plRoom.name : room;
     }
+
+// COLLECTIONS (Bundle)
+    if (!forQuery) {
+      map['Items'] = await getItems().toMapList();
+    }
+// END COLLECTIONS (Bundle)
 
     return map;
   }
@@ -1472,6 +1432,21 @@ class Bundle {
           setDefaultValues: setDefaultValues);
       // final List<String> _loadedFields = List<String>.from(loadedFields);
 
+      // RELATIONSHIPS PRELOAD CHILD
+      if (preload) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('bundles.plItems') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plItems'))) {
+          /*_loadedFields.add('bundles.plItems'); */
+          obj.plItems = obj.plItems ??
+              await obj.getItems().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+      } // END RELATIONSHIPS PRELOAD CHILD
+
       // RELATIONSHIPS PRELOAD
       if (preload || loadParents) {
         loadedFields = loadedFields ?? [];
@@ -1520,6 +1495,21 @@ class Bundle {
     if (data.length != 0) {
       obj = Bundle.fromMap(data[0] as Map<String, dynamic>);
       // final List<String> _loadedFields = loadedFields ?? [];
+
+      // RELATIONSHIPS PRELOAD CHILD
+      if (preload) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('bundles.plItems') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plItems'))) {
+          /*_loadedFields.add('bundles.plItems'); */
+          obj.plItems = obj.plItems ??
+              await obj.getItems().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+      } // END RELATIONSHIPS PRELOAD CHILD
 
       // RELATIONSHIPS PRELOAD
       if (preload || loadParents) {
@@ -1619,6 +1609,12 @@ class Bundle {
   /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
   Future<BoolResult> delete([bool hardDelete = false]) async {
     print('SQFENTITIY: delete Bundle invoked (id=$id)');
+    if (await Item().select().bundle.equals(id).and.toCount() > 0) {
+      return BoolResult(
+          success: false,
+          errorMessage:
+              'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (Item.bundle)');
+    }
     if (!_softDeleteActivated || hardDelete) {
       return _mnBundle
           .delete(QueryParams(whereString: 'id=?', whereArguments: [id]));
@@ -2140,6 +2136,16 @@ class BundleFilterBuilder extends SearchCriteria {
   Future<BoolResult> delete([bool hardDelete = false]) async {
     _buildParameters();
     var r = BoolResult();
+    // Check sub records where in (Item) according to DeleteRule.NO_ACTION
+    final itemsBybundleidList = await toListPrimaryKey(false);
+    final resItemBYbundle =
+        await Item().select().bundle.inValues(itemsBybundleidList).toCount();
+    if (resItemBYbundle > 0) {
+      return BoolResult(
+          success: false,
+          errorMessage:
+              'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (Item.bundle)');
+    }
 
     if (Bundle._softDeleteActivated && !hardDelete) {
       r = await _obj._mnBundle.updateBatch(qparams, {'isDeleted': 1});
@@ -2190,6 +2196,21 @@ class BundleFilterBuilder extends SearchCriteria {
     if (data.isNotEmpty) {
       obj = Bundle.fromMap(data[0] as Map<String, dynamic>);
       // final List<String> _loadedFields = loadedFields ?? [];
+
+      // RELATIONSHIPS PRELOAD CHILD
+      if (preload) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('bundles.plItems') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plItems'))) {
+          /*_loadedFields.add('bundles.plItems'); */
+          obj.plItems = obj.plItems ??
+              await obj.getItems().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+      } // END RELATIONSHIPS PRELOAD CHILD
 
       // RELATIONSHIPS PRELOAD
       if (preload || loadParents) {
@@ -2412,8 +2433,8 @@ class Item {
     bundle = int.tryParse(o['bundle'].toString());
 
     // RELATIONSHIPS FromMAP
-    plRoom = o['room'] != null
-        ? Room.fromMap(o['room'] as Map<String, dynamic>)
+    plBundle = o['plBundle'] != null
+        ? Bundle.fromMap(o['plBundle'] as Map<String, dynamic>)
         : null;
     // END RELATIONSHIPS FromMAP
   }
@@ -2429,13 +2450,13 @@ class Item {
 
 // RELATIONSHIPS (Item)
   /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
-  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plRoom', 'plField2'..]) or so on..
-  Room plRoom;
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plBundle', 'plField2'..]) or so on..
+  Bundle plBundle;
 
-  /// get Room By Bundle
-  Future<Room> getRoom(
+  /// get Bundle By Bundle
+  Future<Bundle> getBundle(
       {bool loadParents = false, List<String> loadedFields}) async {
-    final _obj = await Room()
+    final _obj = await Bundle()
         .getById(bundle, loadParents: loadParents, loadedFields: loadedFields);
     return _obj;
   }
@@ -2468,7 +2489,7 @@ class Item {
     }
 
     if (bundle != null) {
-      map['bundle'] = forView ? plRoom.name : bundle;
+      map['bundle'] = forView ? plBundle.name : bundle;
     }
 
     return map;
@@ -2495,7 +2516,7 @@ class Item {
     }
 
     if (bundle != null) {
-      map['bundle'] = forView ? plRoom.name : bundle;
+      map['bundle'] = forView ? plBundle.name : bundle;
     }
 
     return map;
@@ -2517,6 +2538,16 @@ class Item {
 
   List<dynamic> toArgsWithIds() {
     return [id, name, iconPath, complete, bundle];
+  }
+
+  static Future<List<Item>> fromWeb(
+      [VoidCallback Function(List<Item> o) itemList]) async {
+    final objList = await fromWebUrl(
+        'https://raw.githubusercontent.com/PikaPirate/stardew-valley-tracker/master/Items.json');
+    if (itemList != null) {
+      itemList(objList);
+    }
+    return objList;
   }
 
   static Future<List<Item>> fromWebUrl(String url) async {
@@ -2558,13 +2589,13 @@ class Item {
       // RELATIONSHIPS PRELOAD
       if (preload || loadParents) {
         loadedFields = loadedFields ?? [];
-        if (/*!_loadedFields.contains('rooms.plRoom') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('bundles.plBundle') && */ (preloadFields ==
                 null ||
             loadParents ||
-            preloadFields.contains('plRoom'))) {
-          /*_loadedFields.add('rooms.plRoom');*/
-          obj.plRoom = obj.plRoom ??
-              await obj.getRoom(
+            preloadFields.contains('plBundle'))) {
+          /*_loadedFields.add('bundles.plBundle');*/
+          obj.plBundle = obj.plBundle ??
+              await obj.getBundle(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
@@ -2607,13 +2638,13 @@ class Item {
       // RELATIONSHIPS PRELOAD
       if (preload || loadParents) {
         loadedFields = loadedFields ?? [];
-        if (/*!_loadedFields.contains('rooms.plRoom') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('bundles.plBundle') && */ (preloadFields ==
                 null ||
             loadParents ||
-            preloadFields.contains('plRoom'))) {
-          /*_loadedFields.add('rooms.plRoom');*/
-          obj.plRoom = obj.plRoom ??
-              await obj.getRoom(
+            preloadFields.contains('plBundle'))) {
+          /*_loadedFields.add('bundles.plBundle');*/
+          obj.plBundle = obj.plBundle ??
+              await obj.getBundle(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
@@ -2725,7 +2756,9 @@ class Item {
       ..qparams.distinct = true;
   }
 
-  void _setDefaultValues() {}
+  void _setDefaultValues() {
+    complete = complete ?? false;
+  }
   // END METHODS
   // CUSTOM CODES
   /*
@@ -3274,13 +3307,13 @@ class ItemFilterBuilder extends SearchCriteria {
       // RELATIONSHIPS PRELOAD
       if (preload || loadParents) {
         loadedFields = loadedFields ?? [];
-        if (/*!_loadedFields.contains('rooms.plRoom') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('bundles.plBundle') && */ (preloadFields ==
                 null ||
             loadParents ||
-            preloadFields.contains('plRoom'))) {
-          /*_loadedFields.add('rooms.plRoom');*/
-          obj.plRoom = obj.plRoom ??
-              await obj.getRoom(
+            preloadFields.contains('plBundle'))) {
+          /*_loadedFields.add('bundles.plBundle');*/
+          obj.plBundle = obj.plBundle ??
+              await obj.getBundle(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
