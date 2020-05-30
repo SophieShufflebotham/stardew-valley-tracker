@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_project/src/widgets/FilteredHeaderImage.dart';
+import 'package:test_project/src/widgets/ImageHeaderScaffold.dart';
 import 'package:test_project/src/widgets/ListItem.dart';
 import 'package:test_project/src/screens/BundleScreen.dart';
 import 'package:test_project/model/model.dart';
@@ -21,51 +22,34 @@ class RoomScreen extends StatefulWidget {
 
 class RoomScreenState extends State<RoomScreen> {
   Room _room;
-  final int id;
-  Widget _headerImage;
+  Image _headerImage;
   Map<int, ImageProvider> _iconImages = Map<int, ImageProvider>();
-  bool _sliverCollapsed = false;
-
-  final controller = ScrollController();
-  var titleBar = "";
-  var sliverTitle = "";
   List<Bundle> _bundles = new List();
 
-  RoomScreenState({
-    @required this.id,
-  }) {
-    sliverTitle = _room.name;
+  final int id;
+
+  RoomScreenState({@required this.id}) {
     getDatabaseContent();
   }
 
   @override
-  void initState() {
-    super.initState();
-    controller.addListener(_scrollListener);
-  }
+  Widget build(BuildContext context) {
+    var listSliver = SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          if (index < _bundles.length) {
+            return _buildListItem(context, index);
+          }
+          return null;
+        },
+      ),
+    );
 
-  _scrollListener() {
-    if (controller.offset > 220 &&
-        !controller.position.outOfRange &&
-        !_sliverCollapsed) {
-      titleBar = _room.name;
-      sliverTitle = "";
-      _sliverCollapsed = true;
-      setState(() {});
-    } else if (controller.offset <= 220 &&
-        !controller.position.outOfRange &&
-        _sliverCollapsed) {
-      sliverTitle = _room.name;
-      titleBar = "";
-      _sliverCollapsed = false;
-      setState(() {});
-    }
-  }
-
-  _onTapListItem(Bundle bundle) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (context) => BundleScreen(bundleName: bundle.name),
+    return Scaffold(
+      body: ImageHeader(
+        title: _room.name,
+        image: _headerImage,
+        slivers: [listSliver],
       ),
     );
   }
@@ -81,54 +65,22 @@ class RoomScreenState extends State<RoomScreen> {
     }
 
     return ListItem(
-      name: bundle.name,
+      name: bundle == null ? " " : bundle.name,
       iconImage: _iconImages[bundle.id],
       onTap: () {
-        _onTapListItem(bundle);
+        Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            builder: (context) => BundleScreen(bundleName: bundle.name),
+          ),
+        );
       },
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    var title = Text(
-      titleBar,
-      style: TextStyle(color: Colors.white, fontSize: 16.0),
-    );
-
-    var sliverTitleText = Text(
-      sliverTitle,
-      style: TextStyle(color: Colors.white, fontSize: 16.0),
-    );
-
-    Widget appBar = SliverAppBar(
-      expandedHeight: 200.0,
-      floating: false,
-      pinned: true,
-      title: title,
-      flexibleSpace: Stack(
-        children: <Widget>[
-          FilteredHeaderImage(child: _headerImage),
-          FlexibleSpaceBar(title: sliverTitleText),
-        ],
-      ),
-    );
-
-    var listSliver = SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (context, index) {
-          if (index < _bundles.length) {
-            return _buildListItem(context, index);
-          }
-          return null;
-        },
-      ),
-    );
-
-    return Scaffold(
-      body: CustomScrollView(
-        controller: controller,
-        slivers: [appBar, listSliver],
+  _onTapListItem(Bundle bundle) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (context) => BundleScreen(bundleName: bundle.name),
       ),
     );
   }
