@@ -1,0 +1,44 @@
+[
+    {
+        "id": 1,
+        "name": "Spring Foraging Bundle",
+        "iconPath": "graphics/spring_foraging_bundle_icon.png",
+        "headerImagePath": "graphics/spring_foraging_bundle.png",
+        "room": 1
+    },
+    {
+        "id": 2,
+        "name": "Summer Foraging Bundle",
+        "iconPath": "graphics/spring_foraging_bundle_icon.png",
+        "headerImagePath": "graphics/spring_foraging_bundle.png",
+        "room": 1
+    },
+    {
+        "id": 3,
+        "name": "Fall Foraging Bundle",
+        "iconPath": "graphics/fall_foraging_bundle_icon.png",
+        "headerImagePath": "graphics/fall_foraging_bundle.png",
+        "room": 1
+    },
+    {
+        "id": 4,
+        "name": "Winter Foraging Bundle",
+        "iconPath": "graphics/winter_foraging_bundle_icon.png",
+        "headerImagePath": "graphics/winter_foraging_bundle.png",
+        "room": 1
+    },
+    {
+        "id": 5,
+        "name": "Construction Bundle",
+        "iconPath": "graphics/construction_bundle_icon.png",
+        "headerImagePath": "graphics/construction_bundle.png",
+        "room": 1
+    },
+    {
+        "id": 6,
+        "name": "Exotic Foraging Bundle",
+        "iconPath": "graphics/exotic_foraging_bundle_icon.png",
+        "headerImagePath": "graphics/exotic_foraging_bundle.png",
+        "room": 1
+    }
+]
