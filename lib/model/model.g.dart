@@ -25,7 +25,7 @@ class TableRoom extends SqfEntityTableBase {
   TableRoom() {
     // declare properties of EntityTable
     tableName = 'rooms';
-    primaryKeyName = 'roomId';
+    primaryKeyName = 'id';
     primaryKeyType = PrimaryKeyType.integer_auto_incremental;
     useSoftDeleting = false;
     // when useSoftDeleting is true, creates a field named 'isDeleted' on the table, and set to '1' this field when item deleted (does not hard delete)
@@ -50,7 +50,7 @@ class TableBundle extends SqfEntityTableBase {
     // declare properties of EntityTable
     tableName = 'bundles';
     relationType = RelationType.ONE_TO_MANY;
-    primaryKeyName = 'bundleId';
+    primaryKeyName = 'id';
     primaryKeyType = PrimaryKeyType.integer_auto_incremental;
     useSoftDeleting = false;
     // when useSoftDeleting is true, creates a field named 'isDeleted' on the table, and set to '1' this field when item deleted (does not hard delete)
@@ -63,7 +63,7 @@ class TableBundle extends SqfEntityTableBase {
       SqfEntityFieldRelationshipBase(
           TableRoom.getInstance, DeleteRule.NO_ACTION,
           relationType: RelationType.ONE_TO_MANY,
-          fieldName: 'bundleRoom',
+          fieldName: 'room',
           isNotNull: false),
     ];
     super.init();
@@ -80,7 +80,7 @@ class TableItem extends SqfEntityTableBase {
     // declare properties of EntityTable
     tableName = 'items';
     relationType = RelationType.ONE_TO_MANY;
-    primaryKeyName = 'itemId';
+    primaryKeyName = 'id';
     primaryKeyType = PrimaryKeyType.integer_auto_incremental;
     useSoftDeleting = false;
     // when useSoftDeleting is true, creates a field named 'isDeleted' on the table, and set to '1' this field when item deleted (does not hard delete)
@@ -93,7 +93,7 @@ class TableItem extends SqfEntityTableBase {
       SqfEntityFieldRelationshipBase(
           TableRoom.getInstance, DeleteRule.NO_ACTION,
           relationType: RelationType.ONE_TO_MANY,
-          fieldName: 'itemBundle',
+          fieldName: 'bundle',
           isNotNull: false),
     ];
     super.init();
@@ -131,20 +131,20 @@ class DatabaseModel extends SqfEntityModelProvider {
 // BEGIN ENTITIES
 // region Room
 class Room {
-  Room({this.roomId, this.name, this.iconPath, this.headerImagePath}) {
+  Room({this.id, this.name, this.iconPath, this.headerImagePath}) {
     _setDefaultValues();
   }
   Room.withFields(this.name, this.iconPath, this.headerImagePath) {
     _setDefaultValues();
   }
-  Room.withId(this.roomId, this.name, this.iconPath, this.headerImagePath) {
+  Room.withId(this.id, this.name, this.iconPath, this.headerImagePath) {
     _setDefaultValues();
   }
   Room.fromMap(Map<String, dynamic> o, {bool setDefaultValues = true}) {
     if (setDefaultValues) {
       _setDefaultValues();
     }
-    roomId = int.tryParse(o['roomId'].toString());
+    id = int.tryParse(o['id'].toString());
     if (o['name'] != null) {
       name = o['name'] as String;
     }
@@ -156,7 +156,7 @@ class Room {
     }
   }
   // FIELDS (Room)
-  int roomId;
+  int id;
   String name;
   String iconPath;
   String headerImagePath;
@@ -169,16 +169,16 @@ class Room {
   /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plBundles', 'plField2'..]) or so on..
   List<Bundle> plBundles;
 
-  /// get Bundle(s) filtered by roomId=bundleRoom
+  /// get Bundle(s) filtered by id=room
   BundleFilterBuilder getBundles(
       {List<String> columnsToSelect, bool getIsDeleted}) {
-    if (roomId == null) {
+    if (id == null) {
       return null;
     }
     return Bundle()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .bundleRoom
-        .equals(roomId)
+        .room
+        .equals(id)
         .and;
   }
 
@@ -186,16 +186,16 @@ class Room {
   /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plItems', 'plField2'..]) or so on..
   List<Item> plItems;
 
-  /// get Item(s) filtered by roomId=itemBundle
+  /// get Item(s) filtered by id=bundle
   ItemFilterBuilder getItems(
       {List<String> columnsToSelect, bool getIsDeleted}) {
-    if (roomId == null) {
+    if (id == null) {
       return null;
     }
     return Item()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .itemBundle
-        .equals(roomId)
+        .bundle
+        .equals(id)
         .and;
   }
 
@@ -212,8 +212,8 @@ class Room {
   Map<String, dynamic> toMap(
       {bool forQuery = false, bool forJson = false, bool forView = false}) {
     final map = <String, dynamic>{};
-    if (roomId != null) {
-      map['roomId'] = roomId;
+    if (id != null) {
+      map['id'] = id;
     }
     if (name != null) {
       map['name'] = name;
@@ -235,8 +235,8 @@ class Room {
       bool forJson = false,
       bool forView = false]) async {
     final map = <String, dynamic>{};
-    if (roomId != null) {
-      map['roomId'] = roomId;
+    if (id != null) {
+      map['id'] = id;
     }
     if (name != null) {
       map['name'] = name;
@@ -277,7 +277,17 @@ class Room {
   }
 
   List<dynamic> toArgsWithIds() {
-    return [roomId, name, iconPath, headerImagePath];
+    return [id, name, iconPath, headerImagePath];
+  }
+
+  static Future<List<Room>> fromWeb(
+      [VoidCallback Function(List<Room> o) roomList]) async {
+    final objList = await fromWebUrl(
+        'https://raw.githubusercontent.com/PikaPirate/stardew-valley-tracker/master/Rooms.json');
+    if (roomList != null) {
+      roomList(objList);
+    }
+    return objList;
   }
 
   static Future<List<Room>> fromWebUrl(String url) async {
@@ -348,7 +358,7 @@ class Room {
 
   /// returns Room by ID if exist, otherwise returns null
   ///
-  /// Primary Keys: int roomId
+  /// Primary Keys: int id
   ///
   /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
@@ -362,16 +372,16 @@ class Room {
 
   ///
   /// <returns>returns Room if exist, otherwise returns null
-  Future<Room> getById(int roomId,
+  Future<Room> getById(int id,
       {bool preload = false,
       List<String> preloadFields,
       bool loadParents = false,
       List<String> loadedFields}) async {
-    if (roomId == null) {
+    if (id == null) {
       return null;
     }
     Room obj;
-    final data = await _mnRoom.getById([roomId]);
+    final data = await _mnRoom.getById([id]);
     if (data.length != 0) {
       obj = Room.fromMap(data[0] as Map<String, dynamic>);
       // final List<String> _loadedFields = loadedFields ?? [];
@@ -407,25 +417,25 @@ class Room {
     return obj;
   }
 
-  /// Saves the (Room) object. If the roomId field is null, saves as a new record and returns new roomId, if roomId is not null then updates record
+  /// Saves the (Room) object. If the id field is null, saves as a new record and returns new id, if id is not null then updates record
 
-  /// <returns>Returns roomId
+  /// <returns>Returns id
   Future<int> save() async {
-    if (roomId == null || roomId == 0) {
-      roomId = await _mnRoom.insert(this);
+    if (id == null || id == 0) {
+      id = await _mnRoom.insert(this);
     } else {
-      // roomId= await _upsert(); // removed in sqfentity_gen 1.3.0+6
+      // id= await _upsert(); // removed in sqfentity_gen 1.3.0+6
       await _mnRoom.update(this);
     }
 
-    return roomId;
+    return id;
   }
 
   /// saveAs Room. Returns a new Primary Key value of Room
 
   /// <returns>Returns a new Primary Key value of Room
   Future<int> saveAs() async {
-    roomId = null;
+    id = null;
 
     return save();
   }
@@ -434,7 +444,7 @@ class Room {
   ///
   /// Returns a <List<BoolResult>>
   Future<List<dynamic>> saveAll(List<Room> rooms) async {
-    // final results = _mnRoom.saveAll('INSERT OR REPLACE INTO rooms (roomId,name, iconPath, headerImagePath)  VALUES (?,?,?,?)',rooms);
+    // final results = _mnRoom.saveAll('INSERT OR REPLACE INTO rooms (id,name, iconPath, headerImagePath)  VALUES (?,?,?,?)',rooms);
     // return results; removed in sqfentity_gen 1.3.0+6
     DatabaseModel().batchStart();
     for (final obj in rooms) {
@@ -445,21 +455,20 @@ class Room {
 
   /// Updates if the record exists, otherwise adds a new row
 
-  /// <returns>Returns roomId
+  /// <returns>Returns id
   Future<int> upsert() async {
     try {
       if (await _mnRoom.rawInsert(
-              'INSERT OR REPLACE INTO rooms (roomId,name, iconPath, headerImagePath)  VALUES (?,?,?,?)',
-              [roomId, name, iconPath, headerImagePath]) ==
+              'INSERT OR REPLACE INTO rooms (id,name, iconPath, headerImagePath)  VALUES (?,?,?,?)',
+              [id, name, iconPath, headerImagePath]) ==
           1) {
         saveResult = BoolResult(
-            success: true,
-            successMessage: 'Room roomId=$roomId updated successfully');
+            success: true, successMessage: 'Room id=$id updated successfully');
       } else {
         saveResult = BoolResult(
-            success: false, errorMessage: 'Room roomId=$roomId did not update');
+            success: false, errorMessage: 'Room id=$id did not update');
       }
-      return roomId;
+      return id;
     } catch (e) {
       saveResult = BoolResult(
           success: false,
@@ -475,7 +484,7 @@ class Room {
   /// Returns a BoolCommitResult
   Future<BoolCommitResult> upsertAll(List<Room> rooms) async {
     final results = await _mnRoom.rawInsertAll(
-        'INSERT OR REPLACE INTO rooms (roomId,name, iconPath, headerImagePath)  VALUES (?,?,?,?)',
+        'INSERT OR REPLACE INTO rooms (id,name, iconPath, headerImagePath)  VALUES (?,?,?,?)',
         rooms);
     return results;
   }
@@ -484,25 +493,25 @@ class Room {
 
   /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
   Future<BoolResult> delete([bool hardDelete = false]) async {
-    print('SQFENTITIY: delete Room invoked (roomId=$roomId)');
-    if (await Bundle().select().bundleRoom.equals(roomId).and.toCount() > 0) {
+    print('SQFENTITIY: delete Room invoked (id=$id)');
+    if (await Bundle().select().room.equals(id).and.toCount() > 0) {
       return BoolResult(
           success: false,
           errorMessage:
-              'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (Bundle.bundleRoom)');
+              'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (Bundle.room)');
     }
-    if (await Item().select().itemBundle.equals(roomId).and.toCount() > 0) {
+    if (await Item().select().bundle.equals(id).and.toCount() > 0) {
       return BoolResult(
           success: false,
           errorMessage:
-              'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (Item.itemBundle)');
+              'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (Item.bundle)');
     }
     if (!_softDeleteActivated || hardDelete) {
-      return _mnRoom.delete(
-          QueryParams(whereString: 'roomId=?', whereArguments: [roomId]));
+      return _mnRoom
+          .delete(QueryParams(whereString: 'id=?', whereArguments: [id]));
     } else {
       return _mnRoom.updateBatch(
-          QueryParams(whereString: 'roomId=?', whereArguments: [roomId]),
+          QueryParams(whereString: 'id=?', whereArguments: [id]),
           {'isDeleted': 1});
     }
   }
@@ -907,9 +916,9 @@ class RoomFilterBuilder extends SearchCriteria {
           wStartBlock: _addedBlocks.waitingStartBlock[_blockIndex]);
   }
 
-  RoomField _roomId;
-  RoomField get roomId {
-    return _roomId = setField(_roomId, 'roomId', DbType.integer);
+  RoomField _id;
+  RoomField get id {
+    return _id = setField(_id, 'id', DbType.integer);
   }
 
   RoomField _name;
@@ -1013,30 +1022,24 @@ class RoomFilterBuilder extends SearchCriteria {
     _buildParameters();
     var r = BoolResult();
     // Check sub records where in (Bundle) according to DeleteRule.NO_ACTION
-    final bundlesBybundleRoomidList = await toListPrimaryKey(false);
-    final resBundleBYbundleRoom = await Bundle()
-        .select()
-        .bundleRoom
-        .inValues(bundlesBybundleRoomidList)
-        .toCount();
-    if (resBundleBYbundleRoom > 0) {
+    final bundlesByroomidList = await toListPrimaryKey(false);
+    final resBundleBYroom =
+        await Bundle().select().room.inValues(bundlesByroomidList).toCount();
+    if (resBundleBYroom > 0) {
       return BoolResult(
           success: false,
           errorMessage:
-              'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (Bundle.bundleRoom)');
+              'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (Bundle.room)');
     }
 // Check sub records where in (Item) according to DeleteRule.NO_ACTION
-    final itemsByitemBundleidList = await toListPrimaryKey(false);
-    final resItemBYitemBundle = await Item()
-        .select()
-        .itemBundle
-        .inValues(itemsByitemBundleidList)
-        .toCount();
-    if (resItemBYitemBundle > 0) {
+    final itemsBybundleidList = await toListPrimaryKey(false);
+    final resItemBYbundle =
+        await Item().select().bundle.inValues(itemsBybundleidList).toCount();
+    if (resItemBYbundle > 0) {
       return BoolResult(
           success: false,
           errorMessage:
-              'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (Item.itemBundle)');
+              'SQFENTITY ERROR: The DELETE statement conflicted with the REFERENCE RELATIONSHIP (Item.bundle)');
     }
 
     if (Room._softDeleteActivated && !hardDelete) {
@@ -1056,7 +1059,7 @@ class RoomFilterBuilder extends SearchCriteria {
     _buildParameters();
     if (qparams.limit > 0 || qparams.offset > 0) {
       qparams.whereString =
-          'roomId IN (SELECT roomId from rooms ${qparams.whereString.isNotEmpty ? 'WHERE ${qparams.whereString}' : ''}${qparams.limit > 0 ? ' LIMIT ${qparams.limit}' : ''}${qparams.offset > 0 ? ' OFFSET ${qparams.offset}' : ''})';
+          'id IN (SELECT id from rooms ${qparams.whereString.isNotEmpty ? 'WHERE ${qparams.whereString}' : ''}${qparams.limit > 0 ? ' LIMIT ${qparams.limit}' : ''}${qparams.offset > 0 ? ' OFFSET ${qparams.offset}' : ''})';
     }
     return _obj._mnRoom.updateBatch(qparams, values);
   }
@@ -1197,15 +1200,15 @@ class RoomFilterBuilder extends SearchCriteria {
     if (buildParameters) {
       _buildParameters();
     }
-    final List<int> roomIdData = <int>[];
-    qparams.selectColumns = ['roomId'];
-    final roomIdFuture = await _obj._mnRoom.toList(qparams);
+    final List<int> idData = <int>[];
+    qparams.selectColumns = ['id'];
+    final idFuture = await _obj._mnRoom.toList(qparams);
 
-    final int count = roomIdFuture.length;
+    final int count = idFuture.length;
     for (int i = 0; i < count; i++) {
-      roomIdData.add(roomIdFuture[i]['roomId'] as int);
+      idData.add(idFuture[i]['id'] as int);
     }
-    return roomIdData;
+    return idData;
   }
 
   /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
@@ -1250,10 +1253,9 @@ class RoomFilterBuilder extends SearchCriteria {
 
 // region RoomFields
 class RoomFields {
-  static TableField _fRoomId;
-  static TableField get roomId {
-    return _fRoomId =
-        _fRoomId ?? SqlSyntax.setField(_fRoomId, 'roomid', DbType.integer);
+  static TableField _fId;
+  static TableField get id {
+    return _fId = _fId ?? SqlSyntax.setField(_fId, 'id', DbType.integer);
   }
 
   static TableField _fName;
@@ -1283,34 +1285,28 @@ class RoomManager extends SqfEntityProvider {
             primaryKeyList: _primaryKeyList,
             whereStr: _whereStr);
   static final String _tableName = 'rooms';
-  static final List<String> _primaryKeyList = ['roomId'];
-  static final String _whereStr = 'roomId=?';
+  static final List<String> _primaryKeyList = ['id'];
+  static final String _whereStr = 'id=?';
 }
 
 //endregion RoomManager
 // region Bundle
 class Bundle {
-  Bundle(
-      {this.bundleId,
-      this.name,
-      this.iconPath,
-      this.headerImagePath,
-      this.bundleRoom}) {
+  Bundle({this.id, this.name, this.iconPath, this.headerImagePath, this.room}) {
     _setDefaultValues();
   }
-  Bundle.withFields(
-      this.name, this.iconPath, this.headerImagePath, this.bundleRoom) {
+  Bundle.withFields(this.name, this.iconPath, this.headerImagePath, this.room) {
     _setDefaultValues();
   }
-  Bundle.withId(this.bundleId, this.name, this.iconPath, this.headerImagePath,
-      this.bundleRoom) {
+  Bundle.withId(
+      this.id, this.name, this.iconPath, this.headerImagePath, this.room) {
     _setDefaultValues();
   }
   Bundle.fromMap(Map<String, dynamic> o, {bool setDefaultValues = true}) {
     if (setDefaultValues) {
       _setDefaultValues();
     }
-    bundleId = int.tryParse(o['bundleId'].toString());
+    id = int.tryParse(o['id'].toString());
     if (o['name'] != null) {
       name = o['name'] as String;
     }
@@ -1320,20 +1316,20 @@ class Bundle {
     if (o['headerImagePath'] != null) {
       headerImagePath = o['headerImagePath'] as String;
     }
-    bundleRoom = int.tryParse(o['bundleRoom'].toString());
+    room = int.tryParse(o['room'].toString());
 
     // RELATIONSHIPS FromMAP
-    plRoom = o['room'] != null
-        ? Room.fromMap(o['room'] as Map<String, dynamic>)
+    plRoom = o['plRoom'] != null
+        ? Room.fromMap(o['plRoom'] as Map<String, dynamic>)
         : null;
     // END RELATIONSHIPS FromMAP
   }
   // FIELDS (Bundle)
-  int bundleId;
+  int id;
   String name;
   String iconPath;
   String headerImagePath;
-  int bundleRoom;
+  int room;
 
   BoolResult saveResult;
   // end FIELDS (Bundle)
@@ -1343,11 +1339,11 @@ class Bundle {
   /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plRoom', 'plField2'..]) or so on..
   Room plRoom;
 
-  /// get Room By BundleRoom
+  /// get Room By Room
   Future<Room> getRoom(
       {bool loadParents = false, List<String> loadedFields}) async {
-    final _obj = await Room().getById(bundleRoom,
-        loadParents: loadParents, loadedFields: loadedFields);
+    final _obj = await Room()
+        .getById(room, loadParents: loadParents, loadedFields: loadedFields);
     return _obj;
   }
   // END RELATIONSHIPS (Bundle)
@@ -1363,8 +1359,8 @@ class Bundle {
   Map<String, dynamic> toMap(
       {bool forQuery = false, bool forJson = false, bool forView = false}) {
     final map = <String, dynamic>{};
-    if (bundleId != null) {
-      map['bundleId'] = bundleId;
+    if (id != null) {
+      map['id'] = id;
     }
     if (name != null) {
       map['name'] = name;
@@ -1378,8 +1374,8 @@ class Bundle {
       map['headerImagePath'] = headerImagePath;
     }
 
-    if (bundleRoom != null) {
-      map['bundleRoom'] = forView ? plRoom.name : bundleRoom;
+    if (room != null) {
+      map['room'] = forView ? plRoom.name : room;
     }
 
     return map;
@@ -1390,8 +1386,8 @@ class Bundle {
       bool forJson = false,
       bool forView = false]) async {
     final map = <String, dynamic>{};
-    if (bundleId != null) {
-      map['bundleId'] = bundleId;
+    if (id != null) {
+      map['id'] = id;
     }
     if (name != null) {
       map['name'] = name;
@@ -1405,8 +1401,8 @@ class Bundle {
       map['headerImagePath'] = headerImagePath;
     }
 
-    if (bundleRoom != null) {
-      map['bundleRoom'] = forView ? plRoom.name : bundleRoom;
+    if (room != null) {
+      map['room'] = forView ? plRoom.name : room;
     }
 
     return map;
@@ -1423,11 +1419,21 @@ class Bundle {
   }
 
   List<dynamic> toArgs() {
-    return [name, iconPath, headerImagePath, bundleRoom];
+    return [name, iconPath, headerImagePath, room];
   }
 
   List<dynamic> toArgsWithIds() {
-    return [bundleId, name, iconPath, headerImagePath, bundleRoom];
+    return [id, name, iconPath, headerImagePath, room];
+  }
+
+  static Future<List<Bundle>> fromWeb(
+      [VoidCallback Function(List<Bundle> o) bundleList]) async {
+    final objList = await fromWebUrl(
+        'https://raw.githubusercontent.com/PikaPirate/stardew-valley-tracker/master/Bundles.json');
+    if (bundleList != null) {
+      bundleList(objList);
+    }
+    return objList;
   }
 
   static Future<List<Bundle>> fromWebUrl(String url) async {
@@ -1487,7 +1493,7 @@ class Bundle {
 
   /// returns Bundle by ID if exist, otherwise returns null
   ///
-  /// Primary Keys: int bundleId
+  /// Primary Keys: int id
   ///
   /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
@@ -1501,16 +1507,16 @@ class Bundle {
 
   ///
   /// <returns>returns Bundle if exist, otherwise returns null
-  Future<Bundle> getById(int bundleId,
+  Future<Bundle> getById(int id,
       {bool preload = false,
       List<String> preloadFields,
       bool loadParents = false,
       List<String> loadedFields}) async {
-    if (bundleId == null) {
+    if (id == null) {
       return null;
     }
     Bundle obj;
-    final data = await _mnBundle.getById([bundleId]);
+    final data = await _mnBundle.getById([id]);
     if (data.length != 0) {
       obj = Bundle.fromMap(data[0] as Map<String, dynamic>);
       // final List<String> _loadedFields = loadedFields ?? [];
@@ -1535,25 +1541,25 @@ class Bundle {
     return obj;
   }
 
-  /// Saves the (Bundle) object. If the bundleId field is null, saves as a new record and returns new bundleId, if bundleId is not null then updates record
+  /// Saves the (Bundle) object. If the id field is null, saves as a new record and returns new id, if id is not null then updates record
 
-  /// <returns>Returns bundleId
+  /// <returns>Returns id
   Future<int> save() async {
-    if (bundleId == null || bundleId == 0) {
-      bundleId = await _mnBundle.insert(this);
+    if (id == null || id == 0) {
+      id = await _mnBundle.insert(this);
     } else {
-      // bundleId= await _upsert(); // removed in sqfentity_gen 1.3.0+6
+      // id= await _upsert(); // removed in sqfentity_gen 1.3.0+6
       await _mnBundle.update(this);
     }
 
-    return bundleId;
+    return id;
   }
 
   /// saveAs Bundle. Returns a new Primary Key value of Bundle
 
   /// <returns>Returns a new Primary Key value of Bundle
   Future<int> saveAs() async {
-    bundleId = null;
+    id = null;
 
     return save();
   }
@@ -1562,7 +1568,7 @@ class Bundle {
   ///
   /// Returns a <List<BoolResult>>
   Future<List<dynamic>> saveAll(List<Bundle> bundles) async {
-    // final results = _mnBundle.saveAll('INSERT OR REPLACE INTO bundles (bundleId,name, iconPath, headerImagePath, bundleRoom)  VALUES (?,?,?,?,?)',bundles);
+    // final results = _mnBundle.saveAll('INSERT OR REPLACE INTO bundles (id,name, iconPath, headerImagePath, room)  VALUES (?,?,?,?,?)',bundles);
     // return results; removed in sqfentity_gen 1.3.0+6
     DatabaseModel().batchStart();
     for (final obj in bundles) {
@@ -1573,22 +1579,21 @@ class Bundle {
 
   /// Updates if the record exists, otherwise adds a new row
 
-  /// <returns>Returns bundleId
+  /// <returns>Returns id
   Future<int> upsert() async {
     try {
       if (await _mnBundle.rawInsert(
-              'INSERT OR REPLACE INTO bundles (bundleId,name, iconPath, headerImagePath, bundleRoom)  VALUES (?,?,?,?,?)',
-              [bundleId, name, iconPath, headerImagePath, bundleRoom]) ==
+              'INSERT OR REPLACE INTO bundles (id,name, iconPath, headerImagePath, room)  VALUES (?,?,?,?,?)',
+              [id, name, iconPath, headerImagePath, room]) ==
           1) {
         saveResult = BoolResult(
             success: true,
-            successMessage: 'Bundle bundleId=$bundleId updated successfully');
+            successMessage: 'Bundle id=$id updated successfully');
       } else {
         saveResult = BoolResult(
-            success: false,
-            errorMessage: 'Bundle bundleId=$bundleId did not update');
+            success: false, errorMessage: 'Bundle id=$id did not update');
       }
-      return bundleId;
+      return id;
     } catch (e) {
       saveResult = BoolResult(
           success: false,
@@ -1604,7 +1609,7 @@ class Bundle {
   /// Returns a BoolCommitResult
   Future<BoolCommitResult> upsertAll(List<Bundle> bundles) async {
     final results = await _mnBundle.rawInsertAll(
-        'INSERT OR REPLACE INTO bundles (bundleId,name, iconPath, headerImagePath, bundleRoom)  VALUES (?,?,?,?,?)',
+        'INSERT OR REPLACE INTO bundles (id,name, iconPath, headerImagePath, room)  VALUES (?,?,?,?,?)',
         bundles);
     return results;
   }
@@ -1613,13 +1618,13 @@ class Bundle {
 
   /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
   Future<BoolResult> delete([bool hardDelete = false]) async {
-    print('SQFENTITIY: delete Bundle invoked (bundleId=$bundleId)');
+    print('SQFENTITIY: delete Bundle invoked (id=$id)');
     if (!_softDeleteActivated || hardDelete) {
-      return _mnBundle.delete(
-          QueryParams(whereString: 'bundleId=?', whereArguments: [bundleId]));
+      return _mnBundle
+          .delete(QueryParams(whereString: 'id=?', whereArguments: [id]));
     } else {
       return _mnBundle.updateBatch(
-          QueryParams(whereString: 'bundleId=?', whereArguments: [bundleId]),
+          QueryParams(whereString: 'id=?', whereArguments: [id]),
           {'isDeleted': 1});
     }
   }
@@ -2025,9 +2030,9 @@ class BundleFilterBuilder extends SearchCriteria {
           wStartBlock: _addedBlocks.waitingStartBlock[_blockIndex]);
   }
 
-  BundleField _bundleId;
-  BundleField get bundleId {
-    return _bundleId = setField(_bundleId, 'bundleId', DbType.integer);
+  BundleField _id;
+  BundleField get id {
+    return _id = setField(_id, 'id', DbType.integer);
   }
 
   BundleField _name;
@@ -2046,9 +2051,9 @@ class BundleFilterBuilder extends SearchCriteria {
         setField(_headerImagePath, 'headerImagePath', DbType.text);
   }
 
-  BundleField _bundleRoom;
-  BundleField get bundleRoom {
-    return _bundleRoom = setField(_bundleRoom, 'bundleRoom', DbType.integer);
+  BundleField _room;
+  BundleField get room {
+    return _room = setField(_room, 'room', DbType.integer);
   }
 
   bool _getIsDeleted;
@@ -2153,7 +2158,7 @@ class BundleFilterBuilder extends SearchCriteria {
     _buildParameters();
     if (qparams.limit > 0 || qparams.offset > 0) {
       qparams.whereString =
-          'bundleId IN (SELECT bundleId from bundles ${qparams.whereString.isNotEmpty ? 'WHERE ${qparams.whereString}' : ''}${qparams.limit > 0 ? ' LIMIT ${qparams.limit}' : ''}${qparams.offset > 0 ? ' OFFSET ${qparams.offset}' : ''})';
+          'id IN (SELECT id from bundles ${qparams.whereString.isNotEmpty ? 'WHERE ${qparams.whereString}' : ''}${qparams.limit > 0 ? ' LIMIT ${qparams.limit}' : ''}${qparams.offset > 0 ? ' OFFSET ${qparams.offset}' : ''})';
     }
     return _obj._mnBundle.updateBatch(qparams, values);
   }
@@ -2283,15 +2288,15 @@ class BundleFilterBuilder extends SearchCriteria {
     if (buildParameters) {
       _buildParameters();
     }
-    final List<int> bundleIdData = <int>[];
-    qparams.selectColumns = ['bundleId'];
-    final bundleIdFuture = await _obj._mnBundle.toList(qparams);
+    final List<int> idData = <int>[];
+    qparams.selectColumns = ['id'];
+    final idFuture = await _obj._mnBundle.toList(qparams);
 
-    final int count = bundleIdFuture.length;
+    final int count = idFuture.length;
     for (int i = 0; i < count; i++) {
-      bundleIdData.add(bundleIdFuture[i]['bundleId'] as int);
+      idData.add(idFuture[i]['id'] as int);
     }
-    return bundleIdData;
+    return idData;
   }
 
   /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
@@ -2336,10 +2341,9 @@ class BundleFilterBuilder extends SearchCriteria {
 
 // region BundleFields
 class BundleFields {
-  static TableField _fBundleId;
-  static TableField get bundleId {
-    return _fBundleId = _fBundleId ??
-        SqlSyntax.setField(_fBundleId, 'bundleid', DbType.integer);
+  static TableField _fId;
+  static TableField get id {
+    return _fId = _fId ?? SqlSyntax.setField(_fId, 'id', DbType.integer);
   }
 
   static TableField _fName;
@@ -2359,10 +2363,10 @@ class BundleFields {
         SqlSyntax.setField(_fHeaderImagePath, 'headerImagePath', DbType.text);
   }
 
-  static TableField _fBundleRoom;
-  static TableField get bundleRoom {
-    return _fBundleRoom = _fBundleRoom ??
-        SqlSyntax.setField(_fBundleRoom, 'bundleRoom', DbType.integer);
+  static TableField _fRoom;
+  static TableField get room {
+    return _fRoom =
+        _fRoom ?? SqlSyntax.setField(_fRoom, 'room', DbType.integer);
   }
 }
 // endregion BundleFields
@@ -2375,29 +2379,27 @@ class BundleManager extends SqfEntityProvider {
             primaryKeyList: _primaryKeyList,
             whereStr: _whereStr);
   static final String _tableName = 'bundles';
-  static final List<String> _primaryKeyList = ['bundleId'];
-  static final String _whereStr = 'bundleId=?';
+  static final List<String> _primaryKeyList = ['id'];
+  static final String _whereStr = 'id=?';
 }
 
 //endregion BundleManager
 // region Item
 class Item {
-  Item(
-      {this.itemId, this.name, this.iconPath, this.complete, this.itemBundle}) {
+  Item({this.id, this.name, this.iconPath, this.complete, this.bundle}) {
     _setDefaultValues();
   }
-  Item.withFields(this.name, this.iconPath, this.complete, this.itemBundle) {
+  Item.withFields(this.name, this.iconPath, this.complete, this.bundle) {
     _setDefaultValues();
   }
-  Item.withId(
-      this.itemId, this.name, this.iconPath, this.complete, this.itemBundle) {
+  Item.withId(this.id, this.name, this.iconPath, this.complete, this.bundle) {
     _setDefaultValues();
   }
   Item.fromMap(Map<String, dynamic> o, {bool setDefaultValues = true}) {
     if (setDefaultValues) {
       _setDefaultValues();
     }
-    itemId = int.tryParse(o['itemId'].toString());
+    id = int.tryParse(o['id'].toString());
     if (o['name'] != null) {
       name = o['name'] as String;
     }
@@ -2407,7 +2409,7 @@ class Item {
     if (o['complete'] != null) {
       complete = o['complete'] == 1 || o['complete'] == true;
     }
-    itemBundle = int.tryParse(o['itemBundle'].toString());
+    bundle = int.tryParse(o['bundle'].toString());
 
     // RELATIONSHIPS FromMAP
     plRoom = o['room'] != null
@@ -2416,11 +2418,11 @@ class Item {
     // END RELATIONSHIPS FromMAP
   }
   // FIELDS (Item)
-  int itemId;
+  int id;
   String name;
   String iconPath;
   bool complete;
-  int itemBundle;
+  int bundle;
 
   BoolResult saveResult;
   // end FIELDS (Item)
@@ -2430,11 +2432,11 @@ class Item {
   /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plRoom', 'plField2'..]) or so on..
   Room plRoom;
 
-  /// get Room By ItemBundle
+  /// get Room By Bundle
   Future<Room> getRoom(
       {bool loadParents = false, List<String> loadedFields}) async {
-    final _obj = await Room().getById(itemBundle,
-        loadParents: loadParents, loadedFields: loadedFields);
+    final _obj = await Room()
+        .getById(bundle, loadParents: loadParents, loadedFields: loadedFields);
     return _obj;
   }
   // END RELATIONSHIPS (Item)
@@ -2450,8 +2452,8 @@ class Item {
   Map<String, dynamic> toMap(
       {bool forQuery = false, bool forJson = false, bool forView = false}) {
     final map = <String, dynamic>{};
-    if (itemId != null) {
-      map['itemId'] = itemId;
+    if (id != null) {
+      map['id'] = id;
     }
     if (name != null) {
       map['name'] = name;
@@ -2465,8 +2467,8 @@ class Item {
       map['complete'] = forQuery ? (complete ? 1 : 0) : complete;
     }
 
-    if (itemBundle != null) {
-      map['itemBundle'] = forView ? plRoom.name : itemBundle;
+    if (bundle != null) {
+      map['bundle'] = forView ? plRoom.name : bundle;
     }
 
     return map;
@@ -2477,8 +2479,8 @@ class Item {
       bool forJson = false,
       bool forView = false]) async {
     final map = <String, dynamic>{};
-    if (itemId != null) {
-      map['itemId'] = itemId;
+    if (id != null) {
+      map['id'] = id;
     }
     if (name != null) {
       map['name'] = name;
@@ -2492,8 +2494,8 @@ class Item {
       map['complete'] = forQuery ? (complete ? 1 : 0) : complete;
     }
 
-    if (itemBundle != null) {
-      map['itemBundle'] = forView ? plRoom.name : itemBundle;
+    if (bundle != null) {
+      map['bundle'] = forView ? plRoom.name : bundle;
     }
 
     return map;
@@ -2510,11 +2512,11 @@ class Item {
   }
 
   List<dynamic> toArgs() {
-    return [name, iconPath, complete, itemBundle];
+    return [name, iconPath, complete, bundle];
   }
 
   List<dynamic> toArgsWithIds() {
-    return [itemId, name, iconPath, complete, itemBundle];
+    return [id, name, iconPath, complete, bundle];
   }
 
   static Future<List<Item>> fromWebUrl(String url) async {
@@ -2574,7 +2576,7 @@ class Item {
 
   /// returns Item by ID if exist, otherwise returns null
   ///
-  /// Primary Keys: int itemId
+  /// Primary Keys: int id
   ///
   /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
@@ -2588,16 +2590,16 @@ class Item {
 
   ///
   /// <returns>returns Item if exist, otherwise returns null
-  Future<Item> getById(int itemId,
+  Future<Item> getById(int id,
       {bool preload = false,
       List<String> preloadFields,
       bool loadParents = false,
       List<String> loadedFields}) async {
-    if (itemId == null) {
+    if (id == null) {
       return null;
     }
     Item obj;
-    final data = await _mnItem.getById([itemId]);
+    final data = await _mnItem.getById([id]);
     if (data.length != 0) {
       obj = Item.fromMap(data[0] as Map<String, dynamic>);
       // final List<String> _loadedFields = loadedFields ?? [];
@@ -2622,25 +2624,25 @@ class Item {
     return obj;
   }
 
-  /// Saves the (Item) object. If the itemId field is null, saves as a new record and returns new itemId, if itemId is not null then updates record
+  /// Saves the (Item) object. If the id field is null, saves as a new record and returns new id, if id is not null then updates record
 
-  /// <returns>Returns itemId
+  /// <returns>Returns id
   Future<int> save() async {
-    if (itemId == null || itemId == 0) {
-      itemId = await _mnItem.insert(this);
+    if (id == null || id == 0) {
+      id = await _mnItem.insert(this);
     } else {
-      // itemId= await _upsert(); // removed in sqfentity_gen 1.3.0+6
+      // id= await _upsert(); // removed in sqfentity_gen 1.3.0+6
       await _mnItem.update(this);
     }
 
-    return itemId;
+    return id;
   }
 
   /// saveAs Item. Returns a new Primary Key value of Item
 
   /// <returns>Returns a new Primary Key value of Item
   Future<int> saveAs() async {
-    itemId = null;
+    id = null;
 
     return save();
   }
@@ -2649,7 +2651,7 @@ class Item {
   ///
   /// Returns a <List<BoolResult>>
   Future<List<dynamic>> saveAll(List<Item> items) async {
-    // final results = _mnItem.saveAll('INSERT OR REPLACE INTO items (itemId,name, iconPath, complete, itemBundle)  VALUES (?,?,?,?,?)',items);
+    // final results = _mnItem.saveAll('INSERT OR REPLACE INTO items (id,name, iconPath, complete, bundle)  VALUES (?,?,?,?,?)',items);
     // return results; removed in sqfentity_gen 1.3.0+6
     DatabaseModel().batchStart();
     for (final obj in items) {
@@ -2660,21 +2662,20 @@ class Item {
 
   /// Updates if the record exists, otherwise adds a new row
 
-  /// <returns>Returns itemId
+  /// <returns>Returns id
   Future<int> upsert() async {
     try {
       if (await _mnItem.rawInsert(
-              'INSERT OR REPLACE INTO items (itemId,name, iconPath, complete, itemBundle)  VALUES (?,?,?,?,?)',
-              [itemId, name, iconPath, complete, itemBundle]) ==
+              'INSERT OR REPLACE INTO items (id,name, iconPath, complete, bundle)  VALUES (?,?,?,?,?)',
+              [id, name, iconPath, complete, bundle]) ==
           1) {
         saveResult = BoolResult(
-            success: true,
-            successMessage: 'Item itemId=$itemId updated successfully');
+            success: true, successMessage: 'Item id=$id updated successfully');
       } else {
         saveResult = BoolResult(
-            success: false, errorMessage: 'Item itemId=$itemId did not update');
+            success: false, errorMessage: 'Item id=$id did not update');
       }
-      return itemId;
+      return id;
     } catch (e) {
       saveResult = BoolResult(
           success: false,
@@ -2690,7 +2691,7 @@ class Item {
   /// Returns a BoolCommitResult
   Future<BoolCommitResult> upsertAll(List<Item> items) async {
     final results = await _mnItem.rawInsertAll(
-        'INSERT OR REPLACE INTO items (itemId,name, iconPath, complete, itemBundle)  VALUES (?,?,?,?,?)',
+        'INSERT OR REPLACE INTO items (id,name, iconPath, complete, bundle)  VALUES (?,?,?,?,?)',
         items);
     return results;
   }
@@ -2699,13 +2700,13 @@ class Item {
 
   /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
   Future<BoolResult> delete([bool hardDelete = false]) async {
-    print('SQFENTITIY: delete Item invoked (itemId=$itemId)');
+    print('SQFENTITIY: delete Item invoked (id=$id)');
     if (!_softDeleteActivated || hardDelete) {
-      return _mnItem.delete(
-          QueryParams(whereString: 'itemId=?', whereArguments: [itemId]));
+      return _mnItem
+          .delete(QueryParams(whereString: 'id=?', whereArguments: [id]));
     } else {
       return _mnItem.updateBatch(
-          QueryParams(whereString: 'itemId=?', whereArguments: [itemId]),
+          QueryParams(whereString: 'id=?', whereArguments: [id]),
           {'isDeleted': 1});
     }
   }
@@ -3110,9 +3111,9 @@ class ItemFilterBuilder extends SearchCriteria {
           wStartBlock: _addedBlocks.waitingStartBlock[_blockIndex]);
   }
 
-  ItemField _itemId;
-  ItemField get itemId {
-    return _itemId = setField(_itemId, 'itemId', DbType.integer);
+  ItemField _id;
+  ItemField get id {
+    return _id = setField(_id, 'id', DbType.integer);
   }
 
   ItemField _name;
@@ -3130,9 +3131,9 @@ class ItemFilterBuilder extends SearchCriteria {
     return _complete = setField(_complete, 'complete', DbType.bool);
   }
 
-  ItemField _itemBundle;
-  ItemField get itemBundle {
-    return _itemBundle = setField(_itemBundle, 'itemBundle', DbType.integer);
+  ItemField _bundle;
+  ItemField get bundle {
+    return _bundle = setField(_bundle, 'bundle', DbType.integer);
   }
 
   bool _getIsDeleted;
@@ -3237,7 +3238,7 @@ class ItemFilterBuilder extends SearchCriteria {
     _buildParameters();
     if (qparams.limit > 0 || qparams.offset > 0) {
       qparams.whereString =
-          'itemId IN (SELECT itemId from items ${qparams.whereString.isNotEmpty ? 'WHERE ${qparams.whereString}' : ''}${qparams.limit > 0 ? ' LIMIT ${qparams.limit}' : ''}${qparams.offset > 0 ? ' OFFSET ${qparams.offset}' : ''})';
+          'id IN (SELECT id from items ${qparams.whereString.isNotEmpty ? 'WHERE ${qparams.whereString}' : ''}${qparams.limit > 0 ? ' LIMIT ${qparams.limit}' : ''}${qparams.offset > 0 ? ' OFFSET ${qparams.offset}' : ''})';
     }
     return _obj._mnItem.updateBatch(qparams, values);
   }
@@ -3367,15 +3368,15 @@ class ItemFilterBuilder extends SearchCriteria {
     if (buildParameters) {
       _buildParameters();
     }
-    final List<int> itemIdData = <int>[];
-    qparams.selectColumns = ['itemId'];
-    final itemIdFuture = await _obj._mnItem.toList(qparams);
+    final List<int> idData = <int>[];
+    qparams.selectColumns = ['id'];
+    final idFuture = await _obj._mnItem.toList(qparams);
 
-    final int count = itemIdFuture.length;
+    final int count = idFuture.length;
     for (int i = 0; i < count; i++) {
-      itemIdData.add(itemIdFuture[i]['itemId'] as int);
+      idData.add(idFuture[i]['id'] as int);
     }
-    return itemIdData;
+    return idData;
   }
 
   /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
@@ -3420,10 +3421,9 @@ class ItemFilterBuilder extends SearchCriteria {
 
 // region ItemFields
 class ItemFields {
-  static TableField _fItemId;
-  static TableField get itemId {
-    return _fItemId =
-        _fItemId ?? SqlSyntax.setField(_fItemId, 'itemid', DbType.integer);
+  static TableField _fId;
+  static TableField get id {
+    return _fId = _fId ?? SqlSyntax.setField(_fId, 'id', DbType.integer);
   }
 
   static TableField _fName;
@@ -3443,10 +3443,10 @@ class ItemFields {
         _fComplete ?? SqlSyntax.setField(_fComplete, 'complete', DbType.bool);
   }
 
-  static TableField _fItemBundle;
-  static TableField get itemBundle {
-    return _fItemBundle = _fItemBundle ??
-        SqlSyntax.setField(_fItemBundle, 'itemBundle', DbType.integer);
+  static TableField _fBundle;
+  static TableField get bundle {
+    return _fBundle =
+        _fBundle ?? SqlSyntax.setField(_fBundle, 'bundle', DbType.integer);
   }
 }
 // endregion ItemFields
@@ -3459,8 +3459,8 @@ class ItemManager extends SqfEntityProvider {
             primaryKeyList: _primaryKeyList,
             whereStr: _whereStr);
   static final String _tableName = 'items';
-  static final List<String> _primaryKeyList = ['itemId'];
-  static final String _whereStr = 'itemId=?';
+  static final List<String> _primaryKeyList = ['id'];
+  static final String _whereStr = 'id=?';
 }
 
 //endregion ItemManager

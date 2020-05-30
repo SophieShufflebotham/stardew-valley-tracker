@@ -12,13 +12,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  final _rooms = [
-    "Crafts Room",
-    "Boiler Room",
-  ];
+  List<Room> _rooms = new List<Room>();
+
+  HomeScreenState() {
+    getDatabaseContent();
+  }
+
   @override
   Widget build(BuildContext context) {
-    PopulateDb().populateRooms();
     return Scaffold(
       appBar: AppBar(
         title: Text("Stardew Valley Checklist"),
@@ -28,24 +29,39 @@ class HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildList() {
-    return ListView.builder(
-        itemCount: _rooms.length, itemBuilder: _buildListItem);
+    Widget retVal =
+        ListView.builder(itemCount: _rooms.length, itemBuilder: _buildListItem);
+
+    return retVal;
   }
 
   Widget _buildListItem(BuildContext context, int i) {
-    var roomName = _rooms[i];
+    var roomName = _rooms[i].name;
+    var roomId = _rooms[i].id;
     var imageName = roomName.toLowerCase().replaceAll(' ', '_') + "_icon";
 
     return ListItem(
       name: roomName,
-      iconImage: AssetImage("graphics/$imageName.png"),
+      iconImage: AssetImage("graphics/placeholder.png"),
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute<void>(
-            builder: (context) => RoomScreen(roomName: roomName),
+            builder: (context) =>
+                RoomScreen(roomName: roomName, parentId: roomId),
           ),
         );
       },
     );
+  }
+
+  void getDatabaseContent() async {
+    bool success = await PopulateDb().populateRooms();
+    if (success) {
+      List<Room> roomsList = await Room().select().toList();
+
+      setState(() {
+        _rooms = roomsList;
+      });
+    }
   }
 }

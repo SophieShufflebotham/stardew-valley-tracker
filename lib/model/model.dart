@@ -8,9 +8,11 @@ part 'model.g.dart';
 
 const tableRooms = SqfEntityTable(
   tableName: "rooms",
-  primaryKeyName: "roomId",
+  primaryKeyName: "id",
   modelName: null,
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+  defaultJsonUrl:
+      "https://raw.githubusercontent.com/PikaPirate/stardew-valley-tracker/master/Rooms.json",
   fields: [
     SqfEntityField("name", DbType.text, isNotNull: true),
     SqfEntityField("iconPath", DbType.text),
@@ -20,23 +22,25 @@ const tableRooms = SqfEntityTable(
 
 const tableBundles = SqfEntityTable(
   tableName: "bundles",
-  primaryKeyName: "bundleId",
+  primaryKeyName: "id",
   modelName: null,
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+  defaultJsonUrl:
+      "https://raw.githubusercontent.com/PikaPirate/stardew-valley-tracker/master/Bundles.json",
   fields: [
     SqfEntityField("name", DbType.text, isNotNull: true),
     SqfEntityField("iconPath", DbType.text),
     SqfEntityField("headerImagePath", DbType.text),
     SqfEntityFieldRelationship(
       parentTable: tableRooms,
-      fieldName: "bundleRoom",
+      fieldName: "room",
     ),
   ],
 );
 
 const tableItems = SqfEntityTable(
   tableName: "items",
-  primaryKeyName: "itemId",
+  primaryKeyName: "id",
   modelName: null,
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
   fields: [
@@ -45,7 +49,7 @@ const tableItems = SqfEntityTable(
     SqfEntityField("complete", DbType.bool),
     SqfEntityFieldRelationship(
       parentTable: tableRooms,
-      fieldName: "itemBundle",
+      fieldName: "bundle",
     ),
   ],
 );
