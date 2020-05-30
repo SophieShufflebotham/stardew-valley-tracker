@@ -19,6 +19,7 @@ class RoomScreen extends StatefulWidget {
 class RoomScreenState extends State<RoomScreen> {
   final String roomName;
   final int parentId;
+  int bundleId;
   String assetPath = "";
 
   final controller = ScrollController();
@@ -73,6 +74,7 @@ class RoomScreenState extends State<RoomScreen> {
   Widget _buildListItem(BuildContext context, int i) {
     var bundleName = _bundles[i].name;
     var imagePath = _bundles[i].iconPath;
+    var bundleId = _bundles[i].id;
     var iconImage;
 
     try {
@@ -87,7 +89,8 @@ class RoomScreenState extends State<RoomScreen> {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute<void>(
-            builder: (context) => BundleScreen(bundleName: bundleName),
+            builder: (context) =>
+                BundleScreen(bundleName: bundleName, parentId: bundleId),
           ),
         );
       },
@@ -157,18 +160,14 @@ class RoomScreenState extends State<RoomScreen> {
   }
 
   void getDatabaseContent() async {
-    bool success = await PopulateDb().populateBundles();
+    Room currentRoom = await Room().getById(parentId);
+    assetPath = currentRoom.headerImagePath;
+    List<Bundle> bundles = await currentRoom.getBundles().toList();
 
-    if (success) {
-      Room currentRoom = await Room().getById(parentId);
-      assetPath = currentRoom.headerImagePath;
-      List<Bundle> bundles = await currentRoom.getBundles().toList();
-
-      if (bundles.length > 0) {
-        setState(() {
-          _bundles = bundles;
-        });
-      }
+    if (bundles.length > 0) {
+      setState(() {
+        _bundles = bundles;
+      });
     }
   }
 }

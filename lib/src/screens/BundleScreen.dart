@@ -1,30 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:test_project/src/widgets/ListItem.dart';
 import '../widgets/SquareAvatar.dart';
+import 'package:test_project/model/model.dart';
+import 'package:test_project/tools/populateDb.dart';
 
 class BundleScreen extends StatefulWidget {
   final String bundleName;
+  final int parentId;
 
-  BundleScreen({this.bundleName});
+  BundleScreen({this.bundleName, this.parentId});
 
   @override
   State<StatefulWidget> createState() {
-    return BundleScreenState(bundleName: bundleName);
+    return BundleScreenState(bundleName: bundleName, parentId: parentId);
   }
 }
 
 class BundleScreenState extends State<BundleScreen> {
   final String bundleName;
   final controller = ScrollController();
+  final int parentId;
+
   var titleBar = "";
   var sliverTitle = "";
-  final _items = [
-    "Dandelion",
-    "Wild Horseradish",
-  ];
+  List<Item> _items = new List<Item>();
   final Set<String> _savedItems = new Set<String>();
+  String headerImagePath = "";
 
-  BundleScreenState({@required this.bundleName});
+  BundleScreenState({@required this.bundleName, @required this.parentId}) {
+    getDatabaseContent();
+  }
 
   @override
   void initState() {
@@ -61,12 +66,14 @@ class BundleScreenState extends State<BundleScreen> {
     });
   }
 
-  void _clickHandler(bool alreadySaved, String itemName) {
+  void _clickHandler(bool alreadySaved, String itemName, int itemId) {
     setState(() {
       if (alreadySaved) {
         _savedItems.remove(itemName);
+        toggleItemSelected(itemId, false);
       } else {
         _savedItems.add(itemName);
+        toggleItemSelected(itemId, true);
       }
     });
   }
@@ -77,9 +84,11 @@ class BundleScreenState extends State<BundleScreen> {
   }
 
   Widget _buildListItem(BuildContext context, int i) {
-    var itemName = _items[i];
+    var itemName = _items[i].name;
+    var itemId = _items[i].id;
     var imageName = itemName.toLowerCase().replaceAll(' ', '_') + "_icon";
-    bool alreadySaved = _savedItems.contains(itemName);
+    bool alreadySaved =
+        (_items[i].complete == null) ? false : _items[i].complete;
 
     return ListTile(
         title: Text(itemName),
@@ -89,11 +98,11 @@ class BundleScreenState extends State<BundleScreen> {
           activeColor: Colors.lightGreen,
           value: alreadySaved,
           onChanged: (value) {
-            _clickHandler(alreadySaved, itemName);
+            _clickHandler(alreadySaved, itemName, itemId);
           },
         ),
         onTap: () {
-          _clickHandler(alreadySaved, itemName);
+          _clickHandler(alreadySaved, itemName, itemId);
         });
   }
 
@@ -143,5 +152,29 @@ class BundleScreenState extends State<BundleScreen> {
     );
 
     return Scaffold(body: customScrollView);
+  }
+
+  void getDatabaseContent() async {
+    Bundle currentBundle = await Bundle().getById(parentId);
+    headerImagePath = currentBundle.headerImagePath;
+    List<Item> items = await currentBundle.getItems().toList();
+
+    if (items.length > 0) {
+      setState(() {
+        _items = items;
+      });
+    }
+  }
+
+  void toggleItemSelected(itemId, itemSelected) async {
+    await Item(id: itemId, complete: itemSelected).save();
+    Bundle currentBundle = await Bundle().getById(parentId);
+    List<Item> items = await currentBundle.getItems().toList();
+
+    if (items.length > 0) {
+      setState(() {
+        _items = items;
+      });
+    }
   }
 }
