@@ -14,8 +14,8 @@ class HomeScreenState extends State<HomeScreen> {
     "Crafts Room",
     "Boiler Room",
   ];
-  static final String roomName = "Community Center";
-  var imageName = roomName.toLowerCase().replaceAll(' ', '_') + "_icon";
+  static final String pageTitle = "Community Center";
+  var imageName = pageTitle.toLowerCase().replaceAll(' ', '_') + "_icon";
   var sliverTitle = "";
   var titleBar = "";
   var controller = ScrollController();
@@ -27,7 +27,7 @@ class HomeScreenState extends State<HomeScreen> {
     bool initialised = false;
 
     if (!initialised) {
-      sliverTitle = roomName;
+      sliverTitle = pageTitle;
       initialised = true;
     }
 
@@ -36,17 +36,16 @@ class HomeScreenState extends State<HomeScreen> {
         if (!sliverCollapsed) {
           // do what ever you want when silver is collapsing !
 
-          titleBar = roomName;
+          titleBar = pageTitle;
           sliverTitle = "";
           sliverCollapsed = true;
           setState(() {});
         }
-      }
-      if (controller.offset <= 220 && !controller.position.outOfRange) {
+      } else if (controller.offset <= 220 && !controller.position.outOfRange) {
         if (sliverCollapsed) {
           // do what ever you want when silver is expanding !
 
-          sliverTitle = roomName;
+          sliverTitle = pageTitle;
           titleBar = "";
           sliverCollapsed = false;
           setState(() {});
@@ -57,7 +56,7 @@ class HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var assetName = roomName.toLowerCase().replaceAll(' ', '_');
+    var assetName = pageTitle.toLowerCase().replaceAll(' ', '_');
 
     Widget appBar = SliverAppBar(
         expandedHeight: 200.0,
@@ -109,15 +108,15 @@ class HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildListItem(BuildContext context, int i) {
-    var newRoomName = _rooms[i];
-    var newImageName = newRoomName.toLowerCase().replaceAll(' ', '_') + "_icon";
+    var roomName = _rooms[i];
+    var newImageName = roomName.toLowerCase().replaceAll(' ', '_') + "_icon";
     return ListItem(
-      name: newRoomName,
+      name: roomName,
       iconImage: AssetImage("graphics/$newImageName.png"),
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute<void>(
-            builder: (context) => RoomScreen(roomName: newRoomName),
+            builder: (context) => RoomScreen(roomName: roomName),
           ),
         );
       },
