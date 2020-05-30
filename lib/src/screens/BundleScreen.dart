@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:test_project/src/widgets/ListItem.dart';
 import '../widgets/SquareAvatar.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:test_project/model/model.dart';
 import 'package:test_project/tools/populateDb.dart';
 
@@ -52,8 +53,7 @@ class BundleScreenState extends State<BundleScreen> {
           sliverCollapsed = true;
           setState(() {});
         }
-      }
-      if (controller.offset <= 220 && !controller.position.outOfRange) {
+      } else if (controller.offset <= 220 && !controller.position.outOfRange) {
         if (sliverCollapsed) {
           // do what ever you want when silver is expanding !
 
@@ -78,22 +78,19 @@ class BundleScreenState extends State<BundleScreen> {
     });
   }
 
-  Widget _buildList() {
-    return ListView.builder(
-        itemCount: _items.length, itemBuilder: _buildListItem);
-  }
-
   Widget _buildListItem(BuildContext context, int i) {
     var itemName = _items[i].name;
     var itemId = _items[i].id;
     var imageName = itemName.toLowerCase().replaceAll(' ', '_') + "_icon";
+    bool alreadySaved = _savedItems.contains(itemName);
+    var image = AssetImage("graphics/$imageName.png");
+    
     bool alreadySaved =
         (_items[i].complete == null) ? false : _items[i].complete;
 
     return ListTile(
         title: Text(itemName),
-        leading: SquareAvatar(
-            backgroundImage: AssetImage("graphics/$imageName.png")),
+        leading: SquareAvatar(backgroundImage: image),
         trailing: Switch(
           activeColor: Colors.lightGreen,
           value: alreadySaved,

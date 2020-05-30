@@ -18,7 +18,7 @@ class HomeScreenState extends State<HomeScreen> {
   HomeScreenState() {
     getInitStatus();
   }
-
+  
   static final String pageTitle = "Community Center";
   var imageName = pageTitle.toLowerCase().replaceAll(' ', '_') + "_icon";
   var sliverTitle = "";
@@ -124,8 +124,7 @@ class HomeScreenState extends State<HomeScreen> {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute<void>(
-            builder: (context) =>
-                RoomScreen(roomName: roomName, parentId: roomId),
+            builder: (context) => RoomScreen(id: roomId),
           ),
         );
       },
