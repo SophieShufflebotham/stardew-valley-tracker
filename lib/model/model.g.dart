@@ -88,6 +88,7 @@ class TableItem extends SqfEntityTableBase {
     // declare fields
     fields = [
       SqfEntityFieldBase('name', DbType.text, isNotNull: true),
+      SqfEntityFieldBase('iconPath', DbType.text, isNotNull: true),
       SqfEntityFieldBase('complete', DbType.bool, isNotNull: false),
       SqfEntityFieldRelationshipBase(
           TableRoom.getInstance, DeleteRule.NO_ACTION,
@@ -2381,13 +2382,15 @@ class BundleManager extends SqfEntityProvider {
 //endregion BundleManager
 // region Item
 class Item {
-  Item({this.itemId, this.name, this.complete, this.itemBundle}) {
+  Item(
+      {this.itemId, this.name, this.iconPath, this.complete, this.itemBundle}) {
     _setDefaultValues();
   }
-  Item.withFields(this.name, this.complete, this.itemBundle) {
+  Item.withFields(this.name, this.iconPath, this.complete, this.itemBundle) {
     _setDefaultValues();
   }
-  Item.withId(this.itemId, this.name, this.complete, this.itemBundle) {
+  Item.withId(
+      this.itemId, this.name, this.iconPath, this.complete, this.itemBundle) {
     _setDefaultValues();
   }
   Item.fromMap(Map<String, dynamic> o, {bool setDefaultValues = true}) {
@@ -2397,6 +2400,9 @@ class Item {
     itemId = int.tryParse(o['itemId'].toString());
     if (o['name'] != null) {
       name = o['name'] as String;
+    }
+    if (o['iconPath'] != null) {
+      iconPath = o['iconPath'] as String;
     }
     if (o['complete'] != null) {
       complete = o['complete'] == 1 || o['complete'] == true;
@@ -2412,6 +2418,7 @@ class Item {
   // FIELDS (Item)
   int itemId;
   String name;
+  String iconPath;
   bool complete;
   int itemBundle;
 
@@ -2450,6 +2457,10 @@ class Item {
       map['name'] = name;
     }
 
+    if (iconPath != null) {
+      map['iconPath'] = iconPath;
+    }
+
     if (complete != null) {
       map['complete'] = forQuery ? (complete ? 1 : 0) : complete;
     }
@@ -2471,6 +2482,10 @@ class Item {
     }
     if (name != null) {
       map['name'] = name;
+    }
+
+    if (iconPath != null) {
+      map['iconPath'] = iconPath;
     }
 
     if (complete != null) {
@@ -2495,11 +2510,11 @@ class Item {
   }
 
   List<dynamic> toArgs() {
-    return [name, complete, itemBundle];
+    return [name, iconPath, complete, itemBundle];
   }
 
   List<dynamic> toArgsWithIds() {
-    return [itemId, name, complete, itemBundle];
+    return [itemId, name, iconPath, complete, itemBundle];
   }
 
   static Future<List<Item>> fromWebUrl(String url) async {
@@ -2634,7 +2649,7 @@ class Item {
   ///
   /// Returns a <List<BoolResult>>
   Future<List<dynamic>> saveAll(List<Item> items) async {
-    // final results = _mnItem.saveAll('INSERT OR REPLACE INTO items (itemId,name, complete, itemBundle)  VALUES (?,?,?,?)',items);
+    // final results = _mnItem.saveAll('INSERT OR REPLACE INTO items (itemId,name, iconPath, complete, itemBundle)  VALUES (?,?,?,?,?)',items);
     // return results; removed in sqfentity_gen 1.3.0+6
     DatabaseModel().batchStart();
     for (final obj in items) {
@@ -2649,8 +2664,8 @@ class Item {
   Future<int> upsert() async {
     try {
       if (await _mnItem.rawInsert(
-              'INSERT OR REPLACE INTO items (itemId,name, complete, itemBundle)  VALUES (?,?,?,?)',
-              [itemId, name, complete, itemBundle]) ==
+              'INSERT OR REPLACE INTO items (itemId,name, iconPath, complete, itemBundle)  VALUES (?,?,?,?,?)',
+              [itemId, name, iconPath, complete, itemBundle]) ==
           1) {
         saveResult = BoolResult(
             success: true,
@@ -2675,7 +2690,7 @@ class Item {
   /// Returns a BoolCommitResult
   Future<BoolCommitResult> upsertAll(List<Item> items) async {
     final results = await _mnItem.rawInsertAll(
-        'INSERT OR REPLACE INTO items (itemId,name, complete, itemBundle)  VALUES (?,?,?,?)',
+        'INSERT OR REPLACE INTO items (itemId,name, iconPath, complete, itemBundle)  VALUES (?,?,?,?,?)',
         items);
     return results;
   }
@@ -3105,6 +3120,11 @@ class ItemFilterBuilder extends SearchCriteria {
     return _name = setField(_name, 'name', DbType.text);
   }
 
+  ItemField _iconPath;
+  ItemField get iconPath {
+    return _iconPath = setField(_iconPath, 'iconPath', DbType.text);
+  }
+
   ItemField _complete;
   ItemField get complete {
     return _complete = setField(_complete, 'complete', DbType.bool);
@@ -3409,6 +3429,12 @@ class ItemFields {
   static TableField _fName;
   static TableField get name {
     return _fName = _fName ?? SqlSyntax.setField(_fName, 'name', DbType.text);
+  }
+
+  static TableField _fIconPath;
+  static TableField get iconPath {
+    return _fIconPath =
+        _fIconPath ?? SqlSyntax.setField(_fIconPath, 'iconPath', DbType.text);
   }
 
   static TableField _fComplete;
