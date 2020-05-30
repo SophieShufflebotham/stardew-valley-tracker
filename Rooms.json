@@ -1,0 +1,44 @@
+[
+    {
+        "id": 1,
+        "name": "Crafts Room",
+        "iconPath": "graphics/crafts_room_icon.png",
+        "headerImagePath": "graphics/crafts_room.png"
+    },
+    {
+        "id": 2,
+        "name": "Boiler Room",
+        "iconPath": "graphics/boiler_room_icon.png",
+        "headerImagePath": "graphics/boiler_room.png"
+    },
+    {
+        "id": 3,
+        "name": "Pantry",
+        "iconPath": "graphics/pantry_icon.png",
+        "headerImagePath": "graphics/pantry.png"
+    },
+    {
+        "id": 4,
+        "name": "Fish Tank",
+        "iconPath": "graphics/fish_tank_icon.png",
+        "headerImagePath": "graphics/fish_tank.png"
+    },
+    {
+        "id": 5,
+        "name": "Bulletin Board",
+        "iconPath": "graphics/bulletin_board_icon.png",
+        "headerImagePath": "graphics/bulletin_board.png"
+    },
+    {
+        "id": 6,
+        "name": "Vault",
+        "iconPath": "graphics/vault_icon.png",
+        "headerImagePath": "graphics/vault.png"
+    },
+    {
+        "id": 7,
+        "name": "Abandoned JojaMart",
+        "iconPath": "graphics/abandoned_jojamart_icon.png",
+        "headerImagePath": "graphics/abandoned_jojamart.png"
+    }
+]

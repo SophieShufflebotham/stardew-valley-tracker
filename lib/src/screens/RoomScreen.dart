@@ -1,29 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:test_project/src/widgets/ListItem.dart';
 import 'package:test_project/src/screens/BundleScreen.dart';
+import 'package:test_project/model/model.dart';
+import 'package:test_project/tools/populateDb.dart';
 
 class RoomScreen extends StatefulWidget {
   final String roomName;
+  final int parentId;
 
-  RoomScreen({this.roomName});
+  RoomScreen({this.roomName, this.parentId});
 
   @override
   State<StatefulWidget> createState() {
-    return RoomScreenState(roomName: roomName);
+    return RoomScreenState(roomName: roomName, parentId: parentId);
   }
 }
 
 class RoomScreenState extends State<RoomScreen> {
   final String roomName;
+  final int parentId;
+  String assetPath = "";
+
   final controller = ScrollController();
   var titleBar = "";
   var sliverTitle = "";
-  final _bundles = [
-    "Spring Foraging Bundle",
-    "Summer Foraging Bundle",
-  ];
+  List<Bundle> _bundles = new List();
 
-  RoomScreenState({@required this.roomName});
+  RoomScreenState({@required this.roomName, @required this.parentId}) {
+    getDatabaseContent();
+  }
 
   @override
   void initState() {
@@ -66,12 +71,19 @@ class RoomScreenState extends State<RoomScreen> {
   }
 
   Widget _buildListItem(BuildContext context, int i) {
-    var bundleName = _bundles[i];
-    var imageName = bundleName.toLowerCase().replaceAll(' ', '_') + "_icon";
+    var bundleName = _bundles[i].name;
+    var imagePath = _bundles[i].iconPath;
+    var iconImage;
 
+    try {
+      //iconImage = AssetImage(imagePath);
+    } catch (e) {
+      print("exceptionHandled");
+      iconImage = AssetImage("graphics/placeholder.png");
+    }
     return ListItem(
       name: bundleName,
-      iconImage: AssetImage("graphics/$imageName.png"),
+      iconImage: iconImage,
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute<void>(
@@ -85,6 +97,21 @@ class RoomScreenState extends State<RoomScreen> {
   @override
   Widget build(BuildContext context) {
     var assetName = roomName.toLowerCase().replaceAll(' ', '_');
+    Widget assetIcon;
+
+    try {
+      assetIcon = Image.asset(assetPath, fit: BoxFit.cover);
+    } catch (e) {
+      print("exceptionHandled");
+      assetIcon = Image.asset("graphics/placeholder.png", fit: BoxFit.cover);
+    }
+
+    try {
+      assetIcon = Image.asset("graphics/$assetName.png", fit: BoxFit.cover);
+    } catch (e) {
+      print("exceptionHandled");
+      assetIcon = Image.asset("graphics/placeholder.png", fit: BoxFit.cover);
+    }
 
     Widget appBar = SliverAppBar(
         expandedHeight: 200.0,
@@ -101,8 +128,7 @@ class RoomScreenState extends State<RoomScreen> {
               child: ColorFiltered(
                   colorFilter: ColorFilter.mode(
                       Colors.grey.withOpacity(0.7), BlendMode.modulate),
-                  child: Image.asset("graphics/$assetName.png",
-                      fit: BoxFit.cover)),
+                  child: assetIcon),
             ),
             FlexibleSpaceBar(
                 title: Text(sliverTitle,
@@ -128,5 +154,21 @@ class RoomScreenState extends State<RoomScreen> {
     );
 
     return Scaffold(body: customScrollView);
+  }
+
+  void getDatabaseContent() async {
+    bool success = await PopulateDb().populateBundles();
+
+    if (success) {
+      Room currentRoom = await Room().getById(parentId);
+      assetPath = currentRoom.headerImagePath;
+      List<Bundle> bundles = await currentRoom.getBundles().toList();
+
+      if (bundles.length > 0) {
+        setState(() {
+          _bundles = bundles;
+        });
+      }
+    }
   }
 }
