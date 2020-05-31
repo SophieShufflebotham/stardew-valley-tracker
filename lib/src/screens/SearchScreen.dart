@@ -75,7 +75,6 @@ class SearchScreenState extends State<SearchScreen> {
       subtitle: Text(bundle.name),
       leading: SquareAvatar(
         backgroundImage: AssetImage(item.iconPath),
-        backgroundColor: Theme.of(context).accentColor,
       ),
       trailing: Switch(
         activeColor: Colors.lightGreen,
