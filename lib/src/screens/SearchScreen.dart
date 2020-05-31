@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/SquareAvatar.dart';
 import 'package:floating_search_bar/floating_search_bar.dart';
+import 'package:test_project/model/model.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -10,9 +11,10 @@ class SearchScreen extends StatefulWidget {
 }
 
 class SearchScreenState extends State<SearchScreen> {
-  var _searchResults = ["Wild Horseradish", "Dandelion"];
+  List<Item> _searchResults = new List<Item>();
   final Set<String> _savedItems = new Set<String>();
   var _padding = 20.0;
+  var controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -22,25 +24,8 @@ class SearchScreenState extends State<SearchScreen> {
   }
 
   Widget createSearchBar() {
-    var controller = TextEditingController();
+    controller.addListener(_handleSearch);
 
-    var textField = Expanded(
-        flex: 2,
-        child: Padding(
-            padding: EdgeInsets.only(left: _padding, bottom: _padding),
-            child: TextField(
-              controller: controller,
-              decoration: new InputDecoration(
-                  icon: new Icon(Icons.search), hintText: 'Search'),
-              onTap: () {
-                setState(() {});
-              },
-            )));
-
-    // var searchBar = Row(
-    //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-    //   children: <Widget>[textField, eraseTextIcon],
-    // );
     var searchBar = Padding(
         padding: EdgeInsets.only(top: 20.0),
         child: FloatingSearchBar.builder(
@@ -56,6 +41,9 @@ class SearchScreenState extends State<SearchScreen> {
               icon: new Icon(Icons.close),
               onPressed: () {
                 controller.clear();
+                setState(() {
+                  _searchResults.clear();
+                });
               }),
           leading: Icon(Icons.search),
           onChanged: (String value) {},
@@ -65,50 +53,54 @@ class SearchScreenState extends State<SearchScreen> {
           ),
         ));
 
-    var customScrollView = CustomScrollView(
-      slivers: <Widget>[
-        SliverToBoxAdapter(child: searchBar),
-        SliverList(
-          delegate: SliverChildBuilderDelegate((context, index) {
-            if (index < _searchResults.length) {
-              return _buildListItem(context, index);
-            }
-          }),
-        )
-      ],
-    );
-
     return searchBar;
   }
 
   Widget _buildListItem(context, index) {
-    var itemName = _searchResults[index];
+    Item item = _searchResults[index];
+    var itemName = _searchResults[index].name;
     var imageName = itemName.toLowerCase().replaceAll(' ', '_') + "_icon";
-    bool alreadySaved = _savedItems.contains(itemName);
+    bool alreadySaved = _searchResults[index].complete;
 
     return ListTile(
-        title: Text(itemName),
+        title: Text(item.name),
         leading: SquareAvatar(
             backgroundImage: AssetImage("graphics/$imageName.png")),
         trailing: Switch(
           activeColor: Colors.lightGreen,
           value: alreadySaved,
-          onChanged: (value) {
-            _clickHandler(alreadySaved, itemName);
-          },
+          onChanged: (value) {},
         ),
         onTap: () {
-          _clickHandler(alreadySaved, itemName);
+          toggleItemComplete(item);
         });
   }
 
-  void _clickHandler(bool alreadySaved, String itemName) {
+  void _handleSearch() {
+    String enteredText = controller.text;
+    print("text: " + enteredText);
+    if (enteredText != "") {
+      _searchForText(enteredText);
+    } else {
+      setState(() {
+        _searchResults.clear();
+      });
+    }
+  }
+
+  void _searchForText(String text) async {
+    List<Item> results =
+        await Item().select().name.contains("%$text%").toList();
+
     setState(() {
-      if (alreadySaved) {
-        _savedItems.remove(itemName);
-      } else {
-        _savedItems.add(itemName);
-      }
+      _searchResults = results;
+    });
+  }
+
+  void toggleItemComplete(Item item) async {
+    setState(() {
+      item.complete = !item.complete;
+      item.save();
     });
   }
 }
