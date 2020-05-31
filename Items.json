@@ -2,945 +2,945 @@
     {
         "id": 1,
         "name": "Wild Horseradish",
-        "iconPath": "graphics/wild_horseradish_icon.png",
+        "iconPath": "graphics/items/wild_horseradish_icon.png",
         "completed": false,
         "bundle": 1
     },
     {
         "id": 2,
         "name": "Daffodil",
-        "iconPath": "graphics/daffodil_icon.png",
+        "iconPath": "graphics/items/daffodil_icon.png",
         "completed": false,
         "bundle": 1
     },
     {
         "id": 3,
         "name": "Leek",
-        "iconPath": "graphics/leek_icon.png",
+        "iconPath": "graphics/items/leek_icon.png",
         "completed": false,
         "bundle": 1
     },
     {
         "id": 4,
         "name": "Dandelion",
-        "iconPath": "graphics/dandelion_icon.png",
+        "iconPath": "graphics/items/dandelion_icon.png",
         "completed": false,
         "bundle": 1
     },
     {
         "id": 5,
         "name": "Grape",
-        "iconPath": "graphics/grape_icon.png",
+        "iconPath": "graphics/items/grape_icon.png",
         "completed": false,
         "bundle": 2
     },
     {
         "id": 6,
         "name": "Spice Berry",
-        "iconPath": "graphics/spice_berry_icon.png",
+        "iconPath": "graphics/items/spice_berry_icon.png",
         "completed": false,
         "bundle": 2
     },
     {
         "id": 7,
         "name": "Sweet Pea",
-        "iconPath": "graphics/sweet_pea_icon.png",
+        "iconPath": "graphics/items/sweet_pea_icon.png",
         "completed": false,
         "bundle": 2
     },
     {
         "id": 8,
         "name": "Common Mushroom",
-        "iconPath": "graphics/common_mushroom_icon.png",
+        "iconPath": "graphics/items/common_mushroom_icon.png",
         "completed": false,
         "bundle": 3
     },
     {
         "id": 9,
         "name": "Wild Plum",
-        "iconPath": "graphics/wild_plum_icon.png",
+        "iconPath": "graphics/items/wild_plum_icon.png",
         "completed": false,
         "bundle": 3
     },
     {
         "id": 10,
         "name": "Hazelnut",
-        "iconPath": "graphics/hazelnut_icon.png",
+        "iconPath": "graphics/items/hazelnut_icon.png",
         "completed": false,
         "bundle": 3
     },
     {
         "id": 11,
         "name": "Blackberry",
-        "iconPath": "graphics/blackberry_icon.png",
+        "iconPath": "graphics/items/blackberry_icon.png",
         "completed": false,
         "bundle": 3
     },
     {
         "id": 12,
         "name": "Winter Root",
-        "iconPath": "graphics/winter_root_icon.png",
+        "iconPath": "graphics/items/winter_root_icon.png",
         "completed": false,
         "bundle": 4
     },
     {
         "id": 13,
         "name": "Crystal Root",
-        "iconPath": "graphics/crystal_root_icon.png",
+        "iconPath": "graphics/items/crystal_root_icon.png",
         "completed": false,
         "bundle": 4
     },
     {
         "id": 14,
         "name": "Snow Yam",
-        "iconPath": "graphics/snow_yam_icon.png",
+        "iconPath": "graphics/items/snow_yam_icon.png",
         "completed": false,
         "bundle": 4
     },
     {
         "id": 15,
         "name": "Crocus",
-        "iconPath": "graphics/crocus_icon.png",
+        "iconPath": "graphics/items/crocus_icon.png",
         "completed": false,
         "bundle": 4
     },
     {
         "id": 16,
         "name": "Wood (99)",
-        "iconPath": "graphics/wood_icon.png",
+        "iconPath": "graphics/items/wood_icon.png",
         "completed": false,
         "bundle": 5
     },
     {
         "id": 17,
         "name": "Wood (99)",
-        "iconPath": "graphics/wood_icon.png",
+        "iconPath": "graphics/items/wood_icon.png",
         "completed": false,
         "bundle": 5
     },
     {
         "id": 18,
         "name": "Stone (99)",
-        "iconPath": "graphics/stone_icon.png",
+        "iconPath": "graphics/items/stone_icon.png",
         "completed": false,
         "bundle": 5
     },
     {
         "id": 19,
         "name": "Hardwood (10)",
-        "iconPath": "graphics/hardwood_icon.png",
+        "iconPath": "graphics/items/hardwood_icon.png",
         "completed": false,
         "bundle": 5
     },
     {
         "id": 20,
         "name": "Coconut",
-        "iconPath": "graphics/coconut_icon.png",
+        "iconPath": "graphics/items/coconut_icon.png",
         "completed": false,
         "bundle": 6
     },
     {
         "id": 21,
         "name": "Cactus Fruit",
-        "iconPath": "graphics/cactus_fruit_icon.png",
+        "iconPath": "graphics/items/cactus_fruit_icon.png",
         "completed": false,
         "bundle": 6
     },
     {
         "id": 22,
         "name": "Cave Carrot",
-        "iconPath": "graphics/cave_carrot_icon.png",
+        "iconPath": "graphics/items/cave_carrot_icon.png",
         "completed": false,
         "bundle": 6
     },
     {
         "id": 23,
         "name": "Red Mushroom",
-        "iconPath": "graphics/red_mushroom_icon.png",
+        "iconPath": "graphics/items/red_mushroom_icon.png",
         "completed": false,
         "bundle": 6
     },
     {
         "id": 24,
         "name": "Purple Mushroom",
-        "iconPath": "graphics/purple_mushroom_icon.png",
+        "iconPath": "graphics/items/purple_mushroom_icon.png",
         "completed": false,
         "bundle": 6
     },
     {
         "id": 25,
         "name": "Maple Syrup",
-        "iconPath": "graphics/maple_syrup_icon.png",
+        "iconPath": "graphics/items/maple_syrup_icon.png",
         "completed": false,
         "bundle": 6
     },
     {
         "id": 26,
         "name": "Oak Resin",
-        "iconPath": "graphics/oak_resin_icon.png",
+        "iconPath": "graphics/items/oak_resin_icon.png",
         "completed": false,
         "bundle": 6
     },
     {
         "id": 27,
         "name": "Pine Tar",
-        "iconPath": "graphics/pine_tar_icon.png",
+        "iconPath": "graphics/items/pine_tar_icon.png",
         "completed": false,
         "bundle": 6
     },
     {
         "id": 28,
         "name": "Morel",
-        "iconPath": "graphics/morel_icon.png",
+        "iconPath": "graphics/items/morel_icon.png",
         "completed": false,
         "bundle": 6
     },
     {
         "id": 29,
         "name": "Parsnip",
-        "iconPath": "graphics/parsnip_icon.png",
+        "iconPath": "graphics/items/parsnip_icon.png",
         "completed": false,
         "bundle": 7
     },
     {
         "id": 30,
         "name": "Green Bean",
-        "iconPath": "graphics/green_bean_icon.png",
+        "iconPath": "graphics/items/green_bean_icon.png",
         "completed": false,
         "bundle": 7
     },
     {
         "id": 31,
         "name": "Cauliflower",
-        "iconPath": "graphics/cauliflower_icon.png",
+        "iconPath": "graphics/items/cauliflower_icon.png",
         "completed": false,
         "bundle": 7
     },
     {
         "id": 32,
         "name": "Potato",
-        "iconPath": "graphics/potato_icon.png",
+        "iconPath": "graphics/items/potato_icon.png",
         "completed": false,
         "bundle": 7
     },
     {
         "id": 33,
         "name": "Tomato",
-        "iconPath": "graphics/tomato_icon.png",
+        "iconPath": "graphics/items/tomato_icon.png",
         "completed": false,
         "bundle": 8
     },
     {
         "id": 34,
         "name": "Hot Pepper",
-        "iconPath": "graphics/hot_pepper_icon.png",
+        "iconPath": "graphics/items/hot_pepper_icon.png",
         "completed": false,
         "bundle": 8
     },
     {
         "id": 35,
         "name": "Blueberry",
-        "iconPath": "graphics/blueberry_icon.png",
+        "iconPath": "graphics/items/blueberry_icon.png",
         "completed": false,
         "bundle": 8
     },
     {
         "id": 36,
         "name": "Melon",
-        "iconPath": "graphics/melon_icon.png",
+        "iconPath": "graphics/items/melon_icon.png",
         "completed": false,
         "bundle": 8
     },
     {
         "id": 37,
         "name": "Corn",
-        "iconPath": "graphics/corn_icon.png",
+        "iconPath": "graphics/items/corn_icon.png",
         "completed": false,
         "bundle": 9
     },
     {
         "id": 38,
         "name": "Eggplant",
-        "iconPath": "graphics/eggplant_icon.png",
+        "iconPath": "graphics/items/eggplant_icon.png",
         "completed": false,
         "bundle": 9
     },
     {
         "id": 39,
         "name": "Pumpkin",
-        "iconPath": "graphics/pumpkin_icon.png",
+        "iconPath": "graphics/items/pumpkin_icon.png",
         "completed": false,
         "bundle": 9
     },
     {
         "id": 40,
         "name": "Yam",
-        "iconPath": "graphics/yam_icon.png",
+        "iconPath": "graphics/items/yam_icon.png",
         "completed": false,
         "bundle": 9
     },
     {
         "id": 41,
         "name": "Parsnip (5)",
-        "iconPath": "graphics/good_parsnip_icon.png",
+        "iconPath": "graphics/items/good_parsnip_icon.png",
         "completed": false,
         "bundle": 10
     },
     {
         "id": 42,
         "name": "Melon (5)",
-        "iconPath": "graphics/good_melon_icon.png",
+        "iconPath": "graphics/items/good_melon_icon.png",
         "completed": false,
         "bundle": 10
     },
     {
         "id": 43,
         "name": "Pumpkin (5)",
-        "iconPath": "graphics/good_pumkpin_icon.png",
+        "iconPath": "graphics/items/good_pumkpin_icon.png",
         "completed": false,
         "bundle": 10
     },
     {
         "id": 44,
         "name": "Corn (5)",
-        "iconPath": "graphics/good_corn_icon.png",
+        "iconPath": "graphics/items/good_corn_icon.png",
         "completed": false,
         "bundle": 10
     },
     {
         "id": 45,
         "name": "Large Milk",
-        "iconPath": "graphics/large_milk_icon.png",
+        "iconPath": "graphics/items/large_milk_icon.png",
         "completed": false,
         "bundle": 11
     },
     {
         "id": 46,
         "name": "Large Egg (Brown)",
-        "iconPath": "graphics/large_egg_brown_icon.png",
+        "iconPath": "graphics/items/large_egg_brown_icon.png",
         "completed": false,
         "bundle": 11
     },
     {
         "id": 47,
         "name": "Large Egg",
-        "iconPath": "graphics/large_egg_icon.png",
+        "iconPath": "graphics/items/large_egg_icon.png",
         "completed": false,
         "bundle": 11
     },
     {
         "id": 48,
         "name": "Large Goat Milk",
-        "iconPath": "graphics/large_goat_milk_icon.png",
+        "iconPath": "graphics/items/large_goat_milk_icon.png",
         "completed": false,
         "bundle": 11
     },
     {
         "id": 49,
         "name": "Wool",
-        "iconPath": "graphics/wool_icon.png",
+        "iconPath": "graphics/items/wool_icon.png",
         "completed": false,
         "bundle": 11
     },
     {
         "id": 50,
         "name": "Duck Egg",
-        "iconPath": "graphics/duck_egg_icon.png",
+        "iconPath": "graphics/items/duck_egg_icon.png",
         "completed": false,
         "bundle": 11
     },
     {
         "id": 51,
         "name": "Truffle Oil",
-        "iconPath": "graphics/truffle_oil_icon.png",
+        "iconPath": "graphics/items/truffle_oil_icon.png",
         "completed": false,
         "bundle": 12
     },
     {
         "id": 52,
         "name": "Cloth",
-        "iconPath": "graphics/cloth_icon.png",
+        "iconPath": "graphics/items/cloth_icon.png",
         "completed": false,
         "bundle": 12
     },
     {
         "id": 53,
         "name": "Goat Cheese",
-        "iconPath": "graphics/goat_cheese_icon.png",
+        "iconPath": "graphics/items/goat_cheese_icon.png",
         "completed": false,
         "bundle": 12
     },
     {
         "id": 54,
         "name": "Cheese",
-        "iconPath": "graphics/cheese_icon.png",
+        "iconPath": "graphics/items/cheese_icon.png",
         "completed": false,
         "bundle": 12
     },
     {
         "id": 55,
         "name": "Honey",
-        "iconPath": "graphics/honey_icon.png",
+        "iconPath": "graphics/items/honey_icon.png",
         "completed": false,
         "bundle": 12
     },
     {
         "id": 56,
         "name": "Jelly",
-        "iconPath": "graphics/jelly_icon.png",
+        "iconPath": "graphics/items/jelly_icon.png",
         "completed": false,
         "bundle": 12
     },
     {
         "id": 57,
         "name": "Apple",
-        "iconPath": "graphics/apple_icon.png",
+        "iconPath": "graphics/items/apple_icon.png",
         "completed": false,
         "bundle": 12
     },
     {
         "id": 58,
         "name": "Apricot",
-        "iconPath": "graphics/apricot_icon.png",
+        "iconPath": "graphics/items/apricot_icon.png",
         "completed": false,
         "bundle": 12
     },
     {
         "id": 59,
         "name": "Orange",
-        "iconPath": "graphics/orange_icon.png",
+        "iconPath": "graphics/items/orange_icon.png",
         "completed": false,
         "bundle": 12
     },
     {
         "id": 60,
         "name": "Peach",
-        "iconPath": "graphics/peach_icon.png",
+        "iconPath": "graphics/items/peach_icon.png",
         "completed": false,
         "bundle": 12
     },
     {
         "id": 61,
         "name": "Pomegranate",
-        "iconPath": "graphics/pomegranate_icon.png",
+        "iconPath": "graphics/items/pomegranate_icon.png",
         "completed": false,
         "bundle": 12
     },
     {
         "id": 62,
         "name": "Cherry",
-        "iconPath": "graphics/cherry_icon.png",
+        "iconPath": "graphics/items/cherry_icon.png",
         "completed": false,
         "bundle": 12
     },
     {
         "id": 63,
         "name": "Sunfish",
-        "iconPath": "graphics/sunfish_icon.png",
+        "iconPath": "graphics/items/sunfish_icon.png",
         "completed": false,
         "bundle": 13
     },
     {
         "id": 64,
         "name": "Catfish",
-        "iconPath": "graphics/catfish_icon.png",
+        "iconPath": "graphics/items/catfish_icon.png",
         "completed": false,
         "bundle": 13
     },
     {
         "id": 65,
         "name": "Shad",
-        "iconPath": "graphics/shad_icon.png",
+        "iconPath": "graphics/items/shad_icon.png",
         "completed": false,
         "bundle": 13
     },
     {
         "id": 66,
         "name": "Tiget Trout",
-        "iconPath": "graphics/tiger_trout_icon.png",
+        "iconPath": "graphics/items/tiger_trout_icon.png",
         "completed": false,
         "bundle": 13
     },
     {
         "id": 67,
         "name": "Largemouth Bass",
-        "iconPath": "graphics/largemouth_bass_icon.png",
+        "iconPath": "graphics/items/largemouth_bass_icon.png",
         "completed": false,
         "bundle": 14
     },
     {
         "id": 68,
         "name": "Carp",
-        "iconPath": "graphics/carp_icon.png",
+        "iconPath": "graphics/items/carp_icon.png",
         "completed": false,
         "bundle": 14
     },
     {
         "id": 69,
         "name": "Bullhead",
-        "iconPath": "graphics/bullhead_icon.png",
+        "iconPath": "graphics/items/bullhead_icon.png",
         "completed": false,
         "bundle": 14
     },
     {
         "id": 70,
         "name": "Sturgeon",
-        "iconPath": "graphics/sturgeon_icon.png",
+        "iconPath": "graphics/items/sturgeon_icon.png",
         "completed": false,
         "bundle": 14
     },
     {
         "id": 71,
         "name": "Sardine",
-        "iconPath": "graphics/sardine_icon.png",
+        "iconPath": "graphics/items/sardine_icon.png",
         "completed": false,
         "bundle": 15
     },
     {
         "id": 72,
         "name": "Tuna",
-        "iconPath": "graphics/tuna_icon.png",
+        "iconPath": "graphics/items/tuna_icon.png",
         "completed": false,
         "bundle": 15
     },
     {
         "id": 73,
         "name": "Red Snapper",
-        "iconPath": "graphics/red_snapper_icon.png",
+        "iconPath": "graphics/items/red_snapper_icon.png",
         "completed": false,
         "bundle": 15
     },
     {
         "id": 74,
         "name": "Tilapia",
-        "iconPath": "graphics/tilapia_icon.png",
+        "iconPath": "graphics/items/tilapia_icon.png",
         "completed": false,
         "bundle": 15
     },
     {
         "id": 75,
         "name": "Walleye",
-        "iconPath": "graphics/walleye_icon.png",
+        "iconPath": "graphics/items/walleye_icon.png",
         "completed": false,
         "bundle": 16
     },
     {
         "id": 76,
         "name": "Bream",
-        "iconPath": "graphics/bream_icon.png",
+        "iconPath": "graphics/items/bream_icon.png",
         "completed": false,
         "bundle": 16
     },
     {
         "id": 76,
         "name": "Eel",
-        "iconPath": "graphics/eel_icon.png",
+        "iconPath": "graphics/items/eel_icon.png",
         "completed": false,
         "bundle": 16
     },
     {
         "id": 77,
         "name": "Lobster",
-        "iconPath": "graphics/lobster_icon.png",
+        "iconPath": "graphics/items/lobster_icon.png",
         "completed": false,
         "bundle": 17
     },
     {
         "id": 78,
         "name": "Crayfish",
-        "iconPath": "graphics/crayfish_icon.png",
+        "iconPath": "graphics/items/crayfish_icon.png",
         "completed": false,
         "bundle": 17
     },
     {
         "id": 79,
         "name": "Crab",
-        "iconPath": "graphics/crab_icon.png",
+        "iconPath": "graphics/items/crab_icon.png",
         "completed": false,
         "bundle": 17
     },
     {
         "id": 133,
         "name": "Cockle",
-        "iconPath": "graphics/cockle_icon.png",
+        "iconPath": "graphics/items/cockle_icon.png",
         "completed": false,
         "bundle": 17
     },
     {
         "id": 80,
         "name": "Mussel",
-        "iconPath": "graphics/mussel_icon.png",
+        "iconPath": "graphics/items/mussel_icon.png",
         "completed": false,
         "bundle": 17
     },
     {
         "id": 81,
         "name": "Shrimp",
-        "iconPath": "graphics/shrimp_icon.png",
+        "iconPath": "graphics/items/shrimp_icon.png",
         "completed": false,
         "bundle": 17
     },
     {
         "id": 82,
         "name": "Snail",
-        "iconPath": "graphics/snail_icon.png",
+        "iconPath": "graphics/items/snail_icon.png",
         "completed": false,
         "bundle": 17
     },
     {
         "id": 83,
         "name": "Periwinkle",
-        "iconPath": "graphics/periwinkle_icon.png",
+        "iconPath": "graphics/items/periwinkle_icon.png",
         "completed": false,
         "bundle": 17
     },
     {
         "id": 84,
         "name": "Oyster",
-        "iconPath": "graphics/oyster_icon.png",
+        "iconPath": "graphics/items/oyster_icon.png",
         "completed": false,
         "bundle": 17
     },
     {
         "id": 85,
         "name": "Clam",
-        "iconPath": "graphics/clam_icon.png",
+        "iconPath": "graphics/items/clam_icon.png",
         "completed": false,
         "bundle": 17
     },
     {
         "id": 86,
         "name": "Pufferfish",
-        "iconPath": "graphics/pufferfish_icon.png",
+        "iconPath": "graphics/items/pufferfish_icon.png",
         "completed": false,
         "bundle": 18
     },
     {
         "id": 87,
         "name": "Ghostfish",
-        "iconPath": "graphics/ghostfish_icon.png",
+        "iconPath": "graphics/items/ghostfish_icon.png",
         "completed": false,
         "bundle": 18
     },
     {
         "id": 87,
         "name": "Sandfish",
-        "iconPath": "graphics/sandfish_icon.png",
+        "iconPath": "graphics/items/sandfish_icon.png",
         "completed": false,
         "bundle": 18
     },
     {
         "id": 88,
         "name": "Woodskip",
-        "iconPath": "graphics/woodskip_icon.png",
+        "iconPath": "graphics/items/woodskip_icon.png",
         "completed": false,
         "bundle": 18
     },
     {
         "id": 89,
         "name": "Copper Bar",
-        "iconPath": "graphics/copper_bar_icon.png",
+        "iconPath": "graphics/items/copper_bar_icon.png",
         "completed": false,
         "bundle": 19
     },
     {
         "id": 90,
         "name": "Iron Bar",
-        "iconPath": "graphics/iron_bar_icon.png",
+        "iconPath": "graphics/items/iron_bar_icon.png",
         "completed": false,
         "bundle": 19
     },
     {
         "id": 91,
         "name": "Gold Bar",
-        "iconPath": "graphics/gold_bar_icon.png",
+        "iconPath": "graphics/items/gold_bar_icon.png",
         "completed": false,
         "bundle": 19
     },
     {
         "id": 92,
         "name": "Quartz",
-        "iconPath": "graphics/quartz_icon.png",
+        "iconPath": "graphics/items/quartz_icon.png",
         "completed": false,
         "bundle": 20
     },
     {
         "id": 93,
         "name": "Earth Crystal",
-        "iconPath": "graphics/earth_crystal_icon.png",
+        "iconPath": "graphics/items/earth_crystal_icon.png",
         "completed": false,
         "bundle": 20
     },
     {
         "id": 94,
         "name": "Frozen Tear",
-        "iconPath": "graphics/frozen_tear_icon.png",
+        "iconPath": "graphics/items/frozen_tear_icon.png",
         "completed": false,
         "bundle": 20
     },
     {
         "id": 95,
         "name": "Fire Quartz",
-        "iconPath": "graphics/fire_quartz_icon.png",
+        "iconPath": "graphics/items/fire_quartz_icon.png",
         "completed": false,
         "bundle": 20
     },
     {
         "id": 96,
         "name": "Slime (99)",
-        "iconPath": "graphics/slime_icon.png",
+        "iconPath": "graphics/items/slime_icon.png",
         "completed": false,
         "bundle": 21
     },
     {
         "id": 97,
         "name": "Bat Wing (10)",
-        "iconPath": "graphics/bat_wing_icon.png",
+        "iconPath": "graphics/items/bat_wing_icon.png",
         "completed": false,
         "bundle": 21
     },
     {
         "id": 98,
         "name": "Solar Essence",
-        "iconPath": "graphics/solar_essence_icon.png",
+        "iconPath": "graphics/items/solar_essence_icon.png",
         "completed": false,
         "bundle": 21
     },
     {
         "id": 99,
         "name": "Void Essence",
-        "iconPath": "graphics/void_essence_icon.png",
+        "iconPath": "graphics/items/void_essence_icon.png",
         "completed": false,
         "bundle": 21
     },
     {
         "id": 100,
         "name": "Maple Syrup",
-        "iconPath": "graphics/maple_syrup_icon.png",
+        "iconPath": "graphics/items/maple_syrup_icon.png",
         "completed": false,
         "bundle": 22
     },
     {
         "id": 101,
         "name": "Fiddlehead Fern",
-        "iconPath": "graphics/fiddlehead_fern_icon.png",
+        "iconPath": "graphics/items/fiddlehead_fern_icon.png",
         "completed": false,
         "bundle": 22
     },
     {
         "id": 102,
         "name": "Truffle",
-        "iconPath": "graphics/truffle_icon.png",
+        "iconPath": "graphics/items/truffle_icon.png",
         "completed": false,
         "bundle": 22
     },
     {
         "id": 103,
         "name": "Poppy",
-        "iconPath": "graphics/poppy_icon.png",
+        "iconPath": "graphics/items/poppy_icon.png",
         "completed": false,
         "bundle": 22
     },
     {
         "id": 104,
         "name": "Maki Roll",
-        "iconPath": "graphics/maki_roll_icon.png",
+        "iconPath": "graphics/items/maki_roll_icon.png",
         "completed": false,
         "bundle": 22
     },
     {
         "id": 105,
         "name": "Fried Egg",
-        "iconPath": "graphics/fried_egg_icon.png",
+        "iconPath": "graphics/items/fried_egg_icon.png",
         "completed": false,
         "bundle": 22
     },
     {
         "id": 106,
         "name": "Red Mushroom",
-        "iconPath": "graphics/red_mushroom_icon.png",
+        "iconPath": "graphics/items/red_mushroom_icon.png",
         "completed": false,
         "bundle": 23
     },
     {
         "id": 107,
         "name": "Sea Urchin",
-        "iconPath": "graphics/sea_urchin_icon.png",
+        "iconPath": "graphics/items/sea_urchin_icon.png",
         "completed": false,
         "bundle": 23
     },
     {
         "id": 108,
         "name": "Sunflower",
-        "iconPath": "graphics/sunflower_icon.png",
+        "iconPath": "graphics/items/sunflower_icon.png",
         "completed": false,
         "bundle": 23
     },
     {
         "id": 109,
         "name": "Duck Feather",
-        "iconPath": "graphics/duck_feather_icon.png",
+        "iconPath": "graphics/items/duck_feather_icon.png",
         "completed": false,
         "bundle": 23
     },
     {
         "id": 110,
         "name": "Aquamarine",
-        "iconPath": "graphics/aquamarine_icon.png",
+        "iconPath": "graphics/items/aquamarine_icon.png",
         "completed": false,
         "bundle": 23
     },
     {
         "id": 111,
         "name": "Red Cabbage",
-        "iconPath": "graphics/red_cabbage_icon.png",
+        "iconPath": "graphics/items/red_cabbage_icon.png",
         "completed": false,
         "bundle": 23
     },
     {
         "id": 112,
         "name": "Purple Mushroom",
-        "iconPath": "graphics/purple_mushroom_icon.png",
+        "iconPath": "graphics/items/purple_mushroom_icon.png",
         "completed": false,
         "bundle": 24
     },
     {
         "id": 113,
         "name": "Nautilus Shell",
-        "iconPath": "graphics/nautilus_shell_icon.png",
+        "iconPath": "graphics/items/nautilus_shell_icon.png",
         "completed": false,
         "bundle": 24
     },
     {
         "id": 114,
         "name": "Chub",
-        "iconPath": "graphics/chub_icon.png",
+        "iconPath": "graphics/items/chub_icon.png",
         "completed": false,
         "bundle": 24
     },
     {
         "id": 115,
         "name": "Frozen Geode",
-        "iconPath": "graphics/frozen_geode_icon.png",
+        "iconPath": "graphics/items/frozen_geode_icon.png",
         "completed": false,
         "bundle": 24
     },
     {
         "id": 116,
         "name": "Wheat (10)",
-        "iconPath": "graphics/wheat_icon.png",
+        "iconPath": "graphics/items/wheat_icon.png",
         "completed": false,
         "bundle": 25
     },
     {
         "id": 117,
         "name": "Hay (10)",
-        "iconPath": "graphics/hay_icon.png",
+        "iconPath": "graphics/items/hay_icon.png",
         "completed": false,
         "bundle": 25
     },
     {
         "id": 118,
         "name": "Apple (3)",
-        "iconPath": "graphics/apple_icon.png",
+        "iconPath": "graphics/items/apple_icon.png",
         "completed": false,
         "bundle": 25
     },
     {
         "id": 119,
         "name": "Oak Resin",
-        "iconPath": "graphics/oak_resin_icon.png",
+        "iconPath": "graphics/items/oak_resin_icon.png",
         "completed": false,
         "bundle": 26
     },
     {
         "id": 120,
         "name": "Wine",
-        "iconPath": "graphics/wine_icon.png",
+        "iconPath": "graphics/items/wine_icon.png",
         "completed": false,
         "bundle": 26
     },
     {
         "id": 121,
         "name": "Rabbit's Foot",
-        "iconPath": "graphics/rabbits_foot_icon.png",
+        "iconPath": "graphics/items/rabbits_foot_icon.png",
         "completed": false,
         "bundle": 26
     },
     {
         "id": 122,
         "name": "Pomegranate",
-        "iconPath": "graphics/pomegranate_icon.png",
+        "iconPath": "graphics/items/pomegranate_icon.png",
         "completed": false,
         "bundle": 26
     },
     {
         "id": 123,
         "name": "2,500g",
-        "iconPath": "graphics/gold_coin_icon.png",
+        "iconPath": "graphics/items/gold_coin_icon.png",
         "completed": false,
         "bundle": 27
     },
     {
         "id": 124,
         "name": "5,000g",
-        "iconPath": "graphics/gold_coin_icon.png",
+        "iconPath": "graphics/items/gold_coin_icon.png",
         "completed": false,
         "bundle": 28
     },
     {
         "id": 125,
         "name": "10,000g",
-        "iconPath": "graphics/gold_coin_icon.png",
+        "iconPath": "graphics/items/gold_coin_icon.png",
         "completed": false,
         "bundle": 29
     },
     {
         "id": 126,
         "name": "25,000g",
-        "iconPath": "graphics/gold_coin_icon.png",
+        "iconPath": "graphics/items/gold_coin_icon.png",
         "completed": false,
         "bundle": 30
     },
     {
         "id": 127,
         "name": "Silver Quality Wine (any)",
-        "iconPath": "graphics/silver_quality_icon.png",
+        "iconPath": "graphics/items/silver_quality_icon.png",
         "completed": false,
         "bundle": 31
     },
     {
         "id": 128,
         "name": "Dinosaur Mayonnaise",
-        "iconPath": "graphics/dinosaur_mayonnaise_icon.png",
+        "iconPath": "graphics/items/dinosaur_mayonnaise_icon.png",
         "completed": false,
         "bundle": 31
     },
     {
         "id": 129,
         "name": "Prismatic Shard",
-        "iconPath": "graphics/prismatic_shard_icon.png",
+        "iconPath": "graphics/items/prismatic_shard_icon.png",
         "completed": false,
         "bundle": 31
     },
     {
         "id": 130,
         "name": "Good Quality Ancient Fruit (5)",
-        "iconPath": "graphics/good_ancient_fruit_icon.png",
+        "iconPath": "graphics/items/good_ancient_fruit_icon.png",
         "completed": false,
         "bundle": 31
     },
     {
         "id": 131,
         "name": "Gold or Iridium quality Void Salmon",
-        "iconPath": "graphics/good_void_salmon_icon.png",
+        "iconPath": "graphics/items/good_void_salmon_icon.png",
         "completed": false,
         "bundle": 31
     },
     {
         "id": 132,
         "name": "Caviar",
-        "iconPath": "graphics/caviar_icon.png",
+        "iconPath": "graphics/items/caviar_icon.png",
         "completed": false,
         "bundle": 31
     }

@@ -2,218 +2,218 @@
     {
         "id": 1,
         "name": "Spring Foraging Bundle",
-        "iconPath": "graphics/spring_foraging_bundle_icon.png",
-        "headerImagePath": "graphics/spring_foraging_bundle.png",
+        "iconPath": "graphics/bundles/spring_foraging_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/spring_foraging_bundle.png",
         "room": 1
     },
     {
         "id": 2,
         "name": "Summer Foraging Bundle",
-        "iconPath": "graphics/spring_foraging_bundle_icon.png",
-        "headerImagePath": "graphics/spring_foraging_bundle.png",
+        "iconPath": "graphics/bundles/summer_foraging_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/summer_foraging_bundle.png",
         "room": 1
     },
     {
         "id": 3,
         "name": "Fall Foraging Bundle",
-        "iconPath": "graphics/fall_foraging_bundle_icon.png",
-        "headerImagePath": "graphics/fall_foraging_bundle.png",
+        "iconPath": "graphics/bundles/fall_foraging_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/fall_foraging_bundle.png",
         "room": 1
     },
     {
         "id": 4,
         "name": "Winter Foraging Bundle",
-        "iconPath": "graphics/winter_foraging_bundle_icon.png",
-        "headerImagePath": "graphics/winter_foraging_bundle.png",
+        "iconPath": "graphics/bundles/winter_foraging_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/winter_foraging_bundle.png",
         "room": 1
     },
     {
         "id": 5,
         "name": "Construction Bundle",
-        "iconPath": "graphics/construction_bundle_icon.png",
-        "headerImagePath": "graphics/construction_bundle.png",
+        "iconPath": "graphics/bundles/construction_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/construction_bundle.png",
         "room": 1
     },
     {
         "id": 6,
         "name": "Exotic Foraging Bundle",
-        "iconPath": "graphics/exotic_foraging_bundle_icon.png",
-        "headerImagePath": "graphics/exotic_foraging_bundle.png",
+        "iconPath": "graphics/bundles/exotic_foraging_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/exotic_foraging_bundle.png",
         "room": 1
     },
     {
         "id": 7,
         "name": "Spring Crops Bundle",
-        "iconPath": "graphics/spring_crops_bundle_icon.png",
-        "headerImagePath": "graphics/spring_crops_bundle.png",
+        "iconPath": "graphics/bundles/spring_crops_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/spring_crops_bundle.png",
         "room": 3
     },
     {
         "id": 8,
         "name": "Summer Crops Bundle",
-        "iconPath": "graphics/summer_crops_bundle_icon.png",
-        "headerImagePath": "graphics/summer_crops_bundle.png",
+        "iconPath": "graphics/bundles/summer_crops_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/summer_crops_bundle.png",
         "room": 3
     },
     {
         "id": 9,
         "name": "Fall Crops Bundle",
-        "iconPath": "graphics/fall_crops_bundle_icon.png",
-        "headerImagePath": "graphics/fall_crops_bundle.png",
+        "iconPath": "graphics/bundles/fall_crops_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/fall_crops_bundle.png",
         "room": 3
     },
     {
         "id": 10,
         "name": "Quality Crops Bundle",
-        "iconPath": "graphics/quality_crops_bundle_icon.png",
-        "headerImagePath": "graphics/quality_crops_bundle.png",
+        "iconPath": "graphics/bundles/quality_crops_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/quality_crops_bundle.png",
         "room": 3
     },
     {
         "id": 11,
         "name": "Animal Bundle",
-        "iconPath": "graphics/animal_bundle_icon.png",
-        "headerImagePath": "graphics/animal_bundle.png",
+        "iconPath": "graphics/bundles/animal_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/animal_bundle.png",
         "room": 3
     },
     {
         "id": 12,
         "name": "Artisan Bundle",
-        "iconPath": "graphics/artisan_bundle_icon.png",
-        "headerImagePath": "graphics/artisan_bundle.png",
+        "iconPath": "graphics/bundles/artisan_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/artisan_bundle.png",
         "room": 3
     },
     {
         "id": 13,
         "name": "River Fish Bundle",
-        "iconPath": "graphics/river_fish_bundle_icon.png",
-        "headerImagePath": "graphics/river_fish_bundle.png",
+        "iconPath": "graphics/bundles/river_fish_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/river_fish_bundle.png",
         "room": 4
     },
     {
         "id": 14,
         "name": "Lake Fish Bundle",
-        "iconPath": "graphics/lake_fish_bundle_icon.png",
-        "headerImagePath": "graphics/lake_fish_bundle.png",
+        "iconPath": "graphics/bundles/lake_fish_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/lake_fish_bundle.png",
         "room": 4
     },
     {
         "id": 15,
         "name": "Ocean Fish Bundle",
-        "iconPath": "graphics/ocean_fish_bundle_icon.png",
-        "headerImagePath": "graphics/ocean_fish_bundle.png",
+        "iconPath": "graphics/bundles/ocean_fish_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/ocean_fish_bundle.png",
         "room": 4
     },
     {
         "id": 16,
         "name": "Night Fishing Bundle",
-        "iconPath": "graphics/night_fishing_bundle_icon.png",
-        "headerImagePath": "graphics/night_fishing_bundle.png",
+        "iconPath": "graphics/bundles/night_fishing_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/night_fishing_bundle.png",
         "room": 4
     },
     {
         "id": 17,
         "name": "Crab Pot Bundle",
-        "iconPath": "graphics/crab_pot_bundle_icon.png",
-        "headerImagePath": "graphics/crab_pot_bundle.png",
+        "iconPath": "graphics/bundles/crab_pot_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/crab_pot_bundle.png",
         "room": 4
     },
     {
         "id": 18,
         "name": "Speciality Fish Bundle",
-        "iconPath": "graphics/specialty_fish_bundle_icon.png",
-        "headerImagePath": "graphics/specialty_fish_bundle.png",
+        "iconPath": "graphics/bundles/specialty_fish_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/specialty_fish_bundle.png",
         "room": 4
     },
     {
         "id": 19,
         "name": "Blacksmith's Bundle",
-        "iconPath": "graphics/blacksmiths_bundle_icon.png",
-        "headerImagePath": "graphics/blacksmiths_bundle.png",
+        "iconPath": "graphics/bundles/blacksmiths_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/blacksmiths_bundle.png",
         "room": 2
     },
     {
         "id": 20,
         "name": "Geologist's Bundle",
-        "iconPath": "graphics/geologists_bundle_icon.png",
-        "headerImagePath": "graphics/geologists_bundle.png",
+        "iconPath": "graphics/bundles/geologists_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/geologists_bundle.png",
         "room": 2
     },
     {
         "id": 21,
         "name": "Adventurer's Bundle",
-        "iconPath": "graphics/adventurers_bundle_icon.png",
-        "headerImagePath": "graphics/adventurers_bundle.png",
+        "iconPath": "graphics/bundles/adventurers_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/adventurers_bundle.png",
         "room": 2
     },
     {
         "id": 22,
         "name": "Chef's Bundle",
-        "iconPath": "graphics/chefs_bundle_icon.png",
-        "headerImagePath": "graphics/chefs_bundle.png",
+        "iconPath": "graphics/bundles/chefs_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/chefs_bundle.png",
         "room": 5
     },
     {
         "id": 23,
         "name": "Dye Bundle",
-        "iconPath": "graphics/dye_bundle_icon.png",
-        "headerImagePath": "graphics/dye_bundle.png",
+        "iconPath": "graphics/bundles/dye_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/dye_bundle.png",
         "room": 5
     },
     {
         "id": 25,
         "name": "Field Research Bundle",
-        "iconPath": "graphics/field_research_bundle_icon.png",
-        "headerImagePath": "graphics/field_research_bundle.png",
+        "iconPath": "graphics/bundles/field_research_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/field_research_bundle.png",
         "room": 5
     },
     {
         "id": 26,
         "name": "Fodder Bundle",
-        "iconPath": "graphics/fodder_bundle_icon.png",
-        "headerImagePath": "graphics/fodder_bundle.png",
+        "iconPath": "graphics/bundles/fodder_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/fodder_bundle.png",
         "room": 5
     },
     {
         "id": 27,
         "name": "Enchanter's Bundle",
-        "iconPath": "graphics/enchanters_bundle_icon.png",
-        "headerImagePath": "graphics/enchanters_bundle.png",
+        "iconPath": "graphics/bundles/enchanters_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/enchanters_bundle.png",
         "room": 5
     },
     {
         "id": 28,
         "name": "2,500 Bundle",
-        "iconPath": "graphics/2500_bundle_icon.png",
-        "headerImagePath": "graphics/2500_bundle.png",
+        "iconPath": "graphics/bundles/2500_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/2500_bundle.png",
         "room": 6
     },
     {
         "id": 29,
         "name": "5,000 Bundle",
-        "iconPath": "graphics/5000_bundle_icon.png",
-        "headerImagePath": "graphics/5000_bundle.png",
+        "iconPath": "graphics/bundles/5000_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/5000_bundle.png",
         "room": 6
     },
     {
         "id": 30,
         "name": "10,000 Bundle",
-        "iconPath": "graphics/10000_bundle_icon.png",
-        "headerImagePath": "graphics/10000_bundle.png",
+        "iconPath": "graphics/bundles/10000_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/10000_bundle.png",
         "room": 6
     },
     {
         "id": 31,
         "name": "25,000 Bundle",
-        "iconPath": "graphics/25000_bundle_icon.png",
-        "headerImagePath": "graphics/25000_bundle.png",
+        "iconPath": "graphics/bundles/25000_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/25000_bundle.png",
         "room": 6
     },
     {
         "id": 32,
         "name": "The Missing Bundle",
-        "iconPath": "graphics/the_missing_bundle_icon.png",
-        "headerImagePath": "graphics/the_missing_bundle.png",
+        "iconPath": "graphics/bundles/the_missing_bundle_icon.png",
+        "headerImagePath": "graphics/bundles/the_missing_bundle.png",
         "room": 7
     }
 ]

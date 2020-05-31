@@ -2,43 +2,43 @@
     {
         "id": 1,
         "name": "Crafts Room",
-        "iconPath": "graphics/crafts_room_icon.png",
-        "headerImagePath": "graphics/crafts_room.png"
+        "iconPath": "graphics/rooms/crafts_room_icon.png",
+        "headerImagePath": "graphics/rooms/crafts_room.png"
     },
     {
         "id": 2,
         "name": "Boiler Room",
-        "iconPath": "graphics/boiler_room_icon.png",
-        "headerImagePath": "graphics/boiler_room.png"
+        "iconPath": "graphics/rooms/boiler_room_icon.png",
+        "headerImagePath": "graphics/rooms/boiler_room.png"
     },
     {
         "id": 3,
         "name": "Pantry",
-        "iconPath": "graphics/pantry_icon.png",
-        "headerImagePath": "graphics/pantry.png"
+        "iconPath": "graphics/rooms/pantry_icon.png",
+        "headerImagePath": "graphics/rooms/pantry.png"
     },
     {
         "id": 4,
         "name": "Fish Tank",
-        "iconPath": "graphics/fish_tank_icon.png",
-        "headerImagePath": "graphics/fish_tank.png"
+        "iconPath": "graphics/rooms/fish_tank_icon.png",
+        "headerImagePath": "graphics/rooms/fish_tank.png"
     },
     {
         "id": 5,
         "name": "Bulletin Board",
-        "iconPath": "graphics/bulletin_board_icon.png",
-        "headerImagePath": "graphics/bulletin_board.png"
+        "iconPath": "graphics/rooms/bulletin_board_icon.png",
+        "headerImagePath": "graphics/rooms/bulletin_board.png"
     },
     {
         "id": 6,
         "name": "Vault",
-        "iconPath": "graphics/vault_icon.png",
-        "headerImagePath": "graphics/vault.png"
+        "iconPath": "graphics/rooms/vault_icon.png",
+        "headerImagePath": "graphics/rooms/vault.png"
     },
     {
         "id": 7,
         "name": "Abandoned JojaMart",
-        "iconPath": "graphics/abandoned_jojamart_icon.png",
-        "headerImagePath": "graphics/abandoned_jojamart.png"
+        "iconPath": "graphics/rooms/abandoned_jojamart_icon.png",
+        "headerImagePath": "graphics/rooms/abandoned_jojamart.png"
     }
 ]
