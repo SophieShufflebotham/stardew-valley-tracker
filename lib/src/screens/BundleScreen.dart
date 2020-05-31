@@ -46,7 +46,11 @@ class BundleScreenState extends State<BundleScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(bundle.name),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pop(context, true)),
       ),
       body: ListView.builder(
         itemCount: _items.length,

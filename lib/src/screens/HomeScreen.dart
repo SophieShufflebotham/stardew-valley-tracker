@@ -45,12 +45,14 @@ class HomeScreenState extends State<HomeScreen> {
       name: room.name,
       subtitle: subtitle,
       iconImage: AssetImage(room.iconPath),
-      onTap: () {
-        Navigator.of(context).push(
+      onTap: () async {
+        await Navigator.push(
+          context,
           MaterialPageRoute<void>(
             builder: (context) => RoomScreen(room: _rooms[i]),
           ),
         );
+        initialiseDatabase();
       },
     );
   }

@@ -3,6 +3,7 @@ import 'package:test_project/src/widgets/ListItem.dart';
 import 'package:test_project/src/screens/BundleScreen.dart';
 import 'package:test_project/model/model.dart';
 import 'package:test_project/src/screens/HomeScreen.dart';
+import 'package:flutter/scheduler.dart';
 
 class RoomScreen extends StatefulWidget {
   final Room room;
@@ -26,10 +27,13 @@ class RoomScreenState extends State<RoomScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("build");
     return Scaffold(
       appBar: new AppBar(
-        title: Text(_room.name),
-      ),
+          title: Text(_room.name),
+          leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () => Navigator.pop(context, true))),
       body: ListView.builder(
         itemCount: _bundles.length,
         itemBuilder: _buildListItem,
@@ -52,15 +56,8 @@ class RoomScreenState extends State<RoomScreen> {
           MaterialPageRoute(
             builder: (context) => BundleScreen(bundle: bundle),
           ),
-        ).then((value) => setState(() async {
-              List<Item> newItems = await bundle.getItems().toList();
-              List<Item> completed = newItems.where((item) => item.complete);
-
-              if (completedItemList.length != completed.length) {
-                completedItemList.clear();
-                completedItemList.addAll(completed);
-              }
-            }));
+        );
+        getDatabaseContent(_room);
       },
     );
   }
