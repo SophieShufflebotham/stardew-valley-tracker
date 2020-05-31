@@ -18,7 +18,7 @@ class HomeScreenState extends State<HomeScreen> {
   HomeScreenState() {
     getInitStatus();
   }
-  
+
   static final String pageTitle = "Community Center";
   var imageName = pageTitle.toLowerCase().replaceAll(' ', '_') + "_icon";
   var sliverTitle = "";
@@ -116,15 +116,13 @@ class HomeScreenState extends State<HomeScreen> {
 
   Widget _buildListItem(BuildContext context, int i) {
     var roomName = _rooms[i].name;
-    var roomId = _rooms[i].id;
-    var imageName = roomName.toLowerCase().replaceAll(' ', '_') + "_icon";
     return ListItem(
       name: roomName,
       iconImage: AssetImage("graphics/placeholder.png"),
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute<void>(
-            builder: (context) => RoomScreen(id: roomId),
+            builder: (context) => RoomScreen(room: _rooms[i]),
           ),
         );
       },

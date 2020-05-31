@@ -6,64 +6,62 @@ import 'package:test_project/model/model.dart';
 import 'package:test_project/tools/populateDb.dart';
 
 class BundleScreen extends StatefulWidget {
-  final String bundleName;
-  final int parentId;
+  final Bundle bundle;
 
-  BundleScreen({this.bundleName, this.parentId});
+  BundleScreen({@required this.bundle});
 
   @override
   State<StatefulWidget> createState() {
-    return BundleScreenState(bundleName: bundleName, parentId: parentId);
+    return BundleScreenState(bundle: bundle);
   }
 }
 
 class BundleScreenState extends State<BundleScreen> {
-  final String bundleName;
-  final controller = ScrollController();
-  final int parentId;
+  Bundle bundle;
+  // final controller = ScrollController();
 
-  var titleBar = "";
-  var sliverTitle = "";
+  // var titleBar = "";
+  // var sliverTitle = "";
   List<Item> _items = new List<Item>();
   final Set<String> _savedItems = new Set<String>();
   String headerImagePath = "";
 
-  BundleScreenState({@required this.bundleName, @required this.parentId}) {
+  BundleScreenState({@required this.bundle}) {
     getDatabaseContent();
   }
 
   @override
   void initState() {
     super.initState();
-    bool sliverCollapsed = false;
-    bool initialised = false;
+    // bool sliverCollapsed = false;
+    // bool initialised = false;
 
-    if (!initialised) {
-      sliverTitle = bundleName;
-      initialised = true;
-    }
+    // if (!initialised) {
+    //   sliverTitle = bundleName;
+    //   initialised = true;
+    // }
 
-    controller.addListener(() {
-      if (controller.offset > 220 && !controller.position.outOfRange) {
-        if (!sliverCollapsed) {
-          // do what ever you want when silver is collapsing !
+    // controller.addListener(() {
+    //   if (controller.offset > 220 && !controller.position.outOfRange) {
+    //     if (!sliverCollapsed) {
+    //       // do what ever you want when silver is collapsing !
 
-          titleBar = bundleName;
-          sliverTitle = "";
-          sliverCollapsed = true;
-          setState(() {});
-        }
-      } else if (controller.offset <= 220 && !controller.position.outOfRange) {
-        if (sliverCollapsed) {
-          // do what ever you want when silver is expanding !
+    //       titleBar = bundleName;
+    //       sliverTitle = "";
+    //       sliverCollapsed = true;
+    //       setState(() {});
+    //     }
+    //   } else if (controller.offset <= 220 && !controller.position.outOfRange) {
+    //     if (sliverCollapsed) {
+    //       // do what ever you want when silver is expanding !
 
-          sliverTitle = bundleName;
-          titleBar = "";
-          sliverCollapsed = false;
-          setState(() {});
-        }
-      }
-    });
+    //       sliverTitle = bundleName;
+    //       titleBar = "";
+    //       sliverCollapsed = false;
+    //       setState(() {});
+    //     }
+    //   }
+    // });
   }
 
   void _clickHandler(bool alreadySaved, String itemName, int itemId) {
@@ -84,9 +82,6 @@ class BundleScreenState extends State<BundleScreen> {
     var imageName = itemName.toLowerCase().replaceAll(' ', '_') + "_icon";
     bool alreadySaved = _savedItems.contains(itemName);
     var image = AssetImage("graphics/$imageName.png");
-    
-    bool alreadySaved =
-        (_items[i].complete == null) ? false : _items[i].complete;
 
     return ListTile(
         title: Text(itemName),
@@ -105,56 +100,63 @@ class BundleScreenState extends State<BundleScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var assetName = bundleName.toLowerCase().replaceAll(' ', '_');
+    // var assetName = bundleName.toLowerCase().replaceAll(' ', '_');
 
-    Widget appBar = SliverAppBar(
-        expandedHeight: 200.0,
-        floating: false,
-        pinned: true,
-        title: Text(titleBar,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16.0,
-            )),
-        flexibleSpace: Stack(
-          children: <Widget>[
-            Positioned.fill(
-              child: ColorFiltered(
-                  colorFilter: ColorFilter.mode(
-                      Colors.grey.withOpacity(0.7), BlendMode.modulate),
-                  child: Image.asset("graphics/$assetName.png",
-                      fit: BoxFit.cover)),
-            ),
-            FlexibleSpaceBar(
-                title: Text(sliverTitle,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.0,
-                    ))),
-          ],
-        ));
+    // Widget appBar = SliverAppBar(
+    //     expandedHeight: 200.0,
+    //     floating: false,
+    //     pinned: true,
+    //     title: Text(titleBar,
+    //         style: TextStyle(
+    //           color: Colors.white,
+    //           fontSize: 16.0,
+    //         )),
+    //     flexibleSpace: Stack(
+    //       children: <Widget>[
+    //         Positioned.fill(
+    //           child: ColorFiltered(
+    //               colorFilter: ColorFilter.mode(
+    //                   Colors.grey.withOpacity(0.7), BlendMode.modulate),
+    //               child: Image.asset("graphics/$assetName.png",
+    //                   fit: BoxFit.cover)),
+    //         ),
+    //         FlexibleSpaceBar(
+    //             title: Text(sliverTitle,
+    //                 style: TextStyle(
+    //                   color: Colors.white,
+    //                   fontSize: 16.0,
+    //                 ))),
+    //       ],
+    //     ));
 
-    Widget customScrollView = CustomScrollView(
-      controller: controller,
-      slivers: <Widget>[
-        appBar,
-        SliverList(
-          delegate: SliverChildBuilderDelegate((context, index) {
-            if (index < _items.length) {
-              return _buildListItem(context, index);
-            }
-          }),
-        )
-      ],
+    // Widget customScrollView = CustomScrollView(
+    //   controller: controller,
+    //   slivers: <Widget>[
+    //     appBar,
+    //     SliverList(
+    //       delegate: SliverChildBuilderDelegate((context, index) {
+    //         if (index < _items.length) {
+    //           return _buildListItem(context, index);
+    //         }
+    //       }),
+    //     )
+    //   ],
+    // );
+
+    return Scaffold(
+      appBar: AppBar(title: Text(bundle.name)),
+      body: ListView.builder(
+        itemCount: _items.length,
+        itemBuilder: _buildListItem,
+      ),
     );
 
-    return Scaffold(body: customScrollView);
+    // return Scaffold(body: customScrollView);
   }
 
   void getDatabaseContent() async {
-    Bundle currentBundle = await Bundle().getById(parentId);
-    headerImagePath = currentBundle.headerImagePath;
-    List<Item> items = await currentBundle.getItems().toList();
+    headerImagePath = bundle.headerImagePath;
+    List<Item> items = await bundle.getItems().toList();
 
     if (items.length > 0) {
       setState(() {
@@ -165,8 +167,7 @@ class BundleScreenState extends State<BundleScreen> {
 
   void toggleItemSelected(itemId, itemSelected) async {
     await Item(id: itemId, complete: itemSelected).save();
-    Bundle currentBundle = await Bundle().getById(parentId);
-    List<Item> items = await currentBundle.getItems().toList();
+    List<Item> items = await bundle.getItems().toList();
 
     if (items.length > 0) {
       setState(() {
