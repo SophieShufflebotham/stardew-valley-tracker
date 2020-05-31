@@ -19,11 +19,6 @@ class HomeScreenState extends State<HomeScreen> {
     initialiseDatabase();
   }
 
-  static final String pageTitle = "Community Center";
-  var imageName = pageTitle.toLowerCase().replaceAll(' ', '_') + "_icon";
-  var sliverTitle = "";
-  var titleBar = "";
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
