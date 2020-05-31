@@ -85,8 +85,8 @@
     },
     {
         "id": 13,
-        "name": "Crystal Root",
-        "iconPath": "graphics/items/crystal_root_icon.png",
+        "name": "Crystal Fruit",
+        "iconPath": "graphics/items/crystal_fruit_icon.png",
         "completed": false,
         "bundle": 4
     },
