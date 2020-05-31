@@ -80,7 +80,7 @@ class BundleScreenState extends State<BundleScreen> {
     var itemName = _items[i].name;
     var itemId = _items[i].id;
     var imageName = itemName.toLowerCase().replaceAll(' ', '_') + "_icon";
-    bool alreadySaved = _savedItems.contains(itemName);
+    bool alreadySaved = _items[i].complete;
     var image = AssetImage("graphics/$imageName.png");
 
     return ListTile(
