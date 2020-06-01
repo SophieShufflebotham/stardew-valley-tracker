@@ -32,21 +32,33 @@ class HomeScreenState extends State<HomeScreen> {
 
   Widget _buildListItem(BuildContext context, int i) {
     var room = _rooms[i];
+    var bundleList = room.plBundles;
+
+    var completeBundleList = bundleList.where((bundle) =>
+        bundle.plItems.length ==
+        bundle.plItems.where((item) => item.complete).length);
+
+    String subtitle =
+        "${completeBundleList.length}/${bundleList.length} Completed";
+
     return ListItem(
       name: room.name,
+      subtitle: subtitle,
       iconImage: AssetImage(room.iconPath),
-      onTap: () {
-        Navigator.of(context).push(
+      onTap: () async {
+        await Navigator.push(
+          context,
           MaterialPageRoute<void>(
             builder: (context) => RoomScreen(room: _rooms[i]),
           ),
         );
+        initialiseDatabase();
       },
     );
   }
 
   void getDatabaseContent() async {
-    List<Room> roomsList = await Room().select().toList();
+    List<Room> roomsList = await Room().select().toList(preload: true);
 
     setState(() {
       _rooms = roomsList;

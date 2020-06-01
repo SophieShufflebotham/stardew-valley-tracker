@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/SquareAvatar.dart';
 import 'package:test_project/model/model.dart';
+import 'package:test_project/src/screens/RoomScreen.dart';
 
 class BundleScreen extends StatefulWidget {
   final Bundle bundle;
@@ -44,7 +45,13 @@ class BundleScreenState extends State<BundleScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(bundle.name)),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text(bundle.name),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pop(context, true)),
+      ),
       body: ListView.builder(
         itemCount: _items.length,
         itemBuilder: _buildListItem,
@@ -53,7 +60,7 @@ class BundleScreenState extends State<BundleScreen> {
   }
 
   void getDatabaseContent() async {
-    List<Item> items = await bundle.getItems().toList();
+    List<Item> items = await bundle.getItems().toList(preload: true);
 
     if (items.length > 0) {
       setState(() {
