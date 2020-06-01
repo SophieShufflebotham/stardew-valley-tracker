@@ -1,95 +1,69 @@
 import 'package:flutter/material.dart';
-import 'package:test_project/src/widgets/FilteredHeaderImage.dart';
-import 'package:test_project/src/widgets/ImageHeaderScaffold.dart';
 import 'package:test_project/src/widgets/ListItem.dart';
 import 'package:test_project/src/screens/BundleScreen.dart';
 import 'package:test_project/model/model.dart';
+import 'package:test_project/src/screens/HomeScreen.dart';
+import 'package:flutter/scheduler.dart';
 
 class RoomScreen extends StatefulWidget {
-  final int id;
+  final Room room;
 
-  RoomScreen({
-    this.id,
-  });
+  RoomScreen({@required this.room});
 
   @override
   State<StatefulWidget> createState() {
-    return RoomScreenState(
-      id: id,
-    );
+    return RoomScreenState(room: room);
   }
 }
 
 class RoomScreenState extends State<RoomScreen> {
   Room _room;
-  Image _headerImage;
-  Map<int, ImageProvider> _iconImages = Map<int, ImageProvider>();
   List<Bundle> _bundles = new List();
 
-  final int id;
-
-  RoomScreenState({@required this.id}) {
-    getDatabaseContent();
+  RoomScreenState({@required Room room}) {
+    _room = room;
+    getDatabaseContent(room);
   }
 
   @override
   Widget build(BuildContext context) {
-    var listSliver = SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (context, index) {
-          if (index < _bundles.length) {
-            return _buildListItem(context, index);
-          }
-          return null;
-        },
-      ),
-    );
-
+    print("build");
     return Scaffold(
-      body: ImageHeader(
-        title: _room.name,
-        image: _headerImage,
-        slivers: [listSliver],
+      appBar: new AppBar(
+          title: Text(_room.name),
+          leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () => Navigator.pop(context, true))),
+      body: ListView.builder(
+        itemCount: _bundles.length,
+        itemBuilder: _buildListItem,
       ),
     );
   }
 
   Widget _buildListItem(BuildContext context, int i) {
-    final bundle = _bundles[i];
-
-    if (!_iconImages.containsKey(bundle.id)) {
-      _iconImages.putIfAbsent(
-        bundle.id,
-        () => AssetImage(bundle.iconPath),
-      );
-    }
+    var bundle = _bundles[i];
+    var itemList = bundle.plItems;
+    var completedItemList = itemList.where((item) => item.complete).toList();
 
     return ListItem(
-      name: bundle == null ? " " : bundle.name,
-      iconImage: _iconImages[bundle.id],
-      onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute<void>(
-            builder: (context) => BundleScreen(bundleName: bundle.name),
+      name: bundle.name,
+      subtitle: "${completedItemList.length}/${itemList.length} Completed",
+      iconImage: AssetImage(bundle.iconPath),
+      onTap: () async {
+        await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BundleScreen(bundle: bundle),
           ),
         );
+        getDatabaseContent(_room);
       },
     );
   }
 
-  _onTapListItem(Bundle bundle) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (context) => BundleScreen(bundleName: bundle.name),
-      ),
-    );
-  }
-
-  void getDatabaseContent() async {
-    _room = await Room().getById(id);
-    _headerImage = Image.asset(_room.headerImagePath, fit: BoxFit.cover);
-
-    List<Bundle> bundles = await _room.getBundles().toList();
+  void getDatabaseContent(Room room) async {
+    List<Bundle> bundles = await _room.getBundles().toList(preload: true);
 
     if (bundles.length > 0) {
       setState(() {

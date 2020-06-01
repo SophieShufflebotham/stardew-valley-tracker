@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/SquareAvatar.dart';
 import 'package:floating_search_bar/floating_search_bar.dart';
+import 'package:test_project/model/model.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -10,9 +11,23 @@ class SearchScreen extends StatefulWidget {
 }
 
 class SearchScreenState extends State<SearchScreen> {
-  var _searchResults = ["Wild Horseradish", "Dandelion"];
-  final Set<String> _savedItems = new Set<String>();
-  var _padding = 20.0;
+  List<Item> _searchResults = new List<Item>();
+  List<Item> _items = new List<Item>();
+  List<Bundle> _bundles = new List<Bundle>();
+
+  var controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _getItemsFromDatabase();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,93 +37,86 @@ class SearchScreenState extends State<SearchScreen> {
   }
 
   Widget createSearchBar() {
-    var controller = TextEditingController();
+    controller.addListener(_handleSearch);
 
-    var textField = Expanded(
-        flex: 2,
-        child: Padding(
-            padding: EdgeInsets.only(left: _padding, bottom: _padding),
-            child: TextField(
-              controller: controller,
-              decoration: new InputDecoration(
-                  icon: new Icon(Icons.search), hintText: 'Search'),
-              onTap: () {
-                setState(() {});
-              },
-            )));
-
-    // var searchBar = Row(
-    //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-    //   children: <Widget>[textField, eraseTextIcon],
-    // );
-    var searchBar = Padding(
-        padding: EdgeInsets.only(top: 20.0),
-        child: FloatingSearchBar.builder(
-          controller: controller,
-          pinned: true,
-          itemCount: 100,
-          itemBuilder: (BuildContext context, int index) {
-            if (index < _searchResults.length) {
-              return _buildListItem(context, index);
-            }
+    return Padding(
+      padding: EdgeInsets.only(top: 20.0),
+      child: FloatingSearchBar.builder(
+        controller: controller,
+        pinned: true,
+        itemCount: _searchResults.length,
+        itemBuilder: (BuildContext context, int index) {
+          if (index < _searchResults.length) {
+            return _buildListItem(context, index);
+          }
+        },
+        trailing: IconButton(
+          icon: Icon(Icons.close),
+          onPressed: () {
+            controller.clear();
           },
-          trailing: IconButton(
-              icon: new Icon(Icons.close),
-              onPressed: () {
-                controller.clear();
-              }),
-          leading: Icon(Icons.search),
-          onChanged: (String value) {},
-          onTap: () {},
-          decoration: InputDecoration.collapsed(
-            hintText: "Search...",
-          ),
-        ));
-
-    var customScrollView = CustomScrollView(
-      slivers: <Widget>[
-        SliverToBoxAdapter(child: searchBar),
-        SliverList(
-          delegate: SliverChildBuilderDelegate((context, index) {
-            if (index < _searchResults.length) {
-              return _buildListItem(context, index);
-            }
-          }),
-        )
-      ],
+        ),
+        leading: Icon(Icons.search),
+        onChanged: (String value) {},
+        onTap: () {},
+        decoration: InputDecoration.collapsed(
+          hintText: "Search...",
+        ),
+      ),
     );
-
-    return searchBar;
   }
 
   Widget _buildListItem(context, index) {
-    var itemName = _searchResults[index];
-    var imageName = itemName.toLowerCase().replaceAll(' ', '_') + "_icon";
-    bool alreadySaved = _savedItems.contains(itemName);
+    Item item = _searchResults[index];
+    Bundle bundle = _bundles.firstWhere((bundle) => bundle.id == item.bundle);
 
     return ListTile(
-        title: Text(itemName),
-        leading: SquareAvatar(
-            backgroundImage: AssetImage("graphics/$imageName.png")),
-        trailing: Switch(
-          activeColor: Colors.lightGreen,
-          value: alreadySaved,
-          onChanged: (value) {
-            _clickHandler(alreadySaved, itemName);
-          },
-        ),
-        onTap: () {
-          _clickHandler(alreadySaved, itemName);
-        });
+      title: Text(item.name),
+      subtitle: Text(bundle.name),
+      leading: SquareAvatar(
+        backgroundImage: AssetImage(item.iconPath),
+      ),
+      trailing: Switch(
+        activeColor: Colors.lightGreen,
+        value: item.complete,
+        onChanged: (value) {
+          toggleItemComplete(item);
+        },
+      ),
+      onTap: () {
+        toggleItemComplete(item);
+      },
+    );
   }
 
-  void _clickHandler(bool alreadySaved, String itemName) {
+  void _handleSearch() {
+    if (controller.text.isEmpty) {
+      setState(() {
+        _searchResults.clear();
+      });
+    } else {
+      _searchForText(controller.text);
+    }
+  }
+
+  void _searchForText(String text) async {
     setState(() {
-      if (alreadySaved) {
-        _savedItems.remove(itemName);
-      } else {
-        _savedItems.add(itemName);
-      }
+      _searchResults.clear();
+      _searchResults.addAll(_items.where(
+          (item) => item.name.toLowerCase().contains(text.toLowerCase())));
     });
+  }
+
+  void toggleItemComplete(Item item) async {
+    setState(() {
+      item.complete = !item.complete;
+      item.save();
+    });
+  }
+
+  void _getItemsFromDatabase() async {
+    _items = await Item().select().toList();
+    _bundles = await Bundle().select().toList();
+    _searchForText(controller.text);
   }
 }
