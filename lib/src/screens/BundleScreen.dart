@@ -6,7 +6,7 @@ import '../widgets/SquareAvatar.dart';
 import 'package:test_project/model/model.dart';
 
 class BundleScreen extends StatelessWidget {
-  Bundle bundle;
+  final Bundle bundle;
 
   BundleScreen({@required this.bundle});
 
