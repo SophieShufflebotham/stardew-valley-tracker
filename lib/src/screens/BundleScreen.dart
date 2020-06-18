@@ -1,78 +1,60 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:test_project/src/provider/BundleProvider.dart';
+import 'package:test_project/src/provider/ItemProvider.dart';
 import '../widgets/SquareAvatar.dart';
-import 'package:test_project/model/model.dart';
-import 'package:test_project/src/screens/RoomScreen.dart';
 
-class BundleScreen extends StatefulWidget {
-  final Bundle bundle;
+class BundleScreen extends StatelessWidget {
+  final BundleProvider bundleProvider;
 
-  BundleScreen({@required this.bundle});
-
-  @override
-  State<StatefulWidget> createState() {
-    return BundleScreenState(bundle: bundle);
-  }
-}
-
-class BundleScreenState extends State<BundleScreen> {
-  Bundle bundle;
-
-  List<Item> _items = new List<Item>();
-
-  BundleScreenState({@required this.bundle}) {
-    getDatabaseContent();
-  }
-
-  Widget _buildListItem(BuildContext context, int i) {
-    Item item = _items[i];
-
-    return ListTile(
-      title: Text(item.name),
-      leading: SquareAvatar(backgroundImage: AssetImage(item.iconPath)),
-      trailing: Switch(
-        activeColor: Colors.lightGreen,
-        value: item.complete,
-        onChanged: (value) {
-          toggleItemComplete(item);
-        },
-      ),
-      onTap: () {
-        toggleItemComplete(item);
-      },
-    );
-  }
+  BundleScreen({@required this.bundleProvider});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text(bundle.name),
-        leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pop(context, true)),
-      ),
-      body: ListView.builder(
-        itemCount: _items.length,
-        itemBuilder: _buildListItem,
+    return ChangeNotifierProvider<BundleProvider>.value(
+      value: bundleProvider,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Consumer<BundleProvider>(
+            builder: (context, provider, _) {
+              return Text(provider.bundle.name);
+            },
+          ),
+        ),
+        body: Consumer<BundleProvider>(
+          builder: (context, provider, _) {
+            return ListView.builder(
+              itemCount: provider.items.length,
+              itemBuilder: (context, index) {
+                return _buildListItem(context, provider.items[index]);
+              },
+            );
+          },
+        ),
       ),
     );
   }
 
-  void getDatabaseContent() async {
-    List<Item> items = await bundle.getItems().toList(preload: true);
-
-    if (items.length > 0) {
-      setState(() {
-        _items = items;
-      });
-    }
-  }
-
-  void toggleItemComplete(Item item) async {
-    setState(() {
-      item.complete = !item.complete;
-      item.save();
-    });
+  Widget _buildListItem(BuildContext context, ItemProvider itemProvider) {
+    return ChangeNotifierProvider.value(
+      value: itemProvider,
+      child: Consumer<ItemProvider>(builder: (context, provider, _) {
+        return ListTile(
+          title: Text(provider.item.name),
+          leading:
+              SquareAvatar(backgroundImage: AssetImage(provider.item.iconPath)),
+          trailing: Switch(
+            activeColor: Colors.lightGreen,
+            value: provider.item.complete,
+            onChanged: (value) {
+              provider.complete = value;
+            },
+          ),
+          onTap: () {
+            provider.complete = !provider.item.complete;
+          },
+        );
+      }),
+    );
   }
 }

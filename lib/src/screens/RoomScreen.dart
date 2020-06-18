@@ -1,74 +1,62 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:test_project/src/provider/BundleProvider.dart';
+import 'package:test_project/src/provider/RoomProvider.dart';
 import 'package:test_project/src/widgets/ListItem.dart';
 import 'package:test_project/src/screens/BundleScreen.dart';
 import 'package:test_project/model/model.dart';
-import 'package:test_project/src/screens/HomeScreen.dart';
-import 'package:flutter/scheduler.dart';
 
-class RoomScreen extends StatefulWidget {
-  final Room room;
+class RoomScreen extends StatelessWidget {
+  final RoomProvider roomProvider;
 
-  RoomScreen({@required this.room});
-
-  @override
-  State<StatefulWidget> createState() {
-    return RoomScreenState(room: room);
-  }
-}
-
-class RoomScreenState extends State<RoomScreen> {
-  Room _room;
-  List<Bundle> _bundles = new List();
-
-  RoomScreenState({@required Room room}) {
-    _room = room;
-    getDatabaseContent(room);
-  }
+  RoomScreen({@required this.roomProvider});
 
   @override
   Widget build(BuildContext context) {
-    print("build");
-    return Scaffold(
-      appBar: new AppBar(
-          title: Text(_room.name),
+    return ChangeNotifierProvider.value(
+      value: roomProvider,
+      child: Scaffold(
+        appBar: new AppBar(
+          title: Consumer<RoomProvider>(
+            builder: (context, provider, _) => Text(provider.room.name),
+          ),
           leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () => Navigator.pop(context, true))),
-      body: ListView.builder(
-        itemCount: _bundles.length,
-        itemBuilder: _buildListItem,
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pop(context, true),
+          ),
+        ),
+        body: Consumer<RoomProvider>(
+          builder: (context, provider, value) {
+            return ListView.builder(
+                itemCount: provider.bundles.length,
+                itemBuilder: (context, index) {
+                  return _buildListItem(context, provider.bundles[index]);
+                });
+          },
+        ),
       ),
     );
   }
 
-  Widget _buildListItem(BuildContext context, int i) {
-    var bundle = _bundles[i];
-    var itemList = bundle.plItems;
-    var completedItemList = itemList.where((item) => item.complete).toList();
-
-    return ListItem(
-      name: bundle.name,
-      subtitle: "${completedItemList.length}/${itemList.length} Completed",
-      iconImage: AssetImage(bundle.iconPath),
-      onTap: () async {
-        await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => BundleScreen(bundle: bundle),
-          ),
-        );
-        getDatabaseContent(_room);
-      },
+  Widget _buildListItem(BuildContext context, BundleProvider bundleProvider) {
+    return ChangeNotifierProvider.value(
+      value: bundleProvider,
+      child: Consumer<BundleProvider>(
+        builder: (context, provider, child) => ListItem(
+          name: provider.bundle.name,
+          subtitle:
+              "${provider.items.where((item) => item.item.complete).length}/${provider.items.length} Completed",
+          iconImage: AssetImage(provider.bundle.iconPath),
+          onTap: () async {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BundleScreen(bundleProvider: provider),
+              ),
+            );
+          },
+        ),
+      ),
     );
-  }
-
-  void getDatabaseContent(Room room) async {
-    List<Bundle> bundles = await _room.getBundles().toList(preload: true);
-
-    if (bundles.length > 0) {
-      setState(() {
-        _bundles = bundles;
-      });
-    }
   }
 }
