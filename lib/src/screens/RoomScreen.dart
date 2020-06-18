@@ -7,15 +7,14 @@ import 'package:test_project/src/screens/BundleScreen.dart';
 import 'package:test_project/model/model.dart';
 
 class RoomScreen extends StatelessWidget {
-  final Room room;
-  List<Bundle> _bundles = new List();
+  final RoomProvider roomProvider;
 
-  RoomScreen({@required this.room});
+  RoomScreen({@required this.roomProvider});
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<RoomProvider>(
-      create: (context) => RoomProvider(room),
+    return ChangeNotifierProvider.value(
+      value: roomProvider,
       child: Scaffold(
         appBar: new AppBar(
           title: Consumer<RoomProvider>(
@@ -46,13 +45,13 @@ class RoomScreen extends StatelessWidget {
         builder: (context, provider, child) => ListItem(
           name: provider.bundle.name,
           subtitle:
-              "${provider.bundle.plItems.where((item) => item.complete).length}/${provider.bundle.plItems.length} Completed",
+              "${provider.items.where((item) => item.item.complete).length}/${provider.items.length} Completed",
           iconImage: AssetImage(provider.bundle.iconPath),
           onTap: () async {
             await Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => BundleScreen(bundle: provider.bundle),
+                builder: (context) => BundleScreen(bundleProvider: provider),
               ),
             );
           },

@@ -3,12 +3,37 @@ import 'package:provider/provider.dart';
 import 'package:test_project/src/provider/BundleProvider.dart';
 import 'package:test_project/src/provider/ItemProvider.dart';
 import '../widgets/SquareAvatar.dart';
-import 'package:test_project/model/model.dart';
 
 class BundleScreen extends StatelessWidget {
-  final Bundle bundle;
+  final BundleProvider bundleProvider;
 
-  BundleScreen({@required this.bundle});
+  BundleScreen({@required this.bundleProvider});
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider<BundleProvider>.value(
+      value: bundleProvider,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Consumer<BundleProvider>(
+            builder: (context, provider, _) {
+              return Text(provider.bundle.name);
+            },
+          ),
+        ),
+        body: Consumer<BundleProvider>(
+          builder: (context, provider, _) {
+            return ListView.builder(
+              itemCount: provider.items.length,
+              itemBuilder: (context, index) {
+                return _buildListItem(context, provider.items[index]);
+              },
+            );
+          },
+        ),
+      ),
+    );
+  }
 
   Widget _buildListItem(BuildContext context, ItemProvider itemProvider) {
     return ChangeNotifierProvider.value(
@@ -30,32 +55,6 @@ class BundleScreen extends StatelessWidget {
           },
         );
       }),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider<BundleProvider>(
-      create: (context) => BundleProvider(bundle),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Consumer<BundleProvider>(
-            builder: (context, provider, _) {
-              return Text(provider.bundle.name);
-            },
-          ),
-        ),
-        body: Consumer<BundleProvider>(
-          builder: (context, provider, _) {
-            return ListView.builder(
-              itemCount: provider.items.length,
-              itemBuilder: (context, index) {
-                return _buildListItem(context, provider.items[index]);
-              },
-            );
-          },
-        ),
-      ),
     );
   }
 }

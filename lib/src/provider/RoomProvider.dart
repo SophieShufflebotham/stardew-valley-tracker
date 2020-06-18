@@ -12,11 +12,11 @@ class RoomProvider with ChangeNotifier {
   }
 
   void getDatabaseContent() async {
-    List<Bundle> bundles = await _room.getBundles().toList(preload: true);
-
-    if (bundles.length > 0) {
-      for (var bundle in bundles) {
-        _bundles.add(BundleProvider(bundle));
+    if (_room.plBundles.length > 0) {
+      for (var bundle in _room.plBundles) {
+        var provider = BundleProvider(bundle);
+        provider.addListener(notifyListeners);
+        _bundles.add(provider);
       }
       notifyListeners();
     }
@@ -25,4 +25,14 @@ class RoomProvider with ChangeNotifier {
   List<BundleProvider> get bundles => _bundles;
 
   Room get room => _room;
+
+  @override
+  dispose() {
+    for (var provider in _bundles) {
+      provider.removeListener(notifyListeners);
+      provider.dispose();
+    }
+
+    super.dispose();
+  }
 }
