@@ -13,9 +13,11 @@ jobs:
       image:  google/dart:latest
 
     steps:
-    - uses: subosito/flutter-action@v1.3.2
     - uses: actions/checkout@v2
     - name: Install dependencies
       run: pub get
-    - name: Build flutter apk
-      run: flutter build apk
+      
+    - name: build apk
+      uses: steebchen/flutter@v1.0.0
+      with:
+        args: build apk --release
