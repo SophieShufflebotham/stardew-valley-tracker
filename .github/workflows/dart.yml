@@ -14,8 +14,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      
     - name: Install dependencies
-      run: pub get
+      uses: steebchen/flutter@v1.0.0
+      with:
+        args: pub get
       
     - name: build apk
       uses: steebchen/flutter@v1.0.0
