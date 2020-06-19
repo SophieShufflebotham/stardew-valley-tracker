@@ -65,8 +65,8 @@ class SearchScreen extends StatelessWidget {
             leading: SquareAvatar(
               backgroundImage: AssetImage(provider.item.iconPath),
             ),
-            trailing: Switch(
-              activeColor: Colors.lightGreen,
+            trailing: Checkbox(
+              activeColor: Colors.green,
               value: provider.item.complete,
               onChanged: (value) {
                 provider.complete = value;
