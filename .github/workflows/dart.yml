@@ -1,5 +1,10 @@
-on: pull_request
-name: Test, Build and Release apk
+on: 
+  push: 
+    branches: 
+     - master
+  pull_request:
+    
+name: Install dependencies and build apk
 jobs:
   build:
     name: Build APK
