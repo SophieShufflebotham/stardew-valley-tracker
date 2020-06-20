@@ -8,12 +8,12 @@ class HomeProvider with ChangeNotifier {
   List<RoomProvider> _rooms = List<RoomProvider>();
 
   HomeProvider() {
-    initDatabase();
-
     getDatabaseContent();
   }
 
   void getDatabaseContent() async {
+    await initDatabase();
+
     List<Room> rooms = await Room().select().toList(preload: true);
 
     if (rooms.length > 0) {
@@ -38,7 +38,7 @@ class HomeProvider with ChangeNotifier {
     super.dispose();
   }
 
-  void initDatabase() async {
+  initDatabase() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     // Check if this is the first run of the application.
