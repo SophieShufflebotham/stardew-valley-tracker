@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:test_project/model/model.dart';
-import 'package:test_project/src/provider/RoomProvider.dart';
-import 'package:test_project/tools/populateDb.dart';
+import 'package:uk.co.tcork.stardew_companion/model/model.dart';
+import 'package:uk.co.tcork.stardew_companion/src/provider/RoomProvider.dart';
+import 'package:uk.co.tcork.stardew_companion/tools/populateDb.dart';
 
 class HomeProvider with ChangeNotifier {
   List<RoomProvider> _rooms = List<RoomProvider>();

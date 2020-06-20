@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:test_project/src/provider/ItemProvider.dart';
-import 'package:test_project/src/provider/SearchProvider.dart';
+import 'package:uk.co.tcork.stardew_companion/src/provider/ItemProvider.dart';
+import 'package:uk.co.tcork.stardew_companion/src/provider/SearchProvider.dart';
 import '../widgets/SquareAvatar.dart';
 import 'package:floating_search_bar/floating_search_bar.dart';
 

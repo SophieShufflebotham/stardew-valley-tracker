@@ -1,4 +1,4 @@
-package com.example.test_project
+package uk.co.tcork.stardew_companion
 
 import io.flutter.embedding.android.FlutterActivity
 

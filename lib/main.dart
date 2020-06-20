@@ -3,6 +3,6 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:test_project/src/App.dart';
+import 'package:uk.co.tcork.stardew_companion/src/App.dart';
 
 void main() => runApp(App());

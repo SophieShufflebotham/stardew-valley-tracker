@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:test_project/src/provider/BundleProvider.dart';
-import 'package:test_project/src/provider/RoomProvider.dart';
-import 'package:test_project/src/widgets/ListItem.dart';
-import 'package:test_project/src/screens/BundleScreen.dart';
-import 'package:test_project/model/model.dart';
+import 'package:uk.co.tcork.stardew_companion/src/provider/BundleProvider.dart';
+import 'package:uk.co.tcork.stardew_companion/src/provider/RoomProvider.dart';
+import 'package:uk.co.tcork.stardew_companion/src/widgets/ListItem.dart';
+import 'package:uk.co.tcork.stardew_companion/src/screens/BundleScreen.dart';
+import 'package:uk.co.tcork.stardew_companion/model/model.dart';
 
 class RoomScreen extends StatelessWidget {
   final RoomProvider roomProvider;
