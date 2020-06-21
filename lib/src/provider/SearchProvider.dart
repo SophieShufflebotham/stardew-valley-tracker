@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test_project/src/provider/ItemProvider.dart';
+import 'package:uk.co.tcork.stardew_companion/src/provider/ItemProvider.dart';
 
 import '../../model/model.dart';
 

@@ -1,4 +1,4 @@
-import 'package:test_project/model/model.dart';
+import 'package:uk.co.tcork.stardew_companion/model/model.dart';
 
 class PopulateDb {
   Future<bool> initialiseDatabase() async {

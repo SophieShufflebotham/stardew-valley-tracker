@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:test_project/src/provider/BundleProvider.dart';
-import 'package:test_project/src/provider/ItemProvider.dart';
+import 'package:uk.co.tcork.stardew_companion/src/provider/BundleProvider.dart';
+import 'package:uk.co.tcork.stardew_companion/src/provider/ItemProvider.dart';
 import '../widgets/SquareAvatar.dart';
 
 class BundleScreen extends StatelessWidget {
