@@ -4,21 +4,9 @@ import 'package:uk.co.tcork.stardew_companion/src/provider/HomeProvider.dart';
 import 'package:uk.co.tcork.stardew_companion/src/provider/RoomProvider.dart';
 import 'package:uk.co.tcork.stardew_companion/src/screens/RoomScreen.dart';
 import 'package:uk.co.tcork.stardew_companion/src/widgets/ListItem.dart';
-import 'package:uk.co.tcork.stardew_companion/model/model.dart';
 import 'package:uk.co.tcork.stardew_companion/tools/populateDb.dart';
 
-class HomeScreen extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return HomeScreenState();
-  }
-}
-
-class HomeScreenState extends State<HomeScreen> {
-  List<Room> _rooms = new List<Room>();
-
-  HomeScreenState();
-
+class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<HomeProvider>(
@@ -43,20 +31,22 @@ class HomeScreenState extends State<HomeScreen> {
     return [
       Consumer<HomeProvider>(
         builder: (context, provider, _) => PopupMenuButton(
-            itemBuilder: (BuildContext context) {
-              return [
-                PopupMenuItem(
-                  value: 'reset',
-                  child: Text('Reset Data'),
-                ),
-              ];
-            },
-            onSelected: (choice) => _onAppbarItemSelected(choice, provider)),
+          itemBuilder: (BuildContext context) {
+            return [
+              PopupMenuItem(
+                value: 'reset',
+                child: Text('Reset Data'),
+              ),
+            ];
+          },
+          onSelected: (choice) =>
+              _onAppbarItemSelected(choice, provider, context),
+        ),
       ),
     ];
   }
 
-  void _onAppbarItemSelected(choice, provider) {
+  void _onAppbarItemSelected(choice, provider, context) {
     if (choice == 'reset') {
       showDialog(
         builder: (context) => AlertDialog(
@@ -67,8 +57,8 @@ class HomeScreenState extends State<HomeScreen> {
           actions: [
             FlatButton(
               child: Text('Yes'),
-              onPressed: () {
-                PopulateDb().initialiseDatabase();
+              onPressed: () async {
+                await PopulateDb().initialiseDatabase();
                 provider.getDatabaseContent();
                 Navigator.of(context).pop('modal');
               },
