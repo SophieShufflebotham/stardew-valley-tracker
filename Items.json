@@ -296,7 +296,7 @@
   {
     "id": 43,
     "name": "Pumpkin (5)",
-    "iconPath": "graphics/items/good_pumkpin_icon.png",
+    "iconPath": "graphics/items/good_pumpkin_icon.png",
     "completed": false,
     "bundle": 10
   },
