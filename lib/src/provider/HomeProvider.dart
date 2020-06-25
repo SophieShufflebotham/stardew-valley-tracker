@@ -17,6 +17,7 @@ class HomeProvider with ChangeNotifier {
     List<Room> rooms = await Room().select().toList(preload: true);
 
     if (rooms.length > 0) {
+      _rooms.clear();
       for (var room in rooms) {
         var provider = RoomProvider(room);
         provider.addListener(notifyListeners);
