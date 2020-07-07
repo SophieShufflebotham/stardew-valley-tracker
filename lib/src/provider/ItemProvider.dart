@@ -19,4 +19,6 @@ class ItemProvider with ChangeNotifier {
     _item.save();
     notifyListeners();
   }
+
+  get complete => _item.complete;
 }

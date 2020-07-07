@@ -83,7 +83,7 @@ class HomeScreen extends StatelessWidget {
       child: Consumer<RoomProvider>(
         builder: (context, provider, ___) {
           var completeBundleList = provider.room.plBundles.where((bundle) =>
-              bundle.plItems.length ==
+              bundle.numItemsRequired <=
               bundle.plItems.where((item) => item.complete).length);
 
           String subtitle =

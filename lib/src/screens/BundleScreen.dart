@@ -26,7 +26,12 @@ class BundleScreen extends StatelessWidget {
             return ListView.builder(
               itemCount: provider.items.length,
               itemBuilder: (context, index) {
-                return _buildListItem(context, provider.items[index]);
+                var bundleComplete = provider.bundle.numItemsRequired <=
+                    provider.bundle.plItems
+                        .where((item) => item.complete)
+                        .length;
+                return _buildListItem(
+                    context, provider.items[index], bundleComplete);
               },
             );
           },
@@ -35,26 +40,34 @@ class BundleScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildListItem(BuildContext context, ItemProvider itemProvider) {
+  Widget _buildListItem(
+      BuildContext context, ItemProvider itemProvider, bool bundleComplete) {
     return ChangeNotifierProvider.value(
       value: itemProvider,
       child: Consumer<ItemProvider>(builder: (context, provider, _) {
+        var callback = getItemTappedCallback(bundleComplete, provider);
+
         return ListTile(
           title: Text(provider.item.name),
-          leading:
-              SquareAvatar(backgroundImage: AssetImage(provider.item.iconPath)),
+          leading: SquareAvatar(
+            backgroundImage: AssetImage(provider.item.iconPath),
+          ),
           trailing: Checkbox(
             activeColor: Colors.green,
             value: provider.item.complete,
-            onChanged: (value) {
-              provider.complete = value;
-            },
+            onChanged: callback == null ? null : (value) => callback(),
           ),
-          onTap: () {
-            provider.complete = !provider.item.complete;
-          },
+          onTap: callback,
         );
       }),
     );
+  }
+
+  void Function() getItemTappedCallback(bundleComplete, provider) {
+    if (bundleComplete && !provider.complete) return null;
+
+    return () {
+      provider.complete = !provider.item.complete;
+    };
   }
 }

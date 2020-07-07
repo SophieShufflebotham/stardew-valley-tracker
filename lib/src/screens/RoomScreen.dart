@@ -45,7 +45,7 @@ class RoomScreen extends StatelessWidget {
         builder: (context, provider, child) => ListItem(
           name: provider.bundle.name,
           subtitle:
-              "${provider.items.where((item) => item.item.complete).length}/${provider.items.length} Completed",
+              "${provider.items.where((item) => item.item.complete).length}/${provider.bundle.numItemsRequired} Completed",
           iconImage: AssetImage(provider.bundle.iconPath),
           onTap: () async {
             await Navigator.push(

@@ -64,6 +64,7 @@ class TableBundle extends SqfEntityTableBase {
           relationType: RelationType.ONE_TO_MANY,
           fieldName: 'room',
           isNotNull: false),
+      SqfEntityFieldBase('numItemsRequired', DbType.integer, isNotNull: false),
     ];
     super.init();
   }
@@ -1226,14 +1227,21 @@ class RoomManager extends SqfEntityProvider {
 //endregion RoomManager
 // region Bundle
 class Bundle {
-  Bundle({this.id, this.name, this.iconPath, this.headerImagePath, this.room}) {
+  Bundle(
+      {this.id,
+      this.name,
+      this.iconPath,
+      this.headerImagePath,
+      this.room,
+      this.numItemsRequired}) {
     _setDefaultValues();
   }
-  Bundle.withFields(this.name, this.iconPath, this.headerImagePath, this.room) {
+  Bundle.withFields(this.name, this.iconPath, this.headerImagePath, this.room,
+      this.numItemsRequired) {
     _setDefaultValues();
   }
-  Bundle.withId(
-      this.id, this.name, this.iconPath, this.headerImagePath, this.room) {
+  Bundle.withId(this.id, this.name, this.iconPath, this.headerImagePath,
+      this.room, this.numItemsRequired) {
     _setDefaultValues();
   }
   Bundle.fromMap(Map<String, dynamic> o, {bool setDefaultValues = true}) {
@@ -1252,6 +1260,10 @@ class Bundle {
     }
     room = int.tryParse(o['room'].toString());
 
+    if (o['numItemsRequired'] != null) {
+      numItemsRequired = int.tryParse(o['numItemsRequired'].toString());
+    }
+
     // RELATIONSHIPS FromMAP
     plRoom = o['plRoom'] != null
         ? Room.fromMap(o['plRoom'] as Map<String, dynamic>)
@@ -1264,6 +1276,7 @@ class Bundle {
   String iconPath;
   String headerImagePath;
   int room;
+  int numItemsRequired;
 
   BoolResult saveResult;
   // end FIELDS (Bundle)
@@ -1332,6 +1345,10 @@ class Bundle {
       map['room'] = forView ? plRoom.name : room;
     }
 
+    if (numItemsRequired != null) {
+      map['numItemsRequired'] = numItemsRequired;
+    }
+
     return map;
   }
 
@@ -1359,6 +1376,10 @@ class Bundle {
       map['room'] = forView ? plRoom.name : room;
     }
 
+    if (numItemsRequired != null) {
+      map['numItemsRequired'] = numItemsRequired;
+    }
+
 // COLLECTIONS (Bundle)
     if (!forQuery) {
       map['Items'] = await getItems().toMapList();
@@ -1379,11 +1400,11 @@ class Bundle {
   }
 
   List<dynamic> toArgs() {
-    return [name, iconPath, headerImagePath, room];
+    return [name, iconPath, headerImagePath, room, numItemsRequired];
   }
 
   List<dynamic> toArgsWithIds() {
-    return [id, name, iconPath, headerImagePath, room];
+    return [id, name, iconPath, headerImagePath, room, numItemsRequired];
   }
 
   static Future<List<Bundle>> fromWeb(
@@ -1558,7 +1579,7 @@ class Bundle {
   ///
   /// Returns a <List<BoolResult>>
   Future<List<dynamic>> saveAll(List<Bundle> bundles) async {
-    // final results = _mnBundle.saveAll('INSERT OR REPLACE INTO bundles (id,name, iconPath, headerImagePath, room)  VALUES (?,?,?,?,?)',bundles);
+    // final results = _mnBundle.saveAll('INSERT OR REPLACE INTO bundles (id,name, iconPath, headerImagePath, room, numItemsRequired)  VALUES (?,?,?,?,?,?)',bundles);
     // return results; removed in sqfentity_gen 1.3.0+6
     DatabaseModel().batchStart();
     for (final obj in bundles) {
@@ -1573,8 +1594,8 @@ class Bundle {
   Future<int> upsert() async {
     try {
       if (await _mnBundle.rawInsert(
-              'INSERT OR REPLACE INTO bundles (id,name, iconPath, headerImagePath, room)  VALUES (?,?,?,?,?)',
-              [id, name, iconPath, headerImagePath, room]) ==
+              'INSERT OR REPLACE INTO bundles (id,name, iconPath, headerImagePath, room, numItemsRequired)  VALUES (?,?,?,?,?,?)',
+              [id, name, iconPath, headerImagePath, room, numItemsRequired]) ==
           1) {
         saveResult = BoolResult(
             success: true,
@@ -1599,7 +1620,7 @@ class Bundle {
   /// Returns a BoolCommitResult
   Future<BoolCommitResult> upsertAll(List<Bundle> bundles) async {
     final results = await _mnBundle.rawInsertAll(
-        'INSERT OR REPLACE INTO bundles (id,name, iconPath, headerImagePath, room)  VALUES (?,?,?,?,?)',
+        'INSERT OR REPLACE INTO bundles (id,name, iconPath, headerImagePath, room, numItemsRequired)  VALUES (?,?,?,?,?,?)',
         bundles);
     return results;
   }
@@ -2052,6 +2073,12 @@ class BundleFilterBuilder extends SearchCriteria {
     return _room = setField(_room, 'room', DbType.integer);
   }
 
+  BundleField _numItemsRequired;
+  BundleField get numItemsRequired {
+    return _numItemsRequired =
+        setField(_numItemsRequired, 'numItemsRequired', DbType.integer);
+  }
+
   bool _getIsDeleted;
 
   void _buildParameters() {
@@ -2388,6 +2415,13 @@ class BundleFields {
   static TableField get room {
     return _fRoom =
         _fRoom ?? SqlSyntax.setField(_fRoom, 'room', DbType.integer);
+  }
+
+  static TableField _fNumItemsRequired;
+  static TableField get numItemsRequired {
+    return _fNumItemsRequired = _fNumItemsRequired ??
+        SqlSyntax.setField(
+            _fNumItemsRequired, 'numItemsRequired', DbType.integer);
   }
 }
 // endregion BundleFields
