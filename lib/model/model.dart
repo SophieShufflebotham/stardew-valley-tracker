@@ -36,6 +36,7 @@ const tableBundles = SqfEntityTable(
       fieldName: "room",
     ),
     SqfEntityField("numItemsRequired", DbType.integer),
+    SqfEntityField("numCompleted", DbType.integer, defaultValue: 0),
   ],
 );
 

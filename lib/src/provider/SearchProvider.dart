@@ -29,9 +29,22 @@ class SearchProvider with ChangeNotifier {
 
     if (items.length > 0) {
       for (var item in items) {
-        _items.add(ItemProvider(item));
+        var provider = ItemProvider(item);
+        provider.addListener(notifyListeners);
+        _items.add(provider);
       }
     }
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    // Remove listeners from ItemProvider's
+    for (var item in items) {
+      item.removeListener(notifyListeners);
+      item.dispose();
+    }
+
+    super.dispose();
   }
 }

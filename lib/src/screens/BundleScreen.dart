@@ -26,12 +26,7 @@ class BundleScreen extends StatelessWidget {
             return ListView.builder(
               itemCount: provider.items.length,
               itemBuilder: (context, index) {
-                var bundleComplete = provider.bundle.numItemsRequired <=
-                    provider.bundle.plItems
-                        .where((item) => item.complete)
-                        .length;
-                return _buildListItem(
-                    context, provider.items[index], bundleComplete);
+                return _buildListItem(context, provider.items[index]);
               },
             );
           },
@@ -40,12 +35,11 @@ class BundleScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildListItem(
-      BuildContext context, ItemProvider itemProvider, bool bundleComplete) {
+  Widget _buildListItem(BuildContext context, ItemProvider itemProvider) {
     return ChangeNotifierProvider.value(
       value: itemProvider,
       child: Consumer<ItemProvider>(builder: (context, provider, _) {
-        var callback = getItemTappedCallback(bundleComplete, provider);
+        var callback = getItemTappedCallback(provider);
 
         return ListTile(
           title: Text(provider.item.name),
@@ -63,11 +57,20 @@ class BundleScreen extends StatelessWidget {
     );
   }
 
-  void Function() getItemTappedCallback(bundleComplete, provider) {
-    if (bundleComplete && !provider.complete) return null;
+  void Function() getItemTappedCallback(ItemProvider provider) {
+    bool bundleCompleted =
+        bundleProvider.numCompleted >= provider.item.plBundle.numItemsRequired;
 
-    return () {
+    if (bundleCompleted && !provider.complete) return null;
+
+    return () async {
       provider.complete = !provider.item.complete;
+
+      if (provider.item.complete) {
+        bundleProvider.numCompleted++;
+      } else {
+        bundleProvider.numCompleted--;
+      }
     };
   }
 }
