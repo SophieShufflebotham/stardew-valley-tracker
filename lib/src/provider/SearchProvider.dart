@@ -23,7 +23,12 @@ class SearchProvider with ChangeNotifier {
 
   List<ItemProvider> get items {
     return _items.where((item) {
-      return item.item.name.toLowerCase().contains(_searchTerm.toLowerCase());
+      var searchBundleName = item.item.plBundle.name
+          .toLowerCase()
+          .contains(_searchTerm.toLowerCase());
+      bool searchItemName =
+          item.item.name.toLowerCase().contains(_searchTerm.toLowerCase());
+      return searchBundleName || searchItemName;
     }).toList();
   }
 
