@@ -39,7 +39,14 @@ class BundleScreen extends StatelessWidget {
     return ChangeNotifierProvider.value(
       value: itemProvider,
       child: Consumer<ItemProvider>(builder: (context, provider, _) {
-        var callback = getItemTappedCallback(provider);
+        var callback = getItemTappedCallback;
+        var onChanged = callback;
+        bool bundleCompleted = bundleProvider.numCompleted >=
+            provider.item.plBundle.numItemsRequired;
+
+        if (bundleCompleted && !provider.item.complete) {
+          onChanged = null;
+        }
 
         return ListTile(
           title: Text(provider.item.name),
@@ -48,10 +55,14 @@ class BundleScreen extends StatelessWidget {
           ),
           trailing: Checkbox(
             activeColor: Colors.green,
-            value: provider.item.complete,
-            onChanged: callback == null ? null : (value) => callback(),
+            tristate: true,
+            value: onChanged == null
+                ? null
+                : provider.item
+                    .complete, //TODO have ability to null this similar to Search Screen
+            onChanged: onChanged == null ? null : (value) => callback(provider),
           ),
-          onTap: callback,
+          onTap: callback(provider),
         );
       }),
     );
@@ -63,7 +74,7 @@ class BundleScreen extends StatelessWidget {
 
     if (bundleCompleted && !provider.complete) return null;
 
-    return () async {
+    return () {
       provider.complete = !provider.item.complete;
 
       if (provider.item.complete) {

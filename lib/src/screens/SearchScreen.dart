@@ -8,12 +8,16 @@ import '../widgets/SquareAvatar.dart';
 import 'package:floating_search_bar/floating_search_bar.dart';
 
 class SearchScreen extends StatelessWidget {
-  HashMap<int, int> numCompletedByBundles = HashMap<int, int>();
+  //HashMap<int, int> numCompletedByBundles = HashMap<int, int>();
+  //var completionStatuses = new Map();
+  Map numCompletedByBundles;
+  SearchProvider searchProvider;
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<SearchProvider>(
-      create: (context) => SearchProvider(),
+    numCompletedByBundles = new Map();
+    return ChangeNotifierProvider<SearchProvider>.value(
+      value: searchProvider = new SearchProvider(),
       child: createSearchBar(context),
     );
   }
@@ -58,13 +62,15 @@ class SearchScreen extends StatelessWidget {
 
   Widget _buildListItem(
       context, ItemProvider itemProvider, SearchProvider searchProvider) {
-    numCompletedByBundles.putIfAbsent(itemProvider.item.plBundle.id,
-        () => itemProvider.item.plBundle.numCompleted);
+    if (!numCompletedByBundles.containsKey(itemProvider.item.plBundle.id)) {
+      numCompletedByBundles[itemProvider.item.plBundle.id] =
+          itemProvider.item.plBundle.numCompleted;
+    }
     return ChangeNotifierProvider.value(
       value: itemProvider,
       builder: (context, child) {
         return Consumer<ItemProvider>(builder: (context, provider, _) {
-          var callback = getCallback(provider);
+          var callback = getCallback;
 
           return ListTile(
             title: Text(provider.item.name),
@@ -75,33 +81,74 @@ class SearchScreen extends StatelessWidget {
               backgroundImage: AssetImage(provider.item.iconPath),
             ),
             trailing: Checkbox(
-              activeColor: Colors.green,
-              value: provider.item.complete,
-              onChanged: callback == null ? null : (value) => callback(),
+              tristate: true,
+              value: searchProvider.completionStatuses[provider.item.id],
+              activeColor:
+                  searchProvider.completionStatuses[provider.item.id] == null
+                      ? Colors.grey
+                      : Colors.green,
+              onChanged: callback == null
+                  ? null
+                  : (value) => callback(provider, value),
             ),
-            onTap: callback,
+            onTap: callback(provider, null),
           );
         });
       },
     );
   }
 
-  Function() getCallback(ItemProvider item) {
+  Function() getCallback(ItemProvider item, bool value) {
     var numCompletedForBundle = numCompletedByBundles[item.item.plBundle.id];
     var bundleCompleted =
         numCompletedForBundle >= item.item.plBundle.numItemsRequired;
 
-    if (bundleCompleted && !item.item.complete) return null;
+    if (bundleCompleted && !item.item.complete) {
+      return null;
+    }
 
     return () async {
       item.complete = !item.item.complete;
 
       if (item.complete) {
-        numCompletedByBundles.update(
-            item.item.plBundle.id, (currentVal) => currentVal++);
+        numCompletedByBundles[item.item.plBundle.id]++;
+        searchProvider.updateCompletionStatus(item.item.id, true);
       } else {
-        numCompletedByBundles.update(
-            item.item.plBundle.id, (currentVal) => currentVal--);
+        numCompletedByBundles[item.item.plBundle.id]--;
+        searchProvider.updateCompletionStatus(item.item.id, false);
+      }
+
+      item.item.plBundle.numCompleted =
+          numCompletedByBundles[item.item.plBundle.id];
+      await item.item.plBundle.save();
+
+      bundleCompleted = numCompletedByBundles[item.item.plBundle.id] >=
+          item.item.plBundle
+              .numItemsRequired; //Use the updated completion amount
+
+      var otherItemsInBundleObject =
+          await item.item.plBundle.getItems().toList();
+      List<int> otherItemsInBundle = new List();
+      for (var i in otherItemsInBundleObject) {
+        otherItemsInBundle.add(i.id);
+      }
+
+      if (bundleCompleted && item.complete) {
+        for (var key in searchProvider.completionStatuses.entries) {
+          if (otherItemsInBundle.contains(key.key) && key.key != item.item.id) {
+            if (searchProvider.completionStatuses[key.key] != true) {
+              searchProvider.updateCompletionStatus(key.key, null);
+            }
+          }
+        }
+      } else {
+        for (var key in searchProvider.completionStatuses.entries) {
+          if (otherItemsInBundle.contains(key.key) &&
+              searchProvider.completionStatuses[key.key] == null) {
+            //Re-enable disabled checkboxes
+            searchProvider.updateCompletionStatus(key.key, false);
+          }
+        }
       }
     };
   }
