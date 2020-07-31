@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:uk.co.tcork.stardew_companion/model/model.dart';
 
@@ -30,7 +32,6 @@ class RoomProvider with ChangeNotifier {
   dispose() {
     for (var provider in _bundles) {
       provider.removeListener(notifyListeners);
-      provider.dispose();
     }
 
     super.dispose();

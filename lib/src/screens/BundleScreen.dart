@@ -39,22 +39,48 @@ class BundleScreen extends StatelessWidget {
     return ChangeNotifierProvider.value(
       value: itemProvider,
       child: Consumer<ItemProvider>(builder: (context, provider, _) {
+        var callback = getItemTappedCallback;
+        var onChanged = callback;
+        var itemComplete = provider.item.complete;
+        bool bundleCompleted = bundleProvider.numCompleted >=
+            provider.item.plBundle.numItemsRequired;
+
+        if (bundleCompleted && !itemComplete) {
+          onChanged = null;
+        }
+
         return ListTile(
           title: Text(provider.item.name),
-          leading:
-              SquareAvatar(backgroundImage: AssetImage(provider.item.iconPath)),
+          leading: SquareAvatar(
+            backgroundImage: AssetImage(provider.item.iconPath),
+          ),
           trailing: Checkbox(
             activeColor: Colors.green,
-            value: provider.item.complete,
-            onChanged: (value) {
-              provider.complete = value;
-            },
+            tristate: true,
+            value: onChanged == null ? null : itemComplete,
+            onChanged:
+                onChanged == null ? null : (value) => callback(provider)(),
           ),
-          onTap: () {
-            provider.complete = !provider.item.complete;
-          },
+          onTap: callback(provider),
         );
       }),
     );
+  }
+
+  void Function() getItemTappedCallback(ItemProvider provider) {
+    bool bundleCompleted =
+        bundleProvider.numCompleted >= provider.item.plBundle.numItemsRequired;
+
+    if (bundleCompleted && !provider.complete) return null;
+
+    return () {
+      provider.complete = !provider.item.complete;
+
+      if (provider.item.complete) {
+        bundleProvider.numCompleted++;
+      } else {
+        bundleProvider.numCompleted--;
+      }
+    };
   }
 }

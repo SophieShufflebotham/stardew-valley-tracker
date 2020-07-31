@@ -17,17 +17,24 @@ class BundleProvider with ChangeNotifier {
       notifyListeners();
     }
   }
-
   List<ItemProvider> get items => _items ?? List<Item>();
 
   Bundle get bundle => _bundle;
+
+  int get numCompleted => _bundle.numCompleted;
+  set numCompleted(value) {
+    _bundle.numCompleted = value;
+    _bundle.save();
+    notifyListeners();
+  }
 
   @override
   dispose() {
     for (var item in _items) {
       item.removeListener(notifyListeners);
-      item.dispose();
     }
+
+    print('test1');
 
     super.dispose();
   }

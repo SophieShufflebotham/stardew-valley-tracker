@@ -35,6 +35,8 @@ const tableBundles = SqfEntityTable(
       parentTable: tableRooms,
       fieldName: "room",
     ),
+    SqfEntityField("numItemsRequired", DbType.integer),
+    SqfEntityField("numCompleted", DbType.integer, defaultValue: 0),
   ],
 );
 
@@ -67,4 +69,5 @@ const databaseModel = SqfEntityModel(
     tableItems,
   ],
   bundledDatabasePath: null,
+  dbVersion: 2,
 );

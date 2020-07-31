@@ -5,6 +5,7 @@ import 'package:uk.co.tcork.stardew_companion/src/provider/RoomProvider.dart';
 import 'package:uk.co.tcork.stardew_companion/src/screens/RoomScreen.dart';
 import 'package:uk.co.tcork.stardew_companion/src/widgets/ListItem.dart';
 import 'package:uk.co.tcork.stardew_companion/tools/populateDb.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -17,6 +18,15 @@ class HomeScreen extends StatelessWidget {
           actions: _buildAppbarActions(context),
         ),
         body: Consumer<HomeProvider>(builder: (context, provider, _) {
+          if (provider.isLoading) {
+            var colour = Theme.of(context).hintColor;
+            var spinkit = SpinKitThreeBounce(
+              color: colour,
+              size: 50.0,
+            );
+            return spinkit;
+          }
+
           return ListView.builder(
             itemCount: provider.rooms.length,
             itemBuilder: (context, i) =>
@@ -83,7 +93,7 @@ class HomeScreen extends StatelessWidget {
       child: Consumer<RoomProvider>(
         builder: (context, provider, ___) {
           var completeBundleList = provider.room.plBundles.where((bundle) =>
-              bundle.plItems.length ==
+              bundle.numItemsRequired <=
               bundle.plItems.where((item) => item.complete).length);
 
           String subtitle =

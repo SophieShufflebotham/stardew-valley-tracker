@@ -6,6 +6,8 @@ import '../../model/model.dart';
 class SearchProvider with ChangeNotifier {
   String _searchTerm = '';
   List<ItemProvider> _items = List<ItemProvider>();
+  Map _completionStatuses = new Map();
+  bool _isLoading = true;
 
   SearchProvider() {
     loadItems();
@@ -17,6 +19,7 @@ class SearchProvider with ChangeNotifier {
   }
 
   String get searchTerm => _searchTerm;
+  bool get isLoading => _isLoading;
 
   List<ItemProvider> get items {
     return _items.where((item) {
@@ -25,13 +28,48 @@ class SearchProvider with ChangeNotifier {
   }
 
   loadItems() async {
+    _completionStatuses = new Map();
     List<Item> items = await Item().select().toList(preload: true);
 
     if (items.length > 0) {
       for (var item in items) {
-        _items.add(ItemProvider(item));
+        _addToCompletionStatusMap(item);
+
+        var provider = ItemProvider(item);
+        provider.addListener(notifyListeners);
+        _items.add(provider);
       }
     }
+
+    _isLoading = false;
     notifyListeners();
+  }
+
+  updateCompletionStatus(int key, var value) {
+    _completionStatuses[key] = value;
+    notifyListeners();
+  }
+
+  _addToCompletionStatusMap(Item item) {
+    var bundle = item.plBundle;
+    var bundleCompletion = bundle.numCompleted >= bundle.numItemsRequired;
+
+    if (bundleCompletion && !item.complete) {
+      _completionStatuses[item.id] = null;
+    } else {
+      _completionStatuses[item.id] = item.complete;
+    }
+  }
+
+  Map get completionStatuses => _completionStatuses;
+
+  @override
+  void dispose() {
+    // Remove listeners from ItemProvider's
+    for (var item in items) {
+      item.removeListener(notifyListeners);
+    }
+
+    super.dispose();
   }
 }

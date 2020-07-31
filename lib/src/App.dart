@@ -44,14 +44,20 @@ class _AppState extends State<App> {
       darkTheme: ThemeData.dark(),
       home: Scaffold(
         bottomNavigationBar: BottomNavigationBar(
-            items: _items,
-            selectedItemColor: Colors.blue,
-            currentIndex: _currentIndex,
-            onTap: (index) {
-              navigatorKey.currentState.maybePop();
-              setState(() => _page = _screens[index]);
+          items: _items,
+          selectedItemColor: Colors.blue,
+          currentIndex: _currentIndex,
+          onTap: (index) {
+            navigatorKey.currentState
+                .popUntil((_) => !navigatorKey.currentState.canPop());
+            navigatorKey.currentState.maybePop();
+
+            setState(() {
               _currentIndex = index;
-            }),
+              _page = _screens[index];
+            });
+          },
+        ),
         body: CustomNavigator(
           navigatorKey: navigatorKey,
           home: _page,
@@ -59,5 +65,20 @@ class _AppState extends State<App> {
         ),
       ),
     );
+  }
+
+  ours(index) {
+    navigatorKey.currentState.maybePop();
+    setState(() => _page = _screens[index]);
+    _currentIndex = index;
+  }
+
+  zero3(index) {
+    navigatorKey.currentState
+        .popUntil((_) => !navigatorKey.currentState.canPop());
+    navigatorKey.currentState.maybePop();
+
+    setState(() => _currentIndex = index);
+    // widget.onItemTap(index);
   }
 }
