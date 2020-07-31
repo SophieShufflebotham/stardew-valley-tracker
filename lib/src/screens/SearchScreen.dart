@@ -2,14 +2,13 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:uk.co.tcork.stardew_companion/model/model.dart';
 import 'package:uk.co.tcork.stardew_companion/src/provider/ItemProvider.dart';
 import 'package:uk.co.tcork.stardew_companion/src/provider/SearchProvider.dart';
 import '../widgets/SquareAvatar.dart';
 import 'package:floating_search_bar/floating_search_bar.dart';
 
 class SearchScreen extends StatelessWidget {
-  //HashMap<int, int> numCompletedByBundles = HashMap<int, int>();
-  //var completionStatuses = new Map();
   Map numCompletedByBundles;
   SearchProvider searchProvider;
 
@@ -36,6 +35,7 @@ class SearchScreen extends StatelessWidget {
               if (index < provider.items.length) {
                 return _buildListItem(context, provider.items[index], provider);
               }
+              return null;
             },
             controller: controller,
             trailing: IconButton(
@@ -61,32 +61,38 @@ class SearchScreen extends StatelessWidget {
   }
 
   Widget _buildListItem(
-      context, ItemProvider itemProvider, SearchProvider searchProvider) {
-    if (!numCompletedByBundles.containsKey(itemProvider.item.plBundle.id)) {
-      numCompletedByBundles[itemProvider.item.plBundle.id] =
-          itemProvider.item.plBundle.numCompleted;
+    BuildContext context,
+    ItemProvider itemProvider,
+    SearchProvider searchProvider,
+  ) {
+    var bundle = itemProvider.item.plBundle;
+    if (!numCompletedByBundles.containsKey(bundle.id)) {
+      numCompletedByBundles[bundle.id] = bundle.numCompleted;
     }
+
     return ChangeNotifierProvider.value(
       value: itemProvider,
       builder: (context, child) {
         return Consumer<ItemProvider>(builder: (context, provider, _) {
-          var callback = getCallback;
+          var callback = _getCallback;
+
+          var item = provider.item;
+          var bundle = item.plBundle;
 
           return ListTile(
-            title: Text(provider.item.name),
-            subtitle: Text(provider.item.plBundle != null
-                ? provider.item.plBundle.name
-                : 'CHANGE THIS BUNDLE BROKEN'), //TODO: Broken bundles cause errors here.
+            title: Text(item.name),
+            subtitle: Text(
+              bundle != null ? bundle.name : 'CHANGE THIS BUNDLE BROKEN',
+            ), //TODO: Broken bundles cause errors here.
             leading: SquareAvatar(
-              backgroundImage: AssetImage(provider.item.iconPath),
+              backgroundImage: AssetImage(item.iconPath),
             ),
             trailing: Checkbox(
               tristate: true,
-              value: searchProvider.completionStatuses[provider.item.id],
-              activeColor:
-                  searchProvider.completionStatuses[provider.item.id] == null
-                      ? Colors.grey
-                      : Colors.green,
+              value: searchProvider.completionStatuses[item.id],
+              activeColor: searchProvider.completionStatuses[item.id] == null
+                  ? Colors.grey
+                  : Colors.green,
               onChanged: callback == null
                   ? null
                   : (value) => callback(provider, value),
@@ -98,58 +104,63 @@ class SearchScreen extends StatelessWidget {
     );
   }
 
-  Function() getCallback(ItemProvider item, bool value) {
-    var numCompletedForBundle = numCompletedByBundles[item.item.plBundle.id];
-    var bundleCompleted =
-        numCompletedForBundle >= item.item.plBundle.numItemsRequired;
+  Function() _getCallback(ItemProvider item, bool value) {
+    var bundle = item.item.plBundle;
+    var numCompletedForBundle = numCompletedByBundles[bundle.id];
+    var bundleCompleted = numCompletedForBundle >= bundle.numItemsRequired;
 
-    if (bundleCompleted && !item.item.complete) {
-      return null;
+    if (bundleCompleted && !item.complete) {
+      return null; //item.item.complete
     }
 
     return () async {
-      item.complete = !item.item.complete;
+      item.complete = !item.complete; //item.item.complete
+
+      var currentItem = item.item;
+      var bundle = item.item.plBundle;
 
       if (item.complete) {
-        numCompletedByBundles[item.item.plBundle.id]++;
-        searchProvider.updateCompletionStatus(item.item.id, true);
+        numCompletedByBundles[bundle.id]++;
+        searchProvider.updateCompletionStatus(currentItem.id, true);
       } else {
-        numCompletedByBundles[item.item.plBundle.id]--;
-        searchProvider.updateCompletionStatus(item.item.id, false);
+        numCompletedByBundles[bundle.id]--;
+        searchProvider.updateCompletionStatus(currentItem.id, false);
       }
 
-      item.item.plBundle.numCompleted =
-          numCompletedByBundles[item.item.plBundle.id];
-      await item.item.plBundle.save();
-
-      bundleCompleted = numCompletedByBundles[item.item.plBundle.id] >=
-          item.item.plBundle
-              .numItemsRequired; //Use the updated completion amount
-
-      var otherItemsInBundleObject =
-          await item.item.plBundle.getItems().toList();
-      List<int> otherItemsInBundle = new List();
-      for (var i in otherItemsInBundleObject) {
-        otherItemsInBundle.add(i.id);
-      }
-
-      if (bundleCompleted && item.complete) {
-        for (var key in searchProvider.completionStatuses.entries) {
-          if (otherItemsInBundle.contains(key.key) && key.key != item.item.id) {
-            if (searchProvider.completionStatuses[key.key] != true) {
-              searchProvider.updateCompletionStatus(key.key, null);
-            }
-          }
-        }
-      } else {
-        for (var key in searchProvider.completionStatuses.entries) {
-          if (otherItemsInBundle.contains(key.key) &&
-              searchProvider.completionStatuses[key.key] == null) {
-            //Re-enable disabled checkboxes
-            searchProvider.updateCompletionStatus(key.key, false);
-          }
-        }
-      }
+      bundle.numCompleted = numCompletedByBundles[bundle.id];
+      await bundle.save();
+      _updateBundleCompletionStatuses(bundle, currentItem.id, item.complete);
     };
+  }
+
+  _updateBundleCompletionStatuses(
+      Bundle bundle, int currentItemId, bool itemComplete) async {
+    var bundleCompleted = numCompletedByBundles[bundle.id] >=
+        bundle.numItemsRequired; //Use the updated completion amount
+
+    var otherItemsInBundleObject = await bundle.getItems().toList();
+    List<int> otherItemsInBundle = new List();
+    for (var oItem in otherItemsInBundleObject) {
+      otherItemsInBundle.add(oItem.id);
+    }
+
+    if (bundleCompleted && itemComplete) {
+      for (var entry in searchProvider.completionStatuses.entries) {
+        if (otherItemsInBundle.contains(entry.key) &&
+            entry.key != currentItemId) {
+          if (searchProvider.completionStatuses[entry.key] != true) {
+            searchProvider.updateCompletionStatus(entry.key, null);
+          }
+        }
+      }
+    } else {
+      for (var entry in searchProvider.completionStatuses.entries) {
+        if (otherItemsInBundle.contains(entry.key) &&
+            searchProvider.completionStatuses[entry.key] == null) {
+          //Re-enable disabled checkboxes
+          searchProvider.updateCompletionStatus(entry.key, false);
+        }
+      }
+    }
   }
 }

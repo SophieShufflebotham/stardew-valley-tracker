@@ -33,7 +33,6 @@ class HomeProvider with ChangeNotifier {
   dispose() {
     for (var provider in _rooms) {
       provider.removeListener(notifyListeners);
-      provider.dispose();
     }
 
     super.dispose();

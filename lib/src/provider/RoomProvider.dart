@@ -30,7 +30,6 @@ class RoomProvider with ChangeNotifier {
   dispose() {
     for (var provider in _bundles) {
       provider.removeListener(notifyListeners);
-      provider.dispose();
     }
 
     super.dispose();

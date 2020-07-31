@@ -32,7 +32,6 @@ class BundleProvider with ChangeNotifier {
   dispose() {
     for (var item in _items) {
       item.removeListener(notifyListeners);
-      item.dispose();
     }
 
     super.dispose();
