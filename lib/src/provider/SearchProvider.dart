@@ -7,6 +7,7 @@ class SearchProvider with ChangeNotifier {
   String _searchTerm = '';
   List<ItemProvider> _items = List<ItemProvider>();
   Map _completionStatuses = new Map();
+  bool _isLoading = true;
 
   SearchProvider() {
     loadItems();
@@ -18,6 +19,7 @@ class SearchProvider with ChangeNotifier {
   }
 
   String get searchTerm => _searchTerm;
+  bool get isLoading => _isLoading;
 
   List<ItemProvider> get items {
     return _items.where((item) {
@@ -38,6 +40,8 @@ class SearchProvider with ChangeNotifier {
         _items.add(provider);
       }
     }
+
+    _isLoading = false;
     notifyListeners();
   }
 

@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:uk.co.tcork.stardew_companion/model/model.dart';
 import 'package:uk.co.tcork.stardew_companion/src/provider/ItemProvider.dart';
@@ -28,6 +29,14 @@ class SearchScreen extends StatelessWidget {
       padding: EdgeInsets.only(top: 20.0),
       child: Consumer<SearchProvider>(
         builder: (context, provider, child) {
+          if (provider.isLoading) {
+            var colour = Theme.of(context).hintColor;
+            var spinkit = SpinKitThreeBounce(
+              color: colour,
+              size: 50.0,
+            );
+            return spinkit;
+          }
           return FloatingSearchBar.builder(
             pinned: true,
             itemCount: provider.items.length,
@@ -82,7 +91,9 @@ class SearchScreen extends StatelessWidget {
           return ListTile(
             title: Text(item.name),
             subtitle: Text(
-              bundle != null ? bundle.name : 'CHANGE THIS BUNDLE BROKEN',
+              bundle != null
+                  ? bundle.name
+                  : 'Bundle unknown - Unexpected error',
             ), //TODO: Broken bundles cause errors here.
             leading: SquareAvatar(
               backgroundImage: AssetImage(item.iconPath),
@@ -95,7 +106,7 @@ class SearchScreen extends StatelessWidget {
                   : Colors.green,
               onChanged: callback == null
                   ? null
-                  : (value) => callback(provider, value),
+                  : (value) => callback(provider, value)(),
             ),
             onTap: callback(provider, null),
           );

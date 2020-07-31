@@ -34,6 +34,8 @@ class BundleProvider with ChangeNotifier {
       item.removeListener(notifyListeners);
     }
 
+    print('test1');
+
     super.dispose();
   }
 }

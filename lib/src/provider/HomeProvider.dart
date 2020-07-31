@@ -6,6 +6,7 @@ import 'package:uk.co.tcork.stardew_companion/tools/populateDb.dart';
 
 class HomeProvider with ChangeNotifier {
   List<RoomProvider> _rooms = List<RoomProvider>();
+  bool _isLoading = true;
 
   HomeProvider() {
     getDatabaseContent();
@@ -23,11 +24,13 @@ class HomeProvider with ChangeNotifier {
         provider.addListener(notifyListeners);
         _rooms.add(provider);
       }
+      _isLoading = false;
       notifyListeners();
     }
   }
 
   List<RoomProvider> get rooms => _rooms;
+  bool get isLoading => _isLoading;
 
   @override
   dispose() {
